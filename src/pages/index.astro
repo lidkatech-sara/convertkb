@@ -102,10 +102,77 @@ const canonicalURL = "https://convertkb.com/";
       }
 
       .nav-link:hover,
-      .nav-link:focus-visible {
+      .nav-link:focus-visible,
+      .nav-item:hover > .nav-link,
+      .nav-item:focus-within > .nav-link {
         background: var(--primary-light);
         color: var(--primary);
         outline: none;
+      }
+
+      .nav-item.has-mega:hover .mega-menu,
+      .nav-item.has-mega:focus-within .mega-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .mega-menu {
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 50%;
+        transform: translateX(-50%) translateY(8px);
+        width: min(880px, 70vw);
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: var(--shadow-md);
+        padding: 18px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(170px, 1fr));
+        gap: 18px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+        z-index: 100;
+      }
+
+      .mega-group {
+        min-width: 0;
+      }
+
+      .mega-heading {
+        margin: 0 0 10px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.75rem;
+        line-height: 1.2;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        color: #64748b;
+        text-transform: uppercase;
+      }
+
+      .mega-links {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .mega-links li + li { margin-top: 6px; }
+
+      .mega-links a {
+        display: block;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.94rem;
+        padding: 6px 8px;
+        border-radius: 8px;
+      }
+
+      .mega-links a:hover {
+        background: var(--primary-light);
+        color: var(--primary);
       }
 
       .mobile-menu-toggle {
@@ -508,11 +575,171 @@ const canonicalURL = "https://convertkb.com/";
         <div class="nav-shell">
           <nav class="desktop-nav" aria-label="Main navigation">
             <ul class="nav-root">
-              <li class="nav-item"><a class="nav-link" href="/image/">Image</a></li>
-              <li class="nav-item"><a class="nav-link" href="/pdf/">PDF</a></li>
-              <li class="nav-item"><a class="nav-link" href="/image-formats/">Formats</a></li>
-              <li class="nav-item"><a class="nav-link" href="/exams/">Exams</a></li>
-              <li class="nav-item"><a class="nav-link" href="/tools/">Tools</a></li>
+              <li class="nav-item has-mega">
+                <a class="nav-link" href="/image/">Image</a>
+                <div class="mega-menu" aria-label="Image menu">
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Target KB</h3>
+                    <ul class="mega-links">
+                      <li><a href="/compress-image-to-20kb/">Compress to 20KB</a></li>
+                      <li><a href="/compress-image-to-50kb/">Compress to 50KB</a></li>
+                      <li><a href="/compress-image-to-100kb/">Compress to 100KB</a></li>
+                      <li><a href="/compress-image-to-200kb/">Compress to 200KB</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <h3 class="mega-heading">DPI &amp; Size</h3>
+                    <ul class="mega-links">
+                      <li><a href="/change-dpi-to-200/">Change DPI to 200</a></li>
+                      <li><a href="/convert-image-to-300-dpi/">Convert to 300 DPI</a></li>
+                      <li><a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo</a></li>
+                      <li><a href="/compress-transparent-png-50kb/">Transparent PNG</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Formats</h3>
+                    <ul class="mega-links">
+                      <li><a href="/compress-jpg-to-50kb/">Compress JPG</a></li>
+                      <li><a href="/compress-jpeg-to-20kb/">Compress JPEG</a></li>
+                      <li><a href="/compress-png-to-50kb/">Compress PNG</a></li>
+                      <li><a href="/compress-webp-to-50kb/">Compress WebP</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <h3 class="mega-heading">More</h3>
+                    <ul class="mega-links">
+                      <li><a href="/compress-heic-to-jpg/">HEIC to JPG</a></li>
+                      <li><a href="/compress-tiff-to-100kb/">TIFF to 100KB</a></li>
+                      <li><a href="/image/">View All Image Tools</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
+              <li class="nav-item has-mega">
+                <a class="nav-link" href="/pdf/">PDF</a>
+                <div class="mega-menu" aria-label="PDF menu">
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Compression</h3>
+                    <ul class="mega-links">
+                      <li><a href="/compress-pdf-to-50kb/">Compress to 50KB</a></li>
+                      <li><a href="/compress-pdf-to-100kb/">Compress to 100KB</a></li>
+                      <li><a href="/compress-pdf-to-200kb/">Compress to 200KB</a></li>
+                      <li><a href="/compress-pdf-to-500kb/">Compress to 500KB</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Merge &amp; Convert</h3>
+                    <ul class="mega-links">
+                      <li><a href="/merge-compress-pdf-200kb/">Merge &amp; Compress</a></li>
+                      <li><a href="/pdf-300-dpi-converter/">PDF 300 DPI</a></li>
+                      <li><a href="/compress-pdf-to-20kb/">Compress to 20KB</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Documents</h3>
+                    <ul class="mega-links">
+                      <li><a href="/compress-scanned-documents/">Scanned Docs</a></li>
+                      <li><a href="/compress-marksheet-pdf/">Marksheet PDF</a></li>
+                      <li><a href="/pdf/">View All PDF Tools</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
+              <li class="nav-item has-mega">
+                <a class="nav-link" href="/image-formats/">Formats</a>
+                <div class="mega-menu" aria-label="Formats menu">
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Popular</h3>
+                    <ul class="mega-links">
+                      <li><a href="/compress-jpg-to-50kb/">Compress JPG</a></li>
+                      <li><a href="/compress-jpeg-to-20kb/">Compress JPEG</a></li>
+                      <li><a href="/compress-png-to-50kb/">Compress PNG</a></li>
+                      <li><a href="/compress-webp-to-50kb/">Compress WebP</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Advanced</h3>
+                    <ul class="mega-links">
+                      <li><a href="/convert-heic-to-jpg-50kb/">HEIC to JPG</a></li>
+                      <li><a href="/compress-transparent-png-50kb/">Transparent PNG</a></li>
+                      <li><a href="/compress-tiff-to-100kb/">TIFF to 100KB</a></li>
+                      <li><a href="/resize-image-to-500kb/">Resize to 500KB</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Quick Tools</h3>
+                    <ul class="mega-links">
+                      <li><a href="/image-format-converter/">Image Converter</a></li>
+                      <li><a href="/image-formats/">View All Formats</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
+              <li class="nav-item has-mega">
+                <a class="nav-link" href="/exams/">Exams</a>
+                <div class="mega-menu" aria-label="Exams menu">
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Recruitment</h3>
+                    <ul class="mega-links">
+                      <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo &amp; Signature</a></li>
+                      <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo Resize</a></li>
+                      <li><a href="/gate-photo-size-in-kb/">GATE Photo &amp; Sign</a></li>
+                      <li><a href="/neet-photo-resize-in-kb/">NEET Photo Resize</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <h3 class="mega-heading">State Exams</h3>
+                    <ul class="mega-links">
+                      <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo &amp; Sign</a></li>
+                      <li><a href="/bpsc-photo-resize-in-kb/">BPSC Photo Resize</a></li>
+                      <li><a href="/upsc-id-card-size/">UPSC ID Card Size</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Documents</h3>
+                    <ul class="mega-links">
+                      <li><a href="/signature-compressor-20kb/">Signature Compressor</a></li>
+                      <li><a href="/passport-photo-size/">Passport Photo Size</a></li>
+                      <li><a href="/exams/">View All Exam Tools</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+
+              <li class="nav-item has-mega">
+                <a class="nav-link" href="/tools/">Tools</a>
+                <div class="mega-menu" aria-label="Tools menu">
+                  <div class="mega-group">
+                    <h3 class="mega-heading">ID &amp; Passport</h3>
+                    <ul class="mega-links">
+                      <li><a href="/convert-photo-to-passport-size-50kb/">Passport Photo 50KB</a></li>
+                      <li><a href="/passport-photo-3-5-x-4-5-cm/">3.5x4.5cm Passport</a></li>
+                      <li><a href="/pan-card-photo-resize-in-kb/">PAN Card Photo</a></li>
+                      <li><a href="/aadhaar-card-photo-resize-in-kb/">Aadhaar Card Photo</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Visa &amp; Units</h3>
+                    <ul class="mega-links">
+                      <li><a href="/us-visa-photo-2x2-inches/">US Visa Photo</a></li>
+                      <li><a href="/kb-to-mb/">KB to MB Calculator</a></li>
+                      <li><a href="/mb-to-kb/">MB to KB Calculator</a></li>
+                      <li><a href="/file-size-converter/">File Size Converter</a></li>
+                    </ul>
+                  </div>
+                  <div class="mega-group">
+                    <h3 class="mega-heading">Utilities</h3>
+                    <ul class="mega-links">
+                      <li><a href="/photo-size-converter/">Photo Size Calculator</a></li>
+                      <li><a href="/image-to-pdf/">Image to PDF</a></li>
+                      <li><a href="/tools/">View All Tools</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
             </ul>
           </nav>
 
@@ -545,7 +772,7 @@ const canonicalURL = "https://convertkb.com/";
                 <a href="/compress-pdf-to-100kb/">Compress to 100KB</a>
                 <a href="/compress-pdf-to-200kb/">Compress to 200KB</a>
                 <a href="/compress-pdf-to-500kb/">Compress to 500KB</a>
-                <a href="/merge-compress-pdf-200kb/">Merge & Compress</a>
+                <a href="/merge-compress-pdf-200kb/">Merge &amp; Compress</a>
                 <a href="/pdf-300-dpi-converter/">PDF 300 DPI</a>
                 <a href="/pdf/">View All PDF Tools</a>
               </div>
@@ -566,13 +793,13 @@ const canonicalURL = "https://convertkb.com/";
             </li>
 
             <li class="mobile-nav-item">
-              <button class="mobile-nav-submenu-toggle" data-submenu="exams">Exams & Recruitment</button>
+              <button class="mobile-nav-submenu-toggle" data-submenu="exams">Exams &amp; Recruitment</button>
               <div class="mobile-nav-submenu" id="exams">
-                <a href="/ssc-photo-and-signature-resizer/">SSC Photo & Signature</a>
+                <a href="/ssc-photo-and-signature-resizer/">SSC Photo &amp; Signature</a>
                 <a href="/upsc-photo-resize-in-kb/">UPSC Photo Resize</a>
-                <a href="/gate-photo-size-in-kb/">GATE Photo & Sign</a>
+                <a href="/gate-photo-size-in-kb/">GATE Photo &amp; Sign</a>
                 <a href="/neet-photo-resize-in-kb/">NEET Photo Resize</a>
-                <a href="/tnpsc-photo-signature-resizer/">TNPSC Photo & Sign</a>
+                <a href="/tnpsc-photo-signature-resizer/">TNPSC Photo &amp; Sign</a>
                 <a href="/bpsc-photo-resize-in-kb/">BPSC Photo Resize</a>
                 <a href="/signature-compressor-20kb/">Signature Compressor</a>
                 <a href="/exams/">View All Exam Tools</a>
@@ -580,7 +807,7 @@ const canonicalURL = "https://convertkb.com/";
             </li>
 
             <li class="mobile-nav-item">
-              <button class="mobile-nav-submenu-toggle" data-submenu="tools">ID Tools & Units</button>
+              <button class="mobile-nav-submenu-toggle" data-submenu="tools">ID Tools &amp; Units</button>
               <div class="mobile-nav-submenu" id="tools">
                 <a href="/convert-photo-to-passport-size-50kb/">Passport Photo 50KB</a>
                 <a href="/passport-photo-3-5-x-4-5-cm/">Passport Photo 3.5x4.5cm</a>
