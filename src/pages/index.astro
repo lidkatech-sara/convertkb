@@ -111,21 +111,22 @@ const schemaJson = JSON.stringify(schemaData);
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
       --primary-light: #eff6ff;
+      --primary-glow: rgba(37, 99, 235, 0.12);
       --accent: #0ea5e9;
-      --accent-glow: rgba(14, 165, 233, 0.15);
+      --accent-light: #f0f9ff;
       --text-main: #0f172a;
       --text-muted: #475569;
       --text-light: #64748b;
       --bg-body: #f8fafc;
       --bg-card: #ffffff;
       --border: #e2e8f0;
-      --border-hover: #cbd5e1;
+      --border-focus: #93c5fd;
       --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
-      --shadow-lg: 0 14px 28px -4px rgba(0, 0, 0, 0.08), 0 8px 12px -4px rgba(0, 0, 0, 0.03);
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 8px -2px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+      --shadow-lg: 0 16px 32px -6px rgba(15, 23, 42, 0.08), 0 8px 16px -6px rgba(15, 23, 42, 0.03);
     }
 
     *, *::before, *::after {
@@ -135,7 +136,7 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       background-color: var(--bg-body);
       color: var(--text-main);
       line-height: 1.65;
@@ -148,15 +149,16 @@ const schemaJson = JSON.stringify(schemaData);
       padding: 0 24px;
     }
 
-    /* ==================== ATTRACTIVE HEADER ==================== */
+    /* ==================== MODERN PREMIUM HEADER ==================== */
     .site-header {
       position: sticky;
       top: 0;
-      z-index: 9999;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
     }
 
     .header-inner {
@@ -169,7 +171,7 @@ const schemaJson = JSON.stringify(schemaData);
     .brand-logo {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       font-size: 1.5rem;
       font-weight: 800;
       text-decoration: none;
@@ -177,20 +179,29 @@ const schemaJson = JSON.stringify(schemaData);
       letter-spacing: -0.03em;
     }
 
-    .brand-badge {
+    .logo-icon {
+      width: 34px;
+      height: 34px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: #ffffff;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      font-weight: 900;
+      box-shadow: 0 4px 10px var(--primary-glow);
+    }
+
+    .brand-badge {
+      color: var(--primary);
       font-weight: 700;
     }
 
-    /* Desktop Navigation & Mega-Menus */
     .nav-root {
       display: flex;
       list-style: none;
-      gap: 6px;
+      gap: 4px;
     }
 
     .nav-item {
@@ -200,14 +211,14 @@ const schemaJson = JSON.stringify(schemaData);
     .nav-link {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 10px 14px;
+      gap: 5px;
+      padding: 9px 14px;
       font-size: 0.925rem;
       font-weight: 600;
       color: var(--text-muted);
       text-decoration: none;
       border-radius: var(--radius-sm);
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
     }
 
     .nav-link:hover, .nav-item:focus-within > .nav-link {
@@ -215,6 +226,18 @@ const schemaJson = JSON.stringify(schemaData);
       background: var(--primary-light);
     }
 
+    .arrow-icon {
+      font-size: 0.75rem;
+      transition: transform 0.2s ease;
+      opacity: 0.7;
+    }
+
+    .nav-item:hover .arrow-icon {
+      transform: translateY(1px);
+      opacity: 1;
+    }
+
+    /* Mega-Menu Panel Setup */
     .megamenu-panel {
       display: none;
       position: absolute;
@@ -225,18 +248,24 @@ const schemaJson = JSON.stringify(schemaData);
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-lg);
       padding: 24px;
-      gap: 24px;
-      z-index: 10000;
-      margin-top: 4px;
+      gap: 28px;
+      z-index: 1050;
+      margin-top: 6px;
     }
 
     .nav-item.has-megamenu:hover .megamenu-panel,
     .nav-item.has-megamenu:focus-within .megamenu-panel {
       display: grid;
+      animation: menuFadeIn 0.18s ease-out;
+    }
+
+    @keyframes menuFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .megamenu-panel.cols-2 {
-      min-width: 500px;
+      min-width: 480px;
       grid-template-columns: repeat(2, 1fr);
     }
 
@@ -255,7 +284,7 @@ const schemaJson = JSON.stringify(schemaData);
       font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.07em;
       color: var(--text-light);
       margin-bottom: 12px;
       padding-bottom: 6px;
@@ -267,21 +296,23 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .megamenu-col li {
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .megamenu-col a {
       display: block;
-      font-size: 0.875rem;
+      font-size: 0.885rem;
       color: var(--text-muted);
       text-decoration: none;
-      padding: 4px 0;
-      transition: color 0.15s ease;
+      padding: 5px 8px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
     }
 
     .megamenu-col a:hover {
       color: var(--primary);
-      font-weight: 500;
+      background: var(--primary-light);
+      transform: translateX(2px);
     }
 
     .megamenu-col .hub-pill {
@@ -292,7 +323,7 @@ const schemaJson = JSON.stringify(schemaData);
       font-size: 0.85rem;
     }
 
-    /* Mobile Drawer Checkbox Pattern */
+    /* Mobile Drawer */
     .mobile-menu-toggle {
       display: none;
     }
@@ -307,8 +338,8 @@ const schemaJson = JSON.stringify(schemaData);
 
     .mobile-hamburger span {
       display: block;
-      width: 24px;
-      height: 2.5px;
+      width: 22px;
+      height: 2px;
       background: var(--text-main);
       margin: 5px 0;
       border-radius: 2px;
@@ -321,8 +352,8 @@ const schemaJson = JSON.stringify(schemaData);
     /* ==================== HERO SECTION ==================== */
     .hero {
       text-align: center;
-      padding: 70px 0 45px;
-      background: radial-gradient(circle at 50% 20%, #eff6ff 0%, #f8fafc 70%);
+      padding: 72px 0 54px;
+      background: radial-gradient(circle at 50% 10%, #eff6ff 0%, #f8fafc 80%);
       border-bottom: 1px solid var(--border);
     }
 
@@ -342,10 +373,10 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .hero-title {
-      font-size: 3rem;
+      font-size: 3.1rem;
       font-weight: 800;
       color: var(--text-main);
-      line-height: 1.18;
+      line-height: 1.16;
       letter-spacing: -0.035em;
       margin-bottom: 18px;
     }
@@ -359,15 +390,15 @@ const schemaJson = JSON.stringify(schemaData);
     .hero-subtitle {
       font-size: 1.2rem;
       color: var(--text-muted);
-      max-width: 760px;
-      margin: 0 auto 32px;
+      max-width: 740px;
+      margin: 0 auto 34px;
       font-weight: 400;
     }
 
     .hero-stats {
       display: flex;
       justify-content: center;
-      gap: 28px;
+      gap: 16px;
       flex-wrap: wrap;
     }
 
@@ -375,7 +406,7 @@ const schemaJson = JSON.stringify(schemaData);
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.9rem;
+      font-size: 0.885rem;
       font-weight: 600;
       color: var(--text-muted);
       background: #ffffff;
@@ -385,28 +416,28 @@ const schemaJson = JSON.stringify(schemaData);
       box-shadow: var(--shadow-sm);
     }
 
-    /* ==================== DIRECTORY HUB ==================== */
+    /* ==================== DIRECTORY HUB (USER-FRIENDLY UI/UX) ==================== */
     .hub-section {
-      padding: 50px 0 70px;
+      padding: 64px 0 80px;
     }
 
     .section-intro {
       text-align: center;
       max-width: 680px;
-      margin: 0 auto 40px;
+      margin: 0 auto 44px;
     }
 
     .section-intro h2 {
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 800;
       color: var(--text-main);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       margin-bottom: 8px;
     }
 
     .section-intro p {
       color: var(--text-muted);
-      font-size: 1rem;
+      font-size: 1.05rem;
     }
 
     .hub-grid {
@@ -419,7 +450,7 @@ const schemaJson = JSON.stringify(schemaData);
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 28px;
+      padding: 26px;
       box-shadow: var(--shadow-sm);
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
       display: flex;
@@ -429,19 +460,19 @@ const schemaJson = JSON.stringify(schemaData);
     .hub-card:hover {
       transform: translateY(-4px);
       box-shadow: var(--shadow-md);
-      border-color: var(--border-hover);
+      border-color: var(--border-focus);
     }
 
     .hub-card-header {
       display: flex;
       align-items: center;
       gap: 14px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .hub-icon {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 10px;
       background: var(--primary-light);
       color: var(--primary);
@@ -453,7 +484,7 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .hub-card-header h3 {
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       font-weight: 700;
       color: var(--text-main);
     }
@@ -461,12 +492,12 @@ const schemaJson = JSON.stringify(schemaData);
     .hub-card-desc {
       font-size: 0.925rem;
       color: var(--text-muted);
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       line-height: 1.5;
     }
 
     .hub-subgroup {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .hub-subgroup-title {
@@ -478,20 +509,22 @@ const schemaJson = JSON.stringify(schemaData);
       margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 4px;
     }
 
     .hub-links-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
     .hub-links-list a {
       font-size: 0.885rem;
       color: var(--text-muted);
       text-decoration: none;
-      padding: 5px 8px;
+      padding: 6px 10px;
       border-radius: 6px;
       transition: all 0.15s ease;
       display: flex;
@@ -504,19 +537,29 @@ const schemaJson = JSON.stringify(schemaData);
       background: var(--primary-light);
     }
 
-    .hub-links-list a span {
-      font-size: 0.75rem;
-      color: #94a3b8;
+    .tag-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      transition: all 0.15s ease;
+    }
+
+    .hub-links-list a:hover .tag-badge {
+      color: var(--primary);
+      background: #dbeafe;
     }
 
     .hub-card-action {
       margin-top: auto;
-      padding-top: 18px;
+      padding-top: 16px;
       border-top: 1px solid var(--border);
     }
 
     .hub-card-action a {
-      font-size: 0.9rem;
+      font-size: 0.885rem;
       font-weight: 600;
       color: var(--primary);
       text-decoration: none;
@@ -526,7 +569,6 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .hub-card-action a:hover {
-      color: var(--primary-hover);
       text-decoration: underline;
     }
 
@@ -557,7 +599,7 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .content-wrapper h3 {
-      font-size: 1.45rem;
+      font-size: 1.4rem;
       font-weight: 700;
       color: var(--text-main);
       margin: 28px 0 14px;
@@ -582,9 +624,31 @@ const schemaJson = JSON.stringify(schemaData);
       margin-bottom: 10px;
     }
 
+    /* Editorial Callout Cards */
+    .info-callout {
+      background: var(--primary-light);
+      border-left: 4px solid var(--primary);
+      padding: 20px 24px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 28px 0;
+    }
+
+    .info-callout h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .info-callout p {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+      color: #1e3a8a;
+    }
+
     .table-responsive {
       overflow-x: auto;
-      margin: 30px 0;
+      margin: 32px 0;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
     }
@@ -597,15 +661,15 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .specs-table th {
-      background: #f1f5f9;
+      background: #f8fafc;
       color: var(--text-main);
       font-weight: 700;
-      padding: 12px 16px;
+      padding: 12px 18px;
       border-bottom: 1px solid var(--border);
     }
 
     .specs-table td {
-      padding: 12px 16px;
+      padding: 12px 18px;
       border-bottom: 1px solid var(--border);
       color: var(--text-muted);
     }
@@ -616,7 +680,7 @@ const schemaJson = JSON.stringify(schemaData);
 
     /* FAQ BLOCK */
     .faq-block {
-      margin-top: 50px;
+      margin-top: 54px;
     }
 
     .faq-item {
@@ -624,7 +688,7 @@ const schemaJson = JSON.stringify(schemaData);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 24px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .faq-question {
@@ -776,20 +840,23 @@ const schemaJson = JSON.stringify(schemaData);
 </head>
 <body>
 
-  <!-- ==================== HEADER ==================== -->
+  <!-- ==================== MODERN PREMIUM HEADER ==================== -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="/" class="brand-logo" title="CONVERTkb Homepage">
-        CONVERT<span class="brand-badge">kb</span>
+        <div class="logo-icon">KB</div>
+        <span>CONVERT<span class="brand-badge">kb</span></span>
       </a>
 
-      <!-- Desktop Nav with Multi-Column Mega-Menus -->
+      <!-- Desktop Nav with Smooth Mega-Menus -->
       <nav aria-label="Main Navigation">
         <ul class="nav-root">
           
           <!-- MENU 1: IMAGE -->
           <li class="nav-item has-megamenu">
-            <a href="/image/" class="nav-link">Image &blacktriangledown;</a>
+            <a href="/image/" class="nav-link">
+              Image <span class="arrow-icon">&blacktriangledown;</span>
+            </a>
             <div class="megamenu-panel cols-3">
               <div class="megamenu-col">
                 <h4>Target Sizes</h4>
@@ -809,8 +876,8 @@ const schemaJson = JSON.stringify(schemaData);
                   <li><a href="/change-dpi-to-200/">Change Image DPI to 200</a></li>
                   <li><a href="/convert-image-to-300-dpi/">Convert Image to 300 DPI</a></li>
                   <li><a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo (50KB)</a></li>
-                  <li><a href="/resize-image-pixels-and-kb/">Resize in Pixels and KB</a></li>
-                  <li><a href="/resize-image-cm-and-kb/">Resize Image in CM and KB</a></li>
+                  <li><a href="/resize-image-pixels-and-kb/">Resize in Pixels &amp; KB</a></li>
+                  <li><a href="/resize-image-cm-and-kb/">Resize Image in CM &amp; KB</a></li>
                 </ul>
               </div>
               <div class="megamenu-col">
@@ -829,7 +896,9 @@ const schemaJson = JSON.stringify(schemaData);
 
           <!-- MENU 2: PDF -->
           <li class="nav-item has-megamenu">
-            <a href="/pdf/" class="nav-link">PDF &blacktriangledown;</a>
+            <a href="/pdf/" class="nav-link">
+              PDF <span class="arrow-icon">&blacktriangledown;</span>
+            </a>
             <div class="megamenu-panel cols-2">
               <div class="megamenu-col">
                 <h4>Target PDF Sizes</h4>
@@ -859,7 +928,9 @@ const schemaJson = JSON.stringify(schemaData);
 
           <!-- MENU 3: IMAGE FORMATS -->
           <li class="nav-item has-megamenu">
-            <a href="/image-formats/" class="nav-link">Image Formats &blacktriangledown;</a>
+            <a href="/image-formats/" class="nav-link">
+              Formats <span class="arrow-icon">&blacktriangledown;</span>
+            </a>
             <div class="megamenu-panel cols-3">
               <div class="megamenu-col">
                 <h4>JPG &amp; JPEG</h4>
@@ -899,7 +970,9 @@ const schemaJson = JSON.stringify(schemaData);
 
           <!-- MENU 4: EXAMS -->
           <li class="nav-item has-megamenu">
-            <a href="/exams/" class="nav-link">Exams &blacktriangledown;</a>
+            <a href="/exams/" class="nav-link">
+              Exams <span class="arrow-icon">&blacktriangledown;</span>
+            </a>
             <div class="megamenu-panel cols-3">
               <div class="megamenu-col">
                 <h4>National Boards</h4>
@@ -922,7 +995,7 @@ const schemaJson = JSON.stringify(schemaData);
                 </ul>
               </div>
               <div class="megamenu-col">
-                <h4>Signatures &amp; Sizing</h4>
+                <h4>Signatures &amp; Sizes</h4>
                 <ul>
                   <li><a href="/signature-compressor-20kb/">Signature to 20KB</a></li>
                   <li><a href="/resize-signature-10kb-to-20kb/">Signature 10KB to 20KB</a></li>
@@ -937,7 +1010,9 @@ const schemaJson = JSON.stringify(schemaData);
 
           <!-- MENU 5: TOOLS -->
           <li class="nav-item has-megamenu">
-            <a href="/tools/" class="nav-link">Tools &blacktriangledown;</a>
+            <a href="/tools/" class="nav-link">
+              Tools <span class="arrow-icon">&blacktriangledown;</span>
+            </a>
             <div class="megamenu-panel cols-2">
               <div class="megamenu-col">
                 <h4>Passports &amp; IDs</h4>
@@ -976,10 +1051,10 @@ const schemaJson = JSON.stringify(schemaData);
       </label>
     </div>
 
-    <!-- Hidden Checkbox for Mobile Drawer Toggle -->
+    <!-- Hidden Checkbox for Mobile Toggle -->
     <input type="checkbox" id="menu-toggle" class="mobile-menu-toggle" />
 
-    <!-- Mobile Navigation Drawer -->
+    <!-- Mobile Drawer -->
     <div class="mobile-drawer">
       <div class="mobile-nav-group">
         <h4>Image Compress</h4>
@@ -1047,7 +1122,7 @@ const schemaJson = JSON.stringify(schemaData);
       </div>
     </section>
 
-    <!-- ==================== DIRECTORY HUB ==================== -->
+    <!-- ==================== USER-FRIENDLY DIRECTORY HUB ==================== -->
     <section class="hub-section">
       <div class="container">
         <div class="section-intro">
@@ -1066,23 +1141,23 @@ const schemaJson = JSON.stringify(schemaData);
             <p class="hub-card-desc">Targeted compression algorithms calibrated for identity cards, profile pictures, and online admissions.</p>
             
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>Target KB Sizes</span> <span>Search Vol</span></div>
+              <div class="hub-subgroup-title"><span>Target KB Sizes</span> <span>Precision</span></div>
               <ul class="hub-links-list">
-                <li><a href="/compress-image-to-50kb/">Compress Image to 50KB <span>165K/mo</span></a></li>
-                <li><a href="/compress-image-to-20kb/">Compress Image to 20KB <span>120K/mo</span></a></li>
-                <li><a href="/compress-image-to-100kb/">Compress Image to 100KB <span>110K/mo</span></a></li>
-                <li><a href="/compress-image-to-200kb/">Compress Image to 200KB <span>55K/mo</span></a></li>
-                <li><a href="/compress-image-to-10kb/">Compress Image to 10KB <span>45K/mo</span></a></li>
+                <li><a href="/compress-image-to-50kb/">Compress Image to 50KB <span class="tag-badge">Exact 50KB</span></a></li>
+                <li><a href="/compress-image-to-20kb/">Compress Image to 20KB <span class="tag-badge">Exact 20KB</span></a></li>
+                <li><a href="/compress-image-to-100kb/">Compress Image to 100KB <span class="tag-badge">Under 100KB</span></a></li>
+                <li><a href="/compress-image-to-200kb/">Compress Image to 200KB <span class="tag-badge">Web Standard</span></a></li>
+                <li><a href="/compress-image-to-10kb/">Compress Image to 10KB <span class="tag-badge">Ultra Small</span></a></li>
               </ul>
             </div>
 
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>DPI &amp; Dimension Calibration</span></div>
+              <div class="hub-subgroup-title"><span>DPI &amp; Dimensions</span> <span>Specification</span></div>
               <ul class="hub-links-list">
-                <li><a href="/change-dpi-to-200/">Change Image DPI to 200 <span>42K/mo</span></a></li>
-                <li><a href="/convert-image-to-300-dpi/">Convert Image to 300 DPI <span>65K/mo</span></a></li>
-                <li><a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo 50KB <span>28K/mo</span></a></li>
-                <li><a href="/resize-image-pixels-and-kb/">Resize in Pixels and KB <span>24K/mo</span></a></li>
+                <li><a href="/change-dpi-to-200/">Change Image DPI to 200 <span class="tag-badge">200 DPI</span></a></li>
+                <li><a href="/convert-image-to-300-dpi/">Convert Image to 300 DPI <span class="tag-badge">300 DPI</span></a></li>
+                <li><a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo 50KB <span class="tag-badge">Passport CM</span></a></li>
+                <li><a href="/resize-image-pixels-and-kb/">Resize in Pixels and KB <span class="tag-badge">Custom PX</span></a></li>
               </ul>
             </div>
 
@@ -1100,23 +1175,23 @@ const schemaJson = JSON.stringify(schemaData);
             <p class="hub-card-desc">Shrink scanned certificates, academic marksheets, caste verifications, and multi-page legal submissions.</p>
             
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>Target PDF Weights</span> <span>Search Vol</span></div>
+              <div class="hub-subgroup-title"><span>Target PDF Weights</span> <span>Threshold</span></div>
               <ul class="hub-links-list">
-                <li><a href="/compress-pdf-to-100kb/">Compress PDF to 100KB <span>90K/mo</span></a></li>
-                <li><a href="/compress-pdf-to-200kb/">Compress PDF to 200KB <span>75K/mo</span></a></li>
-                <li><a href="/compress-pdf-to-50kb/">Compress PDF to 50KB <span>45K/mo</span></a></li>
-                <li><a href="/compress-pdf-to-500kb/">Compress PDF to 500KB <span>35K/mo</span></a></li>
-                <li><a href="/compress-pdf-to-10kb/">Compress PDF to 10KB <span>14K/mo</span></a></li>
+                <li><a href="/compress-pdf-to-100kb/">Compress PDF to 100KB <span class="tag-badge">Max 100KB</span></a></li>
+                <li><a href="/compress-pdf-to-200kb/">Compress PDF to 200KB <span class="tag-badge">Max 200KB</span></a></li>
+                <li><a href="/compress-pdf-to-50kb/">Compress PDF to 50KB <span class="tag-badge">Ultra Lite</span></a></li>
+                <li><a href="/compress-pdf-to-500kb/">Compress PDF to 500KB <span class="tag-badge">Documents</span></a></li>
+                <li><a href="/compress-pdf-to-10kb/">Compress PDF to 10KB <span class="tag-badge">Minimal</span></a></li>
               </ul>
             </div>
 
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>Scans &amp; Document Merging</span></div>
+              <div class="hub-subgroup-title"><span>Scans &amp; Merging</span> <span>Process</span></div>
               <ul class="hub-links-list">
-                <li><a href="/merge-compress-pdf-200kb/">Merge &amp; Compress PDF 200KB <span>26K/mo</span></a></li>
-                <li><a href="/compress-scanned-pdf-100kb/">Compress Scanned PDF 100KB <span>21K/mo</span></a></li>
-                <li><a href="/pdf-300-dpi-converter/">PDF 300 DPI Converter <span>22K/mo</span></a></li>
-                <li><a href="/convert-jpg-to-pdf-200kb/">Convert JPG to PDF 200KB <span>48K/mo</span></a></li>
+                <li><a href="/merge-compress-pdf-200kb/">Merge &amp; Compress PDF 200KB <span class="tag-badge">Multi-Page</span></a></li>
+                <li><a href="/compress-scanned-pdf-100kb/">Compress Scanned PDF 100KB <span class="tag-badge">Scan Mode</span></a></li>
+                <li><a href="/pdf-300-dpi-converter/">PDF 300 DPI Converter <span class="tag-badge">Print Crisp</span></a></li>
+                <li><a href="/convert-jpg-to-pdf-200kb/">Convert JPG to PDF 200KB <span class="tag-badge">JPG to PDF</span></a></li>
               </ul>
             </div>
 
@@ -1134,23 +1209,23 @@ const schemaJson = JSON.stringify(schemaData);
             <p class="hub-card-desc">Engineered re-encoders for lossy JPG/JPEG, transparent alpha PNG, modern WebP, and raw HEIC smartphone snaps.</p>
             
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>Standard Formats</span> <span>Search Vol</span></div>
+              <div class="hub-subgroup-title"><span>Standard Formats</span> <span>Type</span></div>
               <ul class="hub-links-list">
-                <li><a href="/compress-jpg-to-50kb/">Compress JPG to 50KB <span>50K/mo</span></a></li>
-                <li><a href="/compress-jpeg-to-50kb/">Compress JPEG to 50KB <span>45K/mo</span></a></li>
-                <li><a href="/compress-jpg-to-20kb/">Compress JPG to 20KB <span>42K/mo</span></a></li>
-                <li><a href="/compress-png-to-50kb/">Compress PNG to 50KB <span>16K/mo</span></a></li>
-                <li><a href="/compress-webp-to-50kb/">Compress WebP to 50KB <span>8.5K/mo</span></a></li>
+                <li><a href="/compress-jpg-to-50kb/">Compress JPG to 50KB <span class="tag-badge">JPG / JPEG</span></a></li>
+                <li><a href="/compress-jpeg-to-50kb/">Compress JPEG to 50KB <span class="tag-badge">Web JPEG</span></a></li>
+                <li><a href="/compress-jpg-to-20kb/">Compress JPG to 20KB <span class="tag-badge">Lightweight</span></a></li>
+                <li><a href="/compress-png-to-50kb/">Compress PNG to 50KB <span class="tag-badge">Lossless</span></a></li>
+                <li><a href="/compress-webp-to-50kb/">Compress WebP to 50KB <span class="tag-badge">Next-Gen</span></a></li>
               </ul>
             </div>
 
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>Modern Mobile &amp; Legacy Formats</span></div>
+              <div class="hub-subgroup-title"><span>Mobile &amp; Legacy</span> <span>Compatibility</span></div>
               <ul class="hub-links-list">
-                <li><a href="/convert-heic-to-jpg-50kb/">HEIC to JPG under 50KB <span>35K/mo</span></a></li>
-                <li><a href="/compress-tiff-to-100kb/">Compress TIFF to 100KB <span>12K/mo</span></a></li>
-                <li><a href="/convert-bmp-to-jpg-50kb/">BMP to JPG under 50KB <span>9.2K/mo</span></a></li>
-                <li><a href="/compress-transparent-png-50kb/">Transparent PNG to 50KB <span>3.2K/mo</span></a></li>
+                <li><a href="/convert-heic-to-jpg-50kb/">HEIC to JPG under 50KB <span class="tag-badge">Apple iOS</span></a></li>
+                <li><a href="/compress-tiff-to-100kb/">Compress TIFF to 100KB <span class="tag-badge">Enterprise</span></a></li>
+                <li><a href="/convert-bmp-to-jpg-50kb/">BMP to JPG under 50KB <span class="tag-badge">Legacy BMP</span></a></li>
+                <li><a href="/compress-transparent-png-50kb/">Transparent PNG to 50KB <span class="tag-badge">Alpha Mask</span></a></li>
               </ul>
             </div>
 
@@ -1168,23 +1243,23 @@ const schemaJson = JSON.stringify(schemaData);
             <p class="hub-card-desc">Presets for Staff Selection, Civil Services, Banking boards, Engineering tests, and Medical entrance portals.</p>
             
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>National Board Presets</span> <span>Search Vol</span></div>
+              <div class="hub-subgroup-title"><span>National Boards</span> <span>Authority</span></div>
               <ul class="hub-links-list">
-                <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo &amp; Signature Resizer <span>25K/mo</span></a></li>
-                <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo Resize (20-300KB) <span>18K/mo</span></a></li>
-                <li><a href="/gate-photo-size-in-kb/">GATE Photo &amp; Signature Size <span>12K/mo</span></a></li>
-                <li><a href="/neet-photo-resize-in-kb/">NEET Photo Resize in KB <span>14K/mo</span></a></li>
-                <li><a href="/ibps-photo-signature-resize/">IBPS Photo &amp; Sign Resizer <span>11K/mo</span></a></li>
+                <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo &amp; Signature Resizer <span class="tag-badge">SSC CGL/CHSL</span></a></li>
+                <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo Resize (20-300KB) <span class="tag-badge">Civil Services</span></a></li>
+                <li><a href="/gate-photo-size-in-kb/">GATE Photo &amp; Signature Size <span class="tag-badge">GATE IIT</span></a></li>
+                <li><a href="/neet-photo-resize-in-kb/">NEET Photo Resize in KB <span class="tag-badge">NTA Entrance</span></a></li>
+                <li><a href="/ibps-photo-signature-resize/">IBPS Photo &amp; Sign Resizer <span class="tag-badge">Bank Portals</span></a></li>
               </ul>
             </div>
 
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>State PSCs &amp; Quick Signatures</span></div>
+              <div class="hub-subgroup-title"><span>State PSCs &amp; Signatures</span> <span>Verification</span></div>
               <ul class="hub-links-list">
-                <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo &amp; Sign Resizer <span>22K/mo</span></a></li>
-                <li><a href="/signature-resize-in-kb/">Signature Resize in KB <span>28K/mo</span></a></li>
-                <li><a href="/signature-compressor-20kb/">Signature Compressor to 20KB <span>19K/mo</span></a></li>
-                <li><a href="/140x60-pixel-signature-20kb/">140x60 Pixel Signature <span>14K/mo</span></a></li>
+                <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo &amp; Sign Resizer <span class="tag-badge">State PSC</span></a></li>
+                <li><a href="/signature-resize-in-kb/">Signature Resize in KB <span class="tag-badge">Sign Only</span></a></li>
+                <li><a href="/signature-compressor-20kb/">Signature Compressor to 20KB <span class="tag-badge">10-20 KB</span></a></li>
+                <li><a href="/140x60-pixel-signature-20kb/">140x60 Pixel Signature <span class="tag-badge">IBPS Format</span></a></li>
               </ul>
             </div>
 
@@ -1202,23 +1277,23 @@ const schemaJson = JSON.stringify(schemaData);
             <p class="hub-card-desc">International passport guidelines, national identity cards, visa constraints, and exact digital storage formulas.</p>
             
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>Identity &amp; Travel Passes</span> <span>Search Vol</span></div>
+              <div class="hub-subgroup-title"><span>Identity &amp; Travel</span> <span>Standard</span></div>
               <ul class="hub-links-list">
-                <li><a href="/passport-photo-size-in-kb/">Passport Photo Size in KB <span>35K/mo</span></a></li>
-                <li><a href="/convert-photo-to-passport-size-50kb/">Passport Photo Size 50KB <span>22K/mo</span></a></li>
-                <li><a href="/pan-card-photo-resize-in-kb/">PAN Card Photo Resizer <span>16K/mo</span></a></li>
-                <li><a href="/pan-card-signature-resize-in-kb/">PAN Card Signature Resize <span>12K/mo</span></a></li>
-                <li><a href="/us-visa-photo-2x2-inches/">US Visa (2x2 Inches / 240KB) <span>11K/mo</span></a></li>
+                <li><a href="/passport-photo-size-in-kb/">Passport Photo Size in KB <span class="tag-badge">Universal ID</span></a></li>
+                <li><a href="/convert-photo-to-passport-size-50kb/">Passport Photo Size 50KB <span class="tag-badge">50KB Form</span></a></li>
+                <li><a href="/pan-card-photo-resize-in-kb/">PAN Card Photo Resizer <span class="tag-badge">NSDL / UTI</span></a></li>
+                <li><a href="/pan-card-signature-resize-in-kb/">PAN Card Signature Resize <span class="tag-badge">Tax Portal</span></a></li>
+                <li><a href="/us-visa-photo-2x2-inches/">US Visa (2x2 Inches / 240KB) <span class="tag-badge">US Dept State</span></a></li>
               </ul>
             </div>
 
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>Data Storage Unit Calculators</span></div>
+              <div class="hub-subgroup-title"><span>Unit Calculators</span> <span>Metric</span></div>
               <ul class="hub-links-list">
-                <li><a href="/kb-to-mb/">KB to MB Calculator <span>1.5M/mo</span></a></li>
-                <li><a href="/mb-to-kb/">MB to KB Calculator <span>950K/mo</span></a></li>
-                <li><a href="/kb-to-bytes/">KB to Bytes Converter <span>185K/mo</span></a></li>
-                <li><a href="/1024-kb-to-mb/">1024 KB to MB Calculator <span>35K/mo</span></a></li>
+                <li><a href="/kb-to-mb/">KB to MB Calculator <span class="tag-badge">1024 vs 1000</span></a></li>
+                <li><a href="/mb-to-kb/">MB to KB Calculator <span class="tag-badge">Data Unit</span></a></li>
+                <li><a href="/kb-to-bytes/">KB to Bytes Converter <span class="tag-badge">Exact Bytes</span></a></li>
+                <li><a href="/1024-kb-to-mb/">1024 KB to MB Calculator <span class="tag-badge">Binary 1MB</span></a></li>
               </ul>
             </div>
 
@@ -1241,6 +1316,13 @@ const schemaJson = JSON.stringify(schemaData);
         <p>
           CONVERTkb was built to resolve this exact technical barrier. Unlike basic graphic design utilities or generic compression tools that operate on rough percentage sliders, our browser-native system uses programmatic binary calibration. We enable students, public sector applicants, web engineers, and administrative teams to hit strict target thresholds&mdash;such as 20KB, 50KB, 100KB, or 200KB&mdash;without technical expertise, software installation, or security risks.
         </p>
+
+        <div class="info-callout">
+          <h4>Privacy-First Client-Side Architecture</h4>
+          <p>
+            Unlike legacy conversion websites, CONVERTkb executes 100% of its compression loops within your local browser memory using HTML5 Canvas and WebAssembly. No files, photographs, or personal signatures are ever uploaded to cloud servers.
+          </p>
+        </div>
 
         <h3>Why Do Recruitment &amp; Government Portals Enforce Strict KB Limits?</h3>
         <p>
@@ -1393,7 +1475,7 @@ const schemaJson = JSON.stringify(schemaData);
     </section>
   </main>
 
-  <!-- ==================== STREAMLINED ADSENSE FOOTER ==================== -->
+  <!-- ==================== STREAMLINED FOOTER ==================== -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-top">
