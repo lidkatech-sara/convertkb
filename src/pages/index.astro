@@ -108,63 +108,6 @@ const canonicalURL = "https://convertkb.com/";
         outline: none;
       }
 
-      .megamenu-panel {
-        position: absolute;
-        top: calc(100% + 10px);
-        left: 0;
-        display: grid;
-        gap: 24px;
-        min-width: 620px;
-        padding: 22px;
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-md);
-        visibility: hidden;
-        opacity: 0;
-        transform: translateY(-8px);
-        transition: all 0.2s ease;
-        pointer-events: none;
-      }
-
-      .nav-item:hover .megamenu-panel,
-      .nav-item:focus-within .megamenu-panel {
-        visibility: visible;
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-      }
-
-      .megamenu-panel.cols-2 { grid-template-columns: repeat(2, minmax(180px, 1fr)); }
-      .megamenu-panel.cols-3 { grid-template-columns: repeat(3, minmax(160px, 1fr)); }
-
-      .megamenu-col h4 {
-        margin: 0 0 12px;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--text-muted);
-      }
-
-      .megamenu-col ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .megamenu-col li + li { margin-top: 7px; }
-
-      .megamenu-col a {
-        display: block;
-        text-decoration: none;
-        color: var(--text-muted);
-        padding: 4px 0;
-      }
-
-      .megamenu-col a:hover {
-        color: var(--primary);
-      }
-
       .mobile-menu-toggle {
         display: none;
         width: 46px;
@@ -538,38 +481,17 @@ const canonicalURL = "https://convertkb.com/";
       }
 
       @media (max-width: 640px) {
-        .header-inner {
-          height: 64px;
-        }
-
-        .hero-title {
-          font-size: 2.2rem;
-        }
-
-        .hero-features {
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .hub-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .footer-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .footer-bottom {
-          flex-direction: column;
-          text-align: center;
-        }
-
+        .header-inner { height: 64px; }
+        .hero-title { font-size: 2.2rem; }
+        .hero-features { flex-direction: column; align-items: center; }
+        .hub-grid { grid-template-columns: 1fr; }
+        .footer-grid { grid-template-columns: 1fr; }
+        .footer-bottom { flex-direction: column; text-align: center; }
         .mobile-nav-item > a,
         .mobile-nav-submenu-toggle {
           padding: 16px 18px;
           font-size: 1.05rem;
         }
-
         .mobile-nav-submenu a {
           padding: 14px 18px 14px 44px;
           font-size: 1rem;
@@ -586,131 +508,11 @@ const canonicalURL = "https://convertkb.com/";
         <div class="nav-shell">
           <nav class="desktop-nav" aria-label="Main navigation">
             <ul class="nav-root">
-              <li class="nav-item">
-                <a class="nav-link" href="/image/">Image</a>
-                <div class="megamenu-panel cols-3">
-                  <div class="megamenu-col">
-                    <h4>Target Sizes</h4>
-                    <ul>
-                      <li><a href="/compress-image-to-20kb/">Compress to 20KB</a></li>
-                      <li><a href="/compress-image-to-50kb/">Compress to 50KB</a></li>
-                      <li><a href="/compress-image-to-100kb/">Compress to 100KB</a></li>
-                    </ul>
-                  </div>
-                  <div class="megamenu-col">
-                    <h4>DPI & Dimensions</h4>
-                    <ul>
-                      <li><a href="/change-dpi-to-200/">Change DPI to 200</a></li>
-                      <li><a href="/convert-image-to-300-dpi/">Convert to 300 DPI</a></li>
-                      <li><a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo</a></li>
-                    </ul>
-                  </div>
-                  <div class="megamenu-col">
-                    <h4>Utilities</h4>
-                    <ul>
-                      <li><a href="/reduce-image-size-in-kb/">Reduce Size in KB</a></li>
-                      <li><a href="/convert-photo-to-50kb/">Convert to 50KB</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/pdf/">PDF</a>
-                <div class="megamenu-panel cols-2">
-                  <div class="megamenu-col">
-                    <h4>Target Sizes</h4>
-                    <ul>
-                      <li><a href="/compress-pdf-to-50kb/">Compress to 50KB</a></li>
-                      <li><a href="/compress-pdf-to-100kb/">Compress to 100KB</a></li>
-                      <li><a href="/compress-pdf-to-200kb/">Compress to 200KB</a></li>
-                    </ul>
-                  </div>
-                  <div class="megamenu-col">
-                    <h4>Document Tools</h4>
-                    <ul>
-                      <li><a href="/merge-compress-pdf-200kb/">Merge & Compress</a></li>
-                      <li><a href="/pdf-300-dpi-converter/">PDF 300 DPI</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/image-formats/">Formats</a>
-                <div class="megamenu-panel cols-3">
-                  <div class="megamenu-col">
-                    <h4>JPG & JPEG</h4>
-                    <ul>
-                      <li><a href="/compress-jpg-to-50kb/">Compress JPG</a></li>
-                      <li><a href="/compress-jpeg-to-20kb/">Compress JPEG</a></li>
-                    </ul>
-                  </div>
-                  <div class="megamenu-col">
-                    <h4>PNG & WebP</h4>
-                    <ul>
-                      <li><a href="/compress-png-to-50kb/">Compress PNG</a></li>
-                      <li><a href="/compress-webp-to-50kb/">Compress WebP</a></li>
-                    </ul>
-                  </div>
-                  <div class="megamenu-col">
-                    <h4>Modern & Legacy</h4>
-                    <ul>
-                      <li><a href="/convert-heic-to-jpg-50kb/">HEIC to JPG</a></li>
-                      <li><a href="/compress-tiff-to-100kb/">TIFF to 100KB</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/exams/">Exams</a>
-                <div class="megamenu-panel cols-3">
-                  <div class="megamenu-col">
-                    <h4>National Portals</h4>
-                    <ul>
-                      <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo</a></li>
-                      <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo</a></li>
-                      <li><a href="/gate-photo-size-in-kb/">GATE Photo</a></li>
-                    </ul>
-                  </div>
-                  <div class="megamenu-col">
-                    <h4>State & Banking</h4>
-                    <ul>
-                      <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo</a></li>
-                      <li><a href="/bpsc-photo-resize-in-kb/">BPSC Photo</a></li>
-                    </ul>
-                  </div>
-                  <div class="megamenu-col">
-                    <h4>Signatures</h4>
-                    <ul>
-                      <li><a href="/signature-compressor-20kb/">Signature 20KB</a></li>
-                      <li><a href="/140x60-pixel-signature-20kb/">140x60 Signature</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/tools/">Tools</a>
-                <div class="megamenu-panel cols-2">
-                  <div class="megamenu-col">
-                    <h4>ID & Passports</h4>
-                    <ul>
-                      <li><a href="/convert-photo-to-passport-size-50kb/">Passport Photo</a></li>
-                      <li><a href="/pan-card-photo-resize-in-kb/">PAN Card Photo</a></li>
-                      <li><a href="/us-visa-photo-2x2-inches/">US Visa Photo</a></li>
-                    </ul>
-                  </div>
-                  <div class="megamenu-col">
-                    <h4>Data Calculators</h4>
-                    <ul>
-                      <li><a href="/kb-to-mb/">KB to MB Calculator</a></li>
-                      <li><a href="/mb-to-kb/">MB to KB Calculator</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
+              <li class="nav-item"><a class="nav-link" href="/image/">Image</a></li>
+              <li class="nav-item"><a class="nav-link" href="/pdf/">PDF</a></li>
+              <li class="nav-item"><a class="nav-link" href="/image-formats/">Formats</a></li>
+              <li class="nav-item"><a class="nav-link" href="/exams/">Exams</a></li>
+              <li class="nav-item"><a class="nav-link" href="/tools/">Tools</a></li>
             </ul>
           </nav>
 
@@ -1054,13 +856,11 @@ const canonicalURL = "https://convertkb.com/";
       const mobileOverlay = document.getElementById('mobile-overlay');
       const submenuToggles = document.querySelectorAll('.mobile-nav-submenu-toggle');
 
-      // Toggle menu on hamburger click
       menuBtn.addEventListener('click', () => {
         const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
         toggleMenu(!isOpen);
       });
 
-      // Close menu when clicking overlay
       mobileOverlay.addEventListener('click', () => {
         toggleMenu(false);
       });
@@ -1075,17 +875,11 @@ const canonicalURL = "https://convertkb.com/";
           document.body.style.overflow = 'hidden';
         } else {
           document.body.style.overflow = '';
-          // Close all submenus when closing main menu
-          submenuToggles.forEach(toggle => {
-            toggle.classList.remove('expanded');
-          });
-          document.querySelectorAll('.mobile-nav-submenu').forEach(menu => {
-            menu.classList.remove('is-open');
-          });
+          submenuToggles.forEach(toggle => toggle.classList.remove('expanded'));
+          document.querySelectorAll('.mobile-nav-submenu').forEach(menu => menu.classList.remove('is-open'));
         }
       }
 
-      // Handle submenu toggle
       submenuToggles.forEach(toggle => {
         toggle.addEventListener('click', (e) => {
           e.preventDefault();
@@ -1097,26 +891,17 @@ const canonicalURL = "https://convertkb.com/";
           const isOpen = submenu.classList.contains('is-open');
 
           if (isOpen) {
-            // Close submenu
             submenu.classList.remove('is-open');
             toggle.classList.remove('expanded');
           } else {
-            // Close other submenus
-            document.querySelectorAll('.mobile-nav-submenu').forEach(menu => {
-              menu.classList.remove('is-open');
-            });
-            submenuToggles.forEach(btn => {
-              btn.classList.remove('expanded');
-            });
-
-            // Open current submenu
+            document.querySelectorAll('.mobile-nav-submenu').forEach(menu => menu.classList.remove('is-open'));
+            submenuToggles.forEach(btn => btn.classList.remove('expanded'));
             submenu.classList.add('is-open');
             toggle.classList.add('expanded');
           }
         });
       });
 
-      // Close menu when clicking a submenu link
       document.querySelectorAll('.mobile-nav-submenu a').forEach(link => {
         link.addEventListener('click', () => {
           toggleMenu(false);
