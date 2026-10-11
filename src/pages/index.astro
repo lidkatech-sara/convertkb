@@ -1,1062 +1,765 @@
 ---
-// src/pages/index.astro
 const title = "CONVERTkb - Free Online Image & PDF Compressor to Exact KB";
 const description = "Compress images, photos, and PDFs to exact file sizes (20KB, 50KB, 100KB) and DPI requirements directly in your browser. Fast, free, and completely private with zero server uploads.";
 const canonicalURL = "https://convertkb.com/";
-
-// Schema.org structured data for WebSite and FAQ
-const schemaData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": "https://convertkb.com/#website",
-      "url": "https://convertkb.com/",
-      "name": "CONVERTkb",
-      "description": description,
-      "inLanguage": "en-US"
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://convertkb.com/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How does CONVERTkb compress images to an exact target KB?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "CONVERTkb uses client-side canvas binary search algorithms directly in your browser. It adjusts quality matrices and dimensional limits iteratively until the file matches your exact target file size (such as 20KB or 50KB) without transmitting raw images across external servers."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Are my uploaded photos, ID cards, and documents stored on your servers?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No. All image compression, DPI configuration, and PDF optimization happen on your local device memory using WebAssembly and HTML5 Canvas. Your files never leave your computer or phone."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Why do government recruitment portals reject photos even when the KB size is correct?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Most portals enforce both file size limits (e.g., 20KB-50KB) and strict metadata constraints such as 200/300 DPI or fixed pixel dimensions (like 3.5 x 4.5 cm). CONVERTkb embeds proper JFIF/EXIF headers to ensure portal validation systems accept your files."
-          }
-        }
-      ]
-    }
-  ]
-};
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title}</title>
-  <meta name="description" content={description} />
-  <link rel="canonical" href={canonicalURL} />
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:url" content={canonicalURL} />
-  <meta property="og:type" content="website" />
-
-  <!-- Structured Data -->
-  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
-
-  <style>
-    /* CSS Variables & Global Reset */
-    :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --primary-light: #eff6ff;
-      --text-main: #0f172a;
-      --text-muted: #475569;
-      --bg-body: #f8fafc;
-      --bg-card: #ffffff;
-      --border: #e2e8f0;
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-      --radius: 12px;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background-color: var(--bg-body);
-      color: var(--text-main);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    /* HEADER & MEGA-MENU */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 9999;
-      background: #ffffff;
-      border-bottom: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 70px;
-    }
-
-    .brand-logo {
-      font-size: 1.45rem;
-      font-weight: 800;
-      text-decoration: none;
-      color: var(--text-main);
-      letter-spacing: -0.5px;
-    }
-    .brand-logo span {
-      color: var(--primary);
-    }
-
-    .nav-root {
-      display: flex;
-      list-style: none;
-      gap: 4px;
-    }
-
-    .nav-item {
-      position: relative;
-    }
-
-    .nav-link {
-      display: inline-flex;
-      align-items: center;
-      padding: 10px 14px;
-      font-size: 0.925rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-decoration: none;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-    }
-
-    .nav-link:hover, .nav-item:focus-within > .nav-link {
-      color: var(--primary);
-      background: var(--primary-light);
-    }
-
-    /* Mega-Menu Panel Setup */
-    .megamenu-panel {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-lg);
-      padding: 24px;
-      gap: 24px;
-      z-index: 10000;
-      margin-top: 2px;
-    }
-
-    .nav-item.has-megamenu:hover .megamenu-panel,
-    .nav-item.has-megamenu:focus-within .megamenu-panel {
-      display: grid;
-    }
-
-    .megamenu-panel.cols-2 {
-      min-width: 480px;
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .megamenu-panel.cols-3 {
-      min-width: 680px;
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    /* Prevent Dropdown Overflow on Rightmost Menus */
-    .nav-item:last-child .megamenu-panel,
-    .nav-item:nth-last-child(2) .megamenu-panel {
-      left: auto;
-      right: 0;
-    }
-
-    .megamenu-col h4 {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .megamenu-col ul {
-      list-style: none;
-    }
-
-    .megamenu-col li {
-      margin-bottom: 6px;
-    }
-
-    .megamenu-col a {
-      display: block;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      padding: 4px 0;
-      transition: color 0.15s ease;
-    }
-
-    .megamenu-col a:hover {
-      color: var(--primary);
-      font-weight: 500;
-    }
-
-    .megamenu-col .hub-pill {
-      display: inline-block;
-      margin-top: 10px;
-      font-weight: 600;
-      color: var(--primary);
-    }
-
-    /* HERO SECTION */
-    .hero {
-      text-align: center;
-      padding: 60px 0 40px;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      background: var(--primary-light);
-      color: var(--primary);
-      font-size: 0.8rem;
-      font-weight: 700;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 16px;
-    }
-
-    .hero-title {
-      font-size: 2.75rem;
-      font-weight: 800;
-      color: var(--text-main);
-      line-height: 1.2;
-      letter-spacing: -0.03em;
-      margin-bottom: 16px;
-    }
-
-    .hero-subtitle {
-      font-size: 1.15rem;
-      color: var(--text-muted);
-      max-width: 720px;
-      margin: 0 auto 30px;
-    }
-
-    .hero-features {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .feature-tag {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      background: #ffffff;
-      padding: 8px 16px;
-      border-radius: 9999px;
-      border: 1px solid var(--border);
-    }
-
-    /* DIRECTORY CARD HUB */
-    .hub-section {
-      padding: 30px 0 60px;
-    }
-
-    .hub-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-    }
-
-    .hub-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .hub-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
-      border-color: #cbd5e1;
-    }
-
-    .hub-card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .hub-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      background: var(--primary-light);
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-
-    .hub-card-header h2 {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
-    .hub-card-desc {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 18px;
-    }
-
-    .hub-subgroup {
-      margin-bottom: 14px;
-    }
-
-    .hub-subgroup-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #94a3b8;
-      margin-bottom: 6px;
-    }
-
-    .hub-links-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .hub-links-list a {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      padding: 3px 6px;
-      border-radius: 4px;
-      transition: all 0.15s ease;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .hub-links-list a:hover {
-      color: var(--primary);
-      background: var(--primary-light);
-    }
-
-    .hub-card-action {
-      margin-top: auto;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-    }
-
-    .hub-card-action a {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--primary);
-      text-decoration: none;
-    }
-
-    /* EDITORIAL CONTENT SECTION */
-    .content-section {
-      background: #ffffff;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 60px 0;
-    }
-
-    .content-wrapper {
-      max-width: 860px;
-      margin: 0 auto;
-    }
-
-    .content-wrapper h2 {
-      font-size: 1.85rem;
-      font-weight: 800;
-      color: var(--text-main);
-      margin: 32px 0 16px;
-      letter-spacing: -0.02em;
-    }
-
-    .content-wrapper h2:first-of-type {
-      margin-top: 0;
-    }
-
-    .content-wrapper h3 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin: 24px 0 12px;
-    }
-
-    .content-wrapper p {
-      color: var(--text-muted);
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-bottom: 16px;
-    }
-
-    .content-wrapper ul, .content-wrapper ol {
-      margin: 0 0 20px 24px;
-      color: var(--text-muted);
-    }
-
-    .content-wrapper li {
-      margin-bottom: 8px;
-      line-height: 1.6;
-    }
-
-    /* FAQ ACCORDION / BLOCK */
-    .faq-item {
-      background: var(--bg-body);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-
-    .faq-question {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 8px;
-    }
-
-    .faq-answer {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      margin: 0;
-    }
-
-    /* FOOTER */
-    .site-footer {
-      background: #0f172a;
-      color: #94a3b8;
-      padding: 60px 0 30px;
-      font-size: 0.875rem;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr repeat(4, 1fr);
-      gap: 32px;
-      margin-bottom: 48px;
-    }
-
-    .footer-brand h3 {
-      color: #ffffff;
-      font-size: 1.3rem;
-      margin-bottom: 12px;
-    }
-
-    .footer-brand p {
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-
-    .footer-col h4 {
-      color: #ffffff;
-      font-size: 0.875rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 14px;
-    }
-
-    .footer-col ul {
-      list-style: none;
-    }
-
-    .footer-col li {
-      margin-bottom: 8px;
-    }
-
-    .footer-col a {
-      color: #94a3b8;
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-
-    .footer-col a:hover {
-      color: #ffffff;
-    }
-
-    .footer-bottom {
-      border-top: 1px solid #1e293b;
-      padding-top: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .legal-nav {
-      display: flex;
-      gap: 20px;
-    }
-
-    .legal-nav a {
-      color: #94a3b8;
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-
-    .legal-nav a:hover {
-      color: #ffffff;
-    }
-
-    /* RESPONSIVE DESIGN */
-    @media (max-width: 992px) {
-      .nav-root { display: none; } /* For mobile, rely on Directory Cards on Home */
-      .hero-title { font-size: 2.2rem; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 600px) {
-      .footer-grid { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; text-align: center; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- ==================== HEADER WITH MEGA MENUS ==================== -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="/" class="brand-logo" title="CONVERTkb Home">CONVERT<span>kb</span></a>
-
-      <nav aria-label="Main Navigation">
-        <ul class="nav-root">
-          
-          <!-- MENU 1: IMAGE -->
-          <li class="nav-item has-megamenu">
-            <a href="/image/" class="nav-link">Image ▾</a>
-            <div class="megamenu-panel cols-3">
-              <div class="megamenu-col">
-                <h4>Target Sizes</h4>
-                <ul>
-                  <li><a href="/compress-image-to-10kb/">Compress Image to 10KB</a></li>
-                  <li><a href="/compress-image-to-20kb/">Compress Image to 20KB</a></li>
-                  <li><a href="/compress-image-to-30kb/">Compress Image to 30KB</a></li>
-                  <li><a href="/compress-image-to-50kb/">Compress Image to 50KB</a></li>
-                  <li><a href="/compress-image-to-100kb/">Compress Image to 100KB</a></li>
-                  <li><a href="/compress-image-to-200kb/">Compress Image to 200KB</a></li>
-                </ul>
-              </div>
-              <div class="megamenu-col">
-                <h4>DPI & Dimensions</h4>
-                <ul>
-                  <li><a href="/change-dpi-to-200/">Change Image DPI to 200</a></li>
-                  <li><a href="/convert-image-to-300-dpi/">Convert Image to 300 DPI</a></li>
-                  <li><a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo (50KB)</a></li>
-                  <li><a href="/resize-image-pixels-and-kb/">Resize in Pixels & KB</a></li>
-                  <li><a href="/resize-image-cm-and-kb/">Resize Image in CM & KB</a></li>
-                </ul>
-              </div>
-              <div class="megamenu-col">
-                <h4>Utilities</h4>
-                <ul>
-                  <li><a href="/reduce-image-size-in-kb/">Reduce Image Size in KB</a></li>
-                  <li><a href="/reduce-image-size-below-50kb/">Reduce Below 50KB</a></li>
-                  <li><a href="/increase-image-size-in-kb/">Increase Image Size in KB</a></li>
-                  <li><a href="/convert-photo-to-50kb/">Convert Photo to 50KB</a></li>
-                  <li><a href="/image/" class="hub-pill">All Image Tools →</a></li>
-                </ul>
-              </div>
-            </div>
-          </li>
-
-          <!-- MENU 2: PDF -->
-          <li class="nav-item has-megamenu">
-            <a href="/pdf/" class="nav-link">PDF ▾</a>
-            <div class="megamenu-panel cols-2">
-              <div class="megamenu-col">
-                <h4>Target Sizes</h4>
-                <ul>
-                  <li><a href="/compress-pdf-to-10kb/">Compress PDF to 10KB</a></li>
-                  <li><a href="/compress-pdf-to-50kb/">Compress PDF to 50KB</a></li>
-                  <li><a href="/compress-pdf-to-100kb/">Compress PDF to 100KB</a></li>
-                  <li><a href="/compress-pdf-to-200kb/">Compress PDF to 200KB</a></li>
-                  <li><a href="/compress-pdf-to-500kb/">Compress PDF to 500KB</a></li>
-                </ul>
-              </div>
-              <div class="megamenu-col">
-                <h4>Document Tools</h4>
-                <ul>
-                  <li><a href="/merge-compress-pdf-200kb/">Merge & Compress to 200KB</a></li>
-                  <li><a href="/compress-scanned-pdf-100kb/">Compress Scanned PDF 100KB</a></li>
-                  <li><a href="/pdf-300-dpi-converter/">PDF 300 DPI Converter</a></li>
-                  <li><a href="/convert-jpg-to-pdf-200kb/">Convert JPG to PDF 200KB</a></li>
-                  <li><a href="/pdf/" class="hub-pill">All PDF Tools →</a></li>
-                </ul>
-              </div>
-            </div>
-          </li>
-
-          <!-- MENU 3: IMAGE FORMATS -->
-          <li class="nav-item has-megamenu">
-            <a href="/image-formats/" class="nav-link">Formats ▾</a>
-            <div class="megamenu-panel cols-3">
-              <div class="megamenu-col">
-                <h4>JPG & JPEG</h4>
-                <ul>
-                  <li><a href="/compress-jpg-to-20kb/">Compress JPG to 20KB</a></li>
-                  <li><a href="/compress-jpg-to-50kb/">Compress JPG to 50KB</a></li>
-                  <li><a href="/compress-jpg-to-100kb/">Compress JPG to 100KB</a></li>
-                  <li><a href="/compress-jpeg-to-20kb/">Compress JPEG to 20KB</a></li>
-                  <li><a href="/compress-jpeg-to-50kb/">Compress JPEG to 50KB</a></li>
-                </ul>
-              </div>
-              <div class="megamenu-col">
-                <h4>PNG & WebP</h4>
-                <ul>
-                  <li><a href="/compress-png-to-20kb/">Compress PNG to 20KB</a></li>
-                  <li><a href="/compress-png-to-50kb/">Compress PNG to 50KB</a></li>
-                  <li><a href="/compress-webp-to-20kb/">Compress WebP to 20KB</a></li>
-                  <li><a href="/compress-webp-to-50kb/">Compress WebP to 50KB</a></li>
-                  <li><a href="/compress-transparent-png-50kb/">Transparent PNG 50KB</a></li>
-                </ul>
-              </div>
-              <div class="megamenu-col">
-                <h4>Modern & Legacy</h4>
-                <ul>
-                  <li><a href="/convert-heic-to-jpg-50kb/">HEIC to JPG under 50KB</a></li>
-                  <li><a href="/compress-tiff-to-100kb/">Compress TIFF to 100KB</a></li>
-                  <li><a href="/convert-bmp-to-jpg-50kb/">BMP to JPG under 50KB</a></li>
-                  <li><a href="/convert-jpg-to-webp-50kb/">JPG to WebP under 50KB</a></li>
-                  <li><a href="/image-formats/" class="hub-pill">All Formats →</a></li>
-                </ul>
-              </div>
-            </div>
-          </li>
-
-          <!-- MENU 4: EXAMS -->
-          <li class="nav-item has-megamenu">
-            <a href="/exams/" class="nav-link">Exams ▾</a>
-            <div class="megamenu-panel cols-3">
-              <div class="megamenu-col">
-                <h4>National Portals</h4>
-                <ul>
-                  <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo & Signature</a></li>
-                  <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo (20-300 KB)</a></li>
-                  <li><a href="/gate-photo-size-in-kb/">GATE Photo & Sign</a></li>
-                  <li><a href="/neet-photo-resize-in-kb/">NEET Photo Resize in KB</a></li>
-                  <li><a href="/ibps-photo-signature-resize/">IBPS Photo & Sign Size</a></li>
-                </ul>
-              </div>
-              <div class="megamenu-col">
-                <h4>State & Banking</h4>
-                <ul>
-                  <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo & Sign</a></li>
-                  <li><a href="/bpsc-photo-resize-in-kb/">BPSC Photo Resize</a></li>
-                  <li><a href="/uppsc-photo-signature-size/">UPPSC Photo & Sign</a></li>
-                  <li><a href="/rrb-photo-signature-size/">RRB Railway Resizer</a></li>
-                  <li><a href="/sbi-po-photo-signature-resize/">SBI PO Photo & Signature</a></li>
-                </ul>
-              </div>
-              <div class="megamenu-col">
-                <h4>Signatures</h4>
-                <ul>
-                  <li><a href="/signature-compressor-20kb/">Signature to 20KB</a></li>
-                  <li><a href="/resize-signature-10kb-to-20kb/">Signature 10KB to 20KB</a></li>
-                  <li><a href="/change-signature-dpi-200/">Signature 200 DPI</a></li>
-                  <li><a href="/140x60-pixel-signature-20kb/">140x60 px Signature</a></li>
-                  <li><a href="/exams/" class="hub-pill">All Exam Portals →</a></li>
-                </ul>
-              </div>
-            </div>
-          </li>
-
-          <!-- MENU 5: TOOLS -->
-          <li class="nav-item has-megamenu">
-            <a href="/tools/" class="nav-link">Tools ▾</a>
-            <div class="megamenu-panel cols-2">
-              <div class="megamenu-col">
-                <h4>ID & Passports</h4>
-                <ul>
-                  <li><a href="/convert-photo-to-passport-size-50kb/">Passport Photo Size 50KB</a></li>
-                  <li><a href="/passport-photo-3-5-x-4-5-cm/">Passport Photo 3.5x4.5 cm</a></li>
-                  <li><a href="/pan-card-photo-resize-in-kb/">PAN Card Photo Resizer</a></li>
-                  <li><a href="/pan-card-signature-resize-in-kb/">PAN Card Signature</a></li>
-                  <li><a href="/us-visa-photo-2x2-inches/">US Visa (2x2" / 240KB)</a></li>
-                  <li><a href="/aadhaar-card-photo-resize-in-kb/">Aadhaar Card Photo Resize</a></li>
-                </ul>
-              </div>
-              <div class="megamenu-col">
-                <h4>Data Calculators</h4>
-                <ul>
-                  <li><a href="/kb-to-mb/">KB to MB Calculator</a></li>
-                  <li><a href="/mb-to-kb/">MB to KB Calculator</a></li>
-                  <li><a href="/convert-kb-to-mb/">Convert KB to MB</a></li>
-                  <li><a href="/kb-to-bytes/">KB to Bytes Converter</a></li>
-                  <li><a href="/1024-kb-to-mb/">1024 KB to MB</a></li>
-                  <li><a href="/tools/" class="hub-pill">All Utility Tools →</a></li>
-                </ul>
-              </div>
-            </div>
-          </li>
-
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- ==================== HERO SECTION ==================== -->
-  <main>
-    <section class="hero">
-      <div class="container">
-        <span class="hero-badge">100% Client-Side Engine</span>
-        <h1 class="hero-title">Compress Images & PDFs to Exact KB</h1>
-        <p class="hero-subtitle">
-          Optimize photos to exact file sizes (20KB, 50KB, 100KB) and configure 200/300 DPI for government exams, passport submissions, and recruitment portals without sacrificing clarity.
-        </p>
-        <div class="hero-features">
-          <div class="feature-tag"><span>🔒</span> Zero Server Uploads</div>
-          <div class="feature-tag"><span>⚡</span> Sub-second On-Device Processing</div>
-          <div class="feature-tag"><span>📐</span> Exact Pixel, CM & DPI Precision</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-light: #eff6ff;
+        --text-main: #0f172a;
+        --text-muted: #475569;
+        --bg-body: #f8fafc;
+        --bg-card: #ffffff;
+        --border: #e2e8f0;
+        --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+        --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.08);
+        --radius: 14px;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", sans-serif;
+        background: var(--bg-body);
+        color: var(--text-main);
+        line-height: 1.6;
+      }
+
+      a { color: inherit; }
+      img { max-width: 100%; }
+
+      .container {
+        width: min(1200px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+        gap: 18px;
+      }
+
+      .brand-logo {
+        text-decoration: none;
+        font-size: clamp(1.2rem, 2vw, 1.5rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        color: var(--text-main);
+      }
+
+      .brand-logo span { color: var(--primary); }
+
+      .nav-shell {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .nav-root {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 8px;
+      }
+
+      .nav-item {
+        position: relative;
+      }
+
+      .nav-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: var(--text-muted);
+        font-weight: 600;
+        padding: 10px 12px;
+        border-radius: 10px;
+        transition: 0.2s ease;
+      }
+
+      .nav-link:hover,
+      .nav-link:focus-visible {
+        background: var(--primary-light);
+        color: var(--primary);
+        outline: none;
+      }
+
+      .megamenu-panel {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        display: grid;
+        gap: 24px;
+        min-width: 620px;
+        padding: 22px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-md);
+      }
+
+      .megamenu-panel.cols-2 { grid-template-columns: repeat(2, minmax(180px, 1fr)); }
+      .megamenu-panel.cols-3 { grid-template-columns: repeat(3, minmax(160px, 1fr)); }
+
+      .megamenu-col h4 {
+        margin: 0 0 12px;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+      }
+
+      .megamenu-col ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .megamenu-col li + li { margin-top: 7px; }
+
+      .megamenu-col a {
+        display: block;
+        text-decoration: none;
+        color: var(--text-muted);
+        padding: 4px 0;
+      }
+
+      .megamenu-col a:hover {
+        color: var(--primary);
+      }
+
+      .mobile-menu-toggle {
+        display: none;
+        width: 46px;
+        height: 46px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--bg-card);
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .mobile-nav-panel {
+        display: none;
+        border-top: 1px solid var(--border);
+        background: #fff;
+      }
+
+      .mobile-nav-panel.is-open { display: block; }
+
+      .mobile-nav-list {
+        list-style: none;
+        margin: 0;
+        padding: 12px 16px 18px;
+      }
+
+      .mobile-nav-list a {
+        display: block;
+        text-decoration: none;
+        font-weight: 600;
+        color: var(--text-main);
+        padding: 12px 8px;
+        border-radius: 10px;
+      }
+
+      .mobile-nav-list a:hover {
+        background: var(--primary-light);
+        color: var(--primary);
+      }
+
+      .hero {
+        padding: 72px 0 40px;
+        text-align: center;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        background: var(--primary-light);
+        color: var(--primary);
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 7px 14px;
+        border-radius: 999px;
+      }
+
+      .hero-title {
+        margin: 18px auto 16px;
+        max-width: 900px;
+        font-size: clamp(2.1rem, 5vw, 4rem);
+        line-height: 1.08;
+        letter-spacing: -0.05em;
+      }
+
+      .hero-subtitle {
+        max-width: 760px;
+        margin: 0 auto 24px;
+        font-size: clamp(1rem, 2vw, 1.15rem);
+        color: var(--text-muted);
+      }
+
+      .hero-features {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .feature-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-size: 0.92rem;
+        color: var(--text-muted);
+        font-weight: 600;
+      }
+
+      .hub-section {
+        padding: 24px 0 48px;
+      }
+
+      .hub-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 22px;
+      }
+
+      .hub-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .hub-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .hub-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-light);
+        color: var(--primary);
+        font-weight: 800;
+      }
+
+      .hub-card h2 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      .hub-card-desc {
+        margin: 0 0 18px;
+        color: var(--text-muted);
+      }
+
+      .hub-subgroup + .hub-subgroup { margin-top: 16px; }
+
+      .hub-subgroup-title {
+        margin: 0 0 8px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #64748b;
+        font-weight: 700;
+      }
+
+      .hub-links-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .hub-links-list li + li { margin-top: 6px; }
+
+      .hub-links-list a {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--text-muted);
+        text-decoration: none;
+        border-radius: 8px;
+        padding: 6px 8px;
+      }
+
+      .hub-links-list a:hover {
+        background: var(--primary-light);
+        color: var(--primary);
+      }
+
+      .hub-card-action {
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+
+      .hub-card-action a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .content-section {
+        background: #fff;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 64px 0;
+      }
+
+      .content-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .content-wrapper h2,
+      .content-wrapper h3 {
+        letter-spacing: -0.03em;
+      }
+
+      .content-wrapper p,
+      .content-wrapper li {
+        color: var(--text-muted);
+        line-height: 1.75;
+      }
+
+      .faq-item {
+        background: var(--bg-body);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 18px 20px;
+        margin-top: 16px;
+      }
+
+      .faq-question {
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .site-footer {
+        background: #0f172a;
+        color: #cbd5e1;
+        padding: 52px 0 22px;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.6fr repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      .footer-brand h3,
+      .footer-col h4 {
+        margin: 0 0 14px;
+        color: #fff;
+      }
+
+      .footer-brand p,
+      .footer-col a,
+      .footer-bottom p,
+      .legal-nav a {
+        color: #cbd5e1;
+        text-decoration: none;
+      }
+
+      .footer-col ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .footer-col li + li { margin-top: 8px; }
+
+      .footer-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        border-top: 1px solid rgba(255,255,255,0.12);
+        margin-top: 28px;
+        padding-top: 18px;
+      }
+
+      .legal-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+
+      @media (max-width: 980px) {
+        .desktop-nav { display: none; }
+        .mobile-menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
+        .hero { padding-top: 54px; }
+        .footer-grid { grid-template-columns: repeat(2, minmax(150px, 1fr)); }
+      }
+
+      @media (max-width: 640px) {
+        .header-inner {
+          height: 64px;
+        }
+
+        .hero-title {
+          font-size: 2.2rem;
+        }
+
+        .hero-features {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .hub-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="/" class="brand-logo" title="CONVERTkb Home">CONVERT<span>kb</span></a>
+
+        <div class="nav-shell">
+          <nav class="desktop-nav" aria-label="Main navigation">
+            <ul class="nav-root">
+              <li class="nav-item"><a class="nav-link" href="/image/">Image</a></li>
+              <li class="nav-item"><a class="nav-link" href="/pdf/">PDF</a></li>
+              <li class="nav-item"><a class="nav-link" href="/image-formats/">Formats</a></li>
+              <li class="nav-item"><a class="nav-link" href="/exams/">Exams</a></li>
+              <li class="nav-item"><a class="nav-link" href="/tools/">Tools</a></li>
+            </ul>
+          </nav>
+
+          <button class="mobile-menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">☰</button>
         </div>
       </div>
-    </section>
 
-    <!-- ==================== DIRECTORY & CARD HUB ==================== -->
-    <section class="hub-section">
-      <div class="container">
-        <div class="hub-grid">
-          
-          <!-- CARD 1: IMAGE -->
-          <article class="hub-card">
-            <div class="hub-card-header">
-              <div class="hub-icon">IMG</div>
-              <h2>Image Compress</h2>
-            </div>
-            <p class="hub-card-desc">Targeted compression algorithms to hit strict file size limits on single photos.</p>
-            
-            <div class="hub-subgroup">
-              <div class="hub-subgroup-title">Target KB Sizes</div>
-              <ul class="hub-links-list">
-                <li><a href="/compress-image-to-20kb/">Compress Image to 20KB <span>→</span></a></li>
-                <li><a href="/compress-image-to-50kb/">Compress Image to 50KB <span>→</span></a></li>
-                <li><a href="/compress-image-to-100kb/">Compress Image to 100KB <span>→</span></a></li>
-                <li><a href="/compress-image-to-200kb/">Compress Image to 200KB <span>→</span></a></li>
-              </ul>
-            </div>
-
-            <div class="hub-subgroup">
-              <div class="hub-subgroup-title">DPI & Dimension Presets</div>
-              <ul class="hub-links-list">
-                <li><a href="/change-dpi-to-200/">Change Image DPI to 200 <span>→</span></a></li>
-                <li><a href="/convert-image-to-300-dpi/">Convert Image to 300 DPI <span>→</span></a></li>
-                <li><a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo 50KB <span>→</span></a></li>
-              </ul>
-            </div>
-
-            <div class="hub-card-action">
-              <a href="/image/">Explore All Image Tools &rarr;</a>
-            </div>
-          </article>
-
-          <!-- CARD 2: PDF -->
-          <article class="hub-card">
-            <div class="hub-card-header">
-              <div class="hub-icon">PDF</div>
-              <h2>PDF Tools</h2>
-            </div>
-            <p class="hub-card-desc">Shrink certificates, scanned marksheet documents, and legal affidavits.</p>
-            
-            <div class="hub-subgroup">
-              <div class="hub-subgroup-title">Target PDF Sizes</div>
-              <ul class="hub-links-list">
-                <li><a href="/compress-pdf-to-50kb/">Compress PDF to 50KB <span>→</span></a></li>
-                <li><a href="/compress-pdf-to-100kb/">Compress PDF to 100KB <span>→</span></a></li>
-                <li><a href="/compress-pdf-to-200kb/">Compress PDF to 200KB <span>→</span></a></li>
-                <li><a href="/compress-pdf-to-500kb/">Compress PDF to 500KB <span>→</span></a></li>
-              </ul>
-            </div>
-
-            <div class="hub-subgroup">
-              <div class="hub-subgroup-title">Scans & Conversion</div>
-              <ul class="hub-links-list">
-                <li><a href="/merge-compress-pdf-200kb/">Merge & Compress to 200KB <span>→</span></a></li>
-                <li><a href="/compress-scanned-pdf-100kb/">Compress Scanned PDF 100KB <span>→</span></a></li>
-                <li><a href="/pdf-300-dpi-converter/">PDF 300 DPI Converter <span>→</span></a></li>
-              </ul>
-            </div>
-
-            <div class="hub-card-action">
-              <a href="/pdf/">Explore All PDF Tools &rarr;</a>
-            </div>
-          </article>
-
-          <!-- CARD 3: FORMATS -->
-          <article class="hub-card">
-            <div class="hub-card-header">
-              <div class="hub-icon">FMT</div>
-              <h2>Format Compress</h2>
-            </div>
-            <p class="hub-card-desc">Specialized encoders for JPG, JPEG, PNG, WebP, HEIC, and TIFF assets.</p>
-            
-            <div class="hub-subgroup">
-              <div class="hub-subgroup-title">Standard Web Formats</div>
-              <ul class="hub-links-list">
-                <li><a href="/compress-jpg-to-50kb/">Compress JPG to 50KB <span>→</span></a></li>
-                <li><a href="/compress-jpeg-to-20kb/">Compress JPEG to 20KB <span>→</span></a></li>
-                <li><a href="/compress-png-to-50kb/">Compress PNG to 50KB <span>→</span></a></li>
-                <li><a href="/compress-webp-to-50kb/">Compress WebP to 50KB <span>→</span></a></li>
-              </ul>
-            </div>
-
-            <div class="hub-subgroup">
-              <div class="hub-subgroup-title">Modern & Raw Converts</div>
-              <ul class="hub-links-list">
-                <li><a href="/convert-heic-to-jpg-50kb/">HEIC to JPG under 50KB <span>→</span></a></li>
-                <li><a href="/compress-tiff-to-100kb/">Compress TIFF to 100KB <span>→</span></a></li>
-                <li><a href="/convert-jpg-to-webp-50kb/">Convert JPG to WebP <span>→</span></a></li>
-              </ul>
-            </div>
-
-            <div class="hub-card-action">
-              <a href="/image-formats/">Explore All Format Tools &rarr;</a>
-            </div>
-          </article>
-
-          <!-- CARD 4: EXAMS -->
-          <article class="hub-card">
-            <div class="hub-card-header">
-              <div class="hub-icon">EXM</div>
-              <h2>Exams & Recruitment</h2>
-            </div>
-            <p class="hub-card-desc">Validated dimension and KB presets for competitive entrance and job forms.</p>
-            
-            <div class="hub-subgroup">
-              <div class="hub-subgroup-title">National Boards</div>
-              <ul class="hub-links-list">
-                <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo & Signature Resizer <span>→</span></a></li>
-                <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo Resize in KB <span>→</span></a></li>
-                <li><a href="/gate-photo-size-in-kb/">GATE Photo & Sign Resizer <span>→</span></a></li>
-                <li><a href="/neet-photo-resize-in-kb/">NEET Photo Resize in KB <span>→</span></a></li>
-              </ul>
-            </div>
-
-            <div class="hub-subgroup">
-              <div class="hub-subgroup-title">State Boards & Signatures</div>
-              <ul class="hub-links-list">
-                <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo & Sign Resizer <span>→</span></a></li>
-                <li><a href="/signature-compressor-20kb/">Signature Compressor to 20KB <span>→</span></a></li>
-                <li><a href="/140x60-pixel-signature-20kb/">140x60 Pixel Signature Resizer <span>→</span></a></li>
-              </ul>
-            </div>
-
-            <div class="hub-card-action">
-              <a href="/exams/">Explore All Exam Tools &rarr;</a>
-            </div>
-          </article>
-
-          <!-- CARD 5: TOOLS -->
-          <article class="hub-card">
-            <div class="hub-card-header">
-              <div class="hub-icon">UTL</div>
-              <h2>ID Tools & Units</h2>
-            </div>
-            <p class="hub-card-desc">Passports, national ID standards, and accurate byte-to-megabyte formulas.</p>
-            
-            <div class="hub-subgroup">
-              <div class="hub-subgroup-title">Identity & Visa Documents</div>
-              <ul class="hub-links-list">
-                <li><a href="/convert-photo-to-passport-size-50kb/">Passport Photo Size 50KB <span>→</span></a></li>
-                <li><a href="/pan-card-photo-resize-in-kb/">PAN Card Photo Resizer <span>→</span></a></li>
-                <li><a href="/us-visa-photo-2x2-inches/">US Visa 2x2" (240KB) <span>→</span></a></li>
-                <li><a href="/aadhaar-card-photo-resize-in-kb/">Aadhaar Card Photo Resize <span>→</span></a></li>
-              </ul>
-            </div>
-
-            <div class="hub-subgroup">
-              <div class="hub-subgroup-title">Data Unit Calculators</div>
-              <ul class="hub-links-list">
-                <li><a href="/kb-to-mb/">KB to MB Calculator <span>→</span></a></li>
-                <li><a href="/mb-to-kb/">MB to KB Calculator <span>→</span></a></li>
-                <li><a href="/1024-kb-to-mb/">1024 KB to MB Conversion <span>→</span></a></li>
-              </ul>
-            </div>
-
-            <div class="hub-card-action">
-              <a href="/tools/">Explore All Utility Tools &rarr;</a>
-            </div>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== EDITORIAL CONTENT & AD-COMPLIANT GUIDE ==================== -->
-    <section class="content-section">
-      <div class="container content-wrapper">
-        <h2>Understanding Digital File Compression & Target Constraints</h2>
-        <p>
-          Uploading digital documents to official portals often results in unexpected rejections. Most recruitment databases, admission gates, and government platforms configure server-side validation filters with strict upper and lower limits on file size, pixel dimensions, and resolution metadata. CONVERTkb was built to resolve this exact friction point directly inside your web browser.
-        </p>
-
-        <h3>Why Exact KB Constraints Matter for Application Portals</h3>
-        <p>
-          Public service portals handle millions of applications within narrow application windows. To conserve database throughput and guarantee uniform printing of hall tickets, admit cards, and identification badges, system architectures set strict boundaries. A portal may mandate that an applicant photo must be between <strong>20KB and 50KB</strong>, formatted at <strong>200 DPI</strong>, and measured exactly to <strong>3.5 cm x 4.5 cm</strong>.
-        </p>
-        <p>
-          Generic compression tools often fail because they rely on broad percentage sliders (e.g., "reduce by 50%"). A 5MB smartphone photo compressed by 50% still leaves a 2.5MB payload, which fails validation. CONVERTkb employs a client-side binary search matrix that incrementally adjusts quantization tables and discrete cosine transform (DCT) coefficients until the resulting file fits snugly within your required threshold.
-        </p>
-
-        <h3>Client-Side Processing: Genuine Privacy by Architecture</h3>
-        <p>
-          Unlike legacy conversion sites that require uploading personal identity documents, signatures, and certificates to remote servers, CONVERTkb processes every byte locally on your machine.
-        </p>
-        <ul>
-          <li><strong>Zero Data Transmission:</strong> Your image data is decoded into an in-memory HTML5 Canvas element on your computer or mobile phone.</li>
-          <li><strong>Local Re-encoding:</strong> The canvas element renders the output to a blob using browser-native APIs. No raw files or metadata ever hit an external server.</li>
-          <li><strong>Instant Execution:</strong> Because no file upload or download latency takes place across internet lines, processing completes in milliseconds.</li>
-        </ul>
-
-        <h2>Frequently Asked Questions</h2>
-        
-        <div class="faq-item">
-          <div class="faq-question">How do I resize an image to 50KB without losing clarity?</div>
-          <div class="faq-answer">
-            To compress to 50KB cleanly, avoid drastic dimension downscaling first. Our algorithms retain your natural pixel dimensions while removing unneeded EXIF location metadata and optimizing color quantization tables. If the file is extremely large, moderate scaling to standard application dimensions (e.g., 600x800 pixels) preserves visual clarity on faces and signatures.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">What is DPI and why do portals ask for 200 or 300 DPI?</div>
-          <div class="faq-answer">
-            DPI stands for Dots Per Inch, an instruction used by physical printers to determine how densely pixels are rendered onto paper. Many government portals (like SSC, UPSC, and passport authorities) require 200 or 300 DPI so physical identity documents print clearly. Our DPI tools adjust the JFIF/EXIF resolution density tags without distorting pixel ratios.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">Can I convert iPhone HEIC photos to JPG under 50KB?</div>
-          <div class="faq-answer">
-            Yes. Modern Apple devices capture images in High Efficiency Image Container (.HEIC) format, which most web application portals reject. Using our HEIC to JPG tool, your phone decodes the HEIC payload locally and exports a compliant, standard JPG below 50KB or 100KB ready for immediate upload.
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- ==================== FOOTER WITH COMPLIANCE LINKS ==================== -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        
-        <div class="footer-brand">
-          <h3>CONVERT<span>kb</span></h3>
-          <p>
-            A high-performance client-side utility dedicated to document sizing, photo compression, and data conversion. Optimized for fast indexing, privacy, and frictionless document submissions worldwide.
-          </p>
-          <p>&copy; 2026 CONVERTkb.com. All rights reserved.</p>
-        </div>
-
-        <div class="footer-col">
-          <h4>Image Tools</h4>
-          <ul>
-            <li><a href="/compress-image-to-20kb/">Compress to 20KB</a></li>
-            <li><a href="/compress-image-to-50kb/">Compress to 50KB</a></li>
-            <li><a href="/compress-image-to-100kb/">Compress to 100KB</a></li>
-            <li><a href="/change-dpi-to-200/">Change DPI to 200</a></li>
-            <li><a href="/convert-image-to-300-dpi/">Convert to 300 DPI</a></li>
-            <li><a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>PDF & Formats</h4>
-          <ul>
-            <li><a href="/compress-pdf-to-50kb/">Compress PDF to 50KB</a></li>
+      <div class="mobile-nav-panel" id="mobile-menu">
+        <nav aria-label="Mobile navigation">
+          <ul class="mobile-nav-list">
+            <li><a href="/image/">Image</a></li>
+            <li><a href="/pdf/">PDF</a></li>
+            <li><a href="/image-formats/">Formats</a></li>
+            <li><a href="/exams/">Exams</a></li>
+            <li><a href="/tools/">Tools</a></li>
+            <li><a href="/compress-image-to-20kb/">Compress Image to 20KB</a></li>
+            <li><a href="/compress-image-to-50kb/">Compress Image to 50KB</a></li>
             <li><a href="/compress-pdf-to-100kb/">Compress PDF to 100KB</a></li>
-            <li><a href="/compress-pdf-to-200kb/">Compress PDF to 200KB</a></li>
             <li><a href="/compress-jpg-to-50kb/">Compress JPG to 50KB</a></li>
-            <li><a href="/compress-png-to-50kb/">Compress PNG to 50KB</a></li>
-            <li><a href="/convert-heic-to-jpg-50kb/">HEIC to JPG 50KB</a></li>
           </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Exams & IDs</h4>
-          <ul>
-            <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo Resizer</a></li>
-            <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo Resize</a></li>
-            <li><a href="/signature-compressor-20kb/">Signature to 20KB</a></li>
-            <li><a href="/passport-photo-size-50kb/">Passport Photo 50KB</a></li>
-            <li><a href="/pan-card-photo-resize-in-kb/">PAN Card Photo Tool</a></li>
-            <li><a href="/us-visa-photo-2x2-inches/">US Visa Photo (240KB)</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Company & Trust</h4>
-          <ul>
-            <li><a href="/about-us/">About Us</a></li>
-            <li><a href="/contact-us/">Contact Us</a></li>
-            <li><a href="/privacy-policy/">Privacy Policy</a></li>
-            <li><a href="/terms-of-service/">Terms of Service</a></li>
-            <li><a href="/disclaimer/">Disclaimer</a></li>
-          </ul>
-        </div>
-
+        </nav>
       </div>
+    </header>
 
-      <div class="footer-bottom">
-        <p>Built with privacy by design. Image transformation executed in local WebAssembly/Canvas memory.</p>
-        <div class="legal-nav">
-          <a href="/privacy-policy/">Privacy</a>
-          <a href="/terms-of-service/">Terms</a>
-          <a href="/disclaimer/">Disclaimer</a>
-          <a href="/contact-us/">Contact</a>
+    <main>
+      <section class="hero">
+        <div class="container">
+          <span class="hero-badge">100% Client-Side Engine</span>
+          <h1 class="hero-title">Compress Images &amp; PDFs to Exact KB</h1>
+          <p class="hero-subtitle">
+            Optimize photos to exact file sizes (20KB, 50KB, 100KB) and configure 200/300 DPI for government exams,
+            passport submissions, and recruitment portals without sacrificing clarity.
+          </p>
+          <div class="hero-features">
+            <div class="feature-tag"><span>🔒</span> Zero Server Uploads</div>
+            <div class="feature-tag"><span>⚡</span> Sub-second On-Device Processing</div>
+            <div class="feature-tag"><span>📐</span> Exact Pixel, CM &amp; DPI Precision</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="hub-section">
+        <div class="container">
+          <div class="hub-grid">
+            <article class="hub-card">
+              <div class="hub-card-header">
+                <div class="hub-icon">IMG</div>
+                <h2>Image Compress</h2>
+              </div>
+              <p class="hub-card-desc">Targeted compression algorithms to hit strict file size limits on single photos.</p>
+
+              <div class="hub-subgroup">
+                <p class="hub-subgroup-title">Target KB Sizes</p>
+                <ul class="hub-links-list">
+                  <li><a href="/compress-image-to-20kb/"><span>Compress Image to 20KB</span><span>→</span></a></li>
+                  <li><a href="/compress-image-to-50kb/"><span>Compress Image to 50KB</span><span>→</span></a></li>
+                  <li><a href="/compress-image-to-100kb/"><span>Compress Image to 100KB</span><span>→</span></a></li>
+                  <li><a href="/compress-image-to-200kb/"><span>Compress Image to 200KB</span><span>→</span></a></li>
+                </ul>
+              </div>
+
+              <div class="hub-subgroup">
+                <p class="hub-subgroup-title">DPI &amp; Dimensions</p>
+                <ul class="hub-links-list">
+                  <li><a href="/change-dpi-to-200/"><span>Change Image DPI to 200</span><span>→</span></a></li>
+                  <li><a href="/convert-image-to-300-dpi/"><span>Convert Image to 300 DPI</span><span>→</span></a></li>
+                  <li><a href="/photo-3-5-x-4-5-cm-50kb/"><span>3.5 x 4.5 cm Photo 50KB</span><span>→</span></a></li>
+                </ul>
+              </div>
+
+              <div class="hub-card-action">
+                <a href="/image/">Explore All Image Tools →</a>
+              </div>
+            </article>
+
+            <article class="hub-card">
+              <div class="hub-card-header">
+                <div class="hub-icon">PDF</div>
+                <h2>PDF Tools</h2>
+              </div>
+              <p class="hub-card-desc">Shrink certificates, scanned marksheet documents, and legal affidavits.</p>
+
+              <div class="hub-subgroup">
+                <p class="hub-subgroup-title">Target PDF Sizes</p>
+                <ul class="hub-links-list">
+                  <li><a href="/compress-pdf-to-50kb/"><span>Compress PDF to 50KB</span><span>→</span></a></li>
+                  <li><a href="/compress-pdf-to-100kb/"><span>Compress PDF to 100KB</span><span>→</span></a></li>
+                  <li><a href="/compress-pdf-to-200kb/"><span>Compress PDF to 200KB</span><span>→</span></a></li>
+                  <li><a href="/compress-pdf-to-500kb/"><span>Compress PDF to 500KB</span><span>→</span></a></li>
+                </ul>
+              </div>
+
+              <div class="hub-card-action">
+                <a href="/pdf/">Explore All PDF Tools →</a>
+              </div>
+            </article>
+
+            <article class="hub-card">
+              <div class="hub-card-header">
+                <div class="hub-icon">FMT</div>
+                <h2>Format Compress</h2>
+              </div>
+              <p class="hub-card-desc">Specialized encoders for JPG, JPEG, PNG, WebP, HEIC, and TIFF assets.</p>
+
+              <div class="hub-subgroup">
+                <p class="hub-subgroup-title">Standard Formats</p>
+                <ul class="hub-links-list">
+                  <li><a href="/compress-jpg-to-50kb/"><span>Compress JPG to 50KB</span><span>→</span></a></li>
+                  <li><a href="/compress-jpeg-to-20kb/"><span>Compress JPEG to 20KB</span><span>→</span></a></li>
+                  <li><a href="/compress-png-to-50kb/"><span>Compress PNG to 50KB</span><span>→</span></a></li>
+                  <li><a href="/compress-webp-to-50kb/"><span>Compress WebP to 50KB</span><span>→</span></a></li>
+                </ul>
+              </div>
+
+              <div class="hub-card-action">
+                <a href="/image-formats/">Explore All Format Tools →</a>
+              </div>
+            </article>
+
+            <article class="hub-card">
+              <div class="hub-card-header">
+                <div class="hub-icon">EXM</div>
+                <h2>Exams &amp; Recruitment</h2>
+              </div>
+              <p class="hub-card-desc">Validated dimension and KB presets for competitive entrance and job forms.</p>
+
+              <div class="hub-subgroup">
+                <p class="hub-subgroup-title">Popular Portals</p>
+                <ul class="hub-links-list">
+                  <li><a href="/ssc-photo-and-signature-resizer/"><span>SSC Photo &amp; Signature</span><span>→</span></a></li>
+                  <li><a href="/upsc-photo-resize-in-kb/"><span>UPSC Photo Resize in KB</span><span>→</span></a></li>
+                  <li><a href="/gate-photo-size-in-kb/"><span>GATE Photo &amp; Sign</span><span>→</span></a></li>
+                </ul>
+              </div>
+
+              <div class="hub-card-action">
+                <a href="/exams/">Explore All Exam Tools →</a>
+              </div>
+            </article>
+
+            <article class="hub-card">
+              <div class="hub-card-header">
+                <div class="hub-icon">UTL</div>
+                <h2>ID Tools &amp; Units</h2>
+              </div>
+              <p class="hub-card-desc">Passports, national ID standards, and accurate byte-to-megabyte formulas.</p>
+
+              <div class="hub-subgroup">
+                <p class="hub-subgroup-title">Identity &amp; Visa</p>
+                <ul class="hub-links-list">
+                  <li><a href="/convert-photo-to-passport-size-50kb/"><span>Passport Photo Size 50KB</span><span>→</span></a></li>
+                  <li><a href="/pan-card-photo-resize-in-kb/"><span>PAN Card Photo Resizer</span><span>→</span></a></li>
+                  <li><a href="/us-visa-photo-2x2-inches/"><span>US Visa 2x2" (240KB)</span><span>→</span></a></li>
+                </ul>
+              </div>
+
+              <div class="hub-card-action">
+                <a href="/tools/">Explore All Utility Tools →</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="container content-wrapper">
+          <h2>Understanding Digital File Compression &amp; Target Constraints</h2>
+          <p>
+            Uploading digital documents to official portals often results in unexpected rejections. Most recruitment
+            databases, admission gates, and government platforms configure server-side validation filters with strict
+            upper and lower limits on file size, pixel dimensions, and resolution metadata. CONVERTkb was built to solve
+            this exact friction point directly inside your web browser.
+          </p>
+
+          <h3>Why Exact KB Constraints Matter for Application Portals</h3>
+          <p>
+            Public service portals handle millions of applications within narrow application windows. To conserve database
+            throughput and guarantee uniform printing of identity badges, hall tickets, and application forms, system
+            architects set strict boundaries. A portal may mandate that an applicant photo must be between 20KB and 50KB,
+            formatted at 200 DPI, and measured exactly to 3.5 cm x 4.5 cm.
+          </p>
+
+          <h3>Client-Side Processing: Genuine Privacy by Architecture</h3>
+          <p>
+            Unlike legacy conversion sites that require uploading personal identity documents, signatures, and certificates to
+            remote servers, CONVERTkb processes every byte locally on your machine. That means your data never leaves your
+            device, and the browser performs the full conversion in real time.
+          </p>
+
+          <ul>
+            <li><strong>Zero Data Transmission:</strong> Your image data is decoded inside a browser canvas on your computer or phone.</li>
+            <li><strong>Local Re-encoding:</strong> The canvas output is saved to a blob using native browser APIs.</li>
+            <li><strong>Instant Execution:</strong> No upload/download latency means the whole process completes in milliseconds.</li>
+          </ul>
+
+          <h2>Frequently Asked Questions</h2>
+
+          <div class="faq-item">
+            <div class="faq-question">How do I resize an image to 50KB without losing clarity?</div>
+            <div class="faq-answer">Use precise optimization rather than broad percentage reduction. Keep the natural pixel dimensions while removing extra metadata and balancing quality settings.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">What is DPI and why do portals ask for 200 or 300 DPI?</div>
+            <div class="faq-answer">DPI stands for Dots Per Inch, a printer density measure. Many government and exam portals require fixed DPI values so printed documents are readable and consistent.</div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">Can I convert iPhone HEIC photos to JPG under 50KB?</div>
+            <div class="faq-answer">Yes. Modern Apple devices often capture HEIC files, which many portals reject. Convert them locally to JPG in compressed form without uploading personal images anywhere.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <h3>CONVERT<span>kb</span></h3>
+            <p>A high-performance client-side utility dedicated to document sizing, photo compression, and data conversion.</p>
+            <p>&copy; 2026 CONVERTkb.com. All rights reserved.</p>
+          </div>
+
+          <div class="footer-col">
+            <h4>Image Tools</h4>
+            <ul>
+              <li><a href="/compress-image-to-20kb/">Compress to 20KB</a></li>
+              <li><a href="/compress-image-to-50kb/">Compress to 50KB</a></li>
+              <li><a href="/compress-image-to-100kb/">Compress to 100KB</a></li>
+              <li><a href="/change-dpi-to-200/">Change DPI to 200</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>PDF &amp; Formats</h4>
+            <ul>
+              <li><a href="/compress-pdf-to-50kb/">Compress PDF to 50KB</a></li>
+              <li><a href="/compress-pdf-to-100kb/">Compress PDF to 100KB</a></li>
+              <li><a href="/compress-jpg-to-50kb/">Compress JPG to 50KB</a></li>
+              <li><a href="/compress-png-to-50kb/">Compress PNG to 50KB</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Exams &amp; IDs</h4>
+            <ul>
+              <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo Resizer</a></li>
+              <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo Resize</a></li>
+              <li><a href="/signature-compressor-20kb/">Signature to 20KB</a></li>
+              <li><a href="/convert-photo-to-passport-size-50kb/">Passport Photo 50KB</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Company &amp; Trust</h4>
+            <ul>
+              <li><a href="/about-us/">About Us</a></li>
+              <li><a href="/contact-us/">Contact Us</a></li>
+              <li><a href="/privacy-policy/">Privacy Policy</a></li>
+              <li><a href="/terms-of-service/">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>Built with privacy by design. Image transformation executed in local browser memory.</p>
+          <div class="legal-nav">
+            <a href="/privacy-policy/">Privacy</a>
+            <a href="/terms-of-service/">Terms</a>
+            <a href="/disclaimer/">Disclaimer</a>
+            <a href="/contact-us/">Contact</a>
+          </div>
         </div>
       </div>
-    </div>
-  </footer>
+    </footer>
 
-</body>
+    <script>
+      const menuButton = document.querySelector('.mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      if (menuButton && mobileMenu) {
+        menuButton.addEventListener('click', () => {
+          const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
+          menuButton.setAttribute('aria-expanded', String(!isOpen));
+          mobileMenu.classList.toggle('is-open', !isOpen);
+        });
+      }
+    </script>
+  </body>
 </html>
