@@ -1,7 +1,7 @@
 ---
 // src/pages/index.astro
-const title = "CONVERTkb - Free Online Image & PDF Compressor to Exact KB";
-const description = "Compress images, photos, signatures, and PDFs to exact file sizes (10KB, 20KB, 50KB, 100KB) and configure 200/300 DPI directly in your browser. Fast, zero server uploads, 100% private.";
+const pageTitle = "CONVERTkb - Free Online Image & PDF Compressor to Exact KB";
+const pageDescription = "Compress images, signatures, marksheet scans, and PDFs to exact file sizes (10KB, 20KB, 50KB, 100KB) and configure 200/300 DPI directly in your browser. Fast, free, and completely private with zero server uploads.";
 const canonicalURL = "https://convertkb.com/";
 
 const schemaData = {
@@ -12,14 +12,14 @@ const schemaData = {
       "@id": "https://convertkb.com/#website",
       "url": "https://convertkb.com/",
       "name": "CONVERTkb",
-      "description": description,
+      "description": pageDescription,
       "inLanguage": "en-US"
     },
     {
       "@type": "WebApplication",
       "@id": "https://convertkb.com/#webapp",
       "url": "https://convertkb.com/",
-      "name": "CONVERTkb Optimizer & Sizing Tool",
+      "name": "CONVERTkb Client-Side Image & PDF Optimizer",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "All",
       "browserRequirements": "Requires JavaScript. Runs client-side on all modern browsers.",
@@ -35,26 +35,26 @@ const schemaData = {
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How does CONVERTkb achieve exact KB file sizes without losing quality?",
+          "name": "How does CONVERTkb compress images to an exact target KB without quality loss?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "CONVERTkb utilizes client-side HTML5 Canvas and native WebAssembly quantization algorithms. Rather than applying a single arbitrary compression level, our engine runs a sub-second iterative binary search algorithm directly inside your browser memory. It adjusts discrete cosine transform (DCT) coefficients, strips redundant metadata tags, and optimizes color lookup tables until your file precisely hits the required target (such as 20KB, 50KB, or 100KB) with minimal optical distortion."
+            "text": "CONVERTkb uses client-side HTML5 Canvas and native WebAssembly binary search algorithms. Rather than applying a single arbitrary compression level, our engine runs a sub-second iterative search directly in your browser memory. It adjusts discrete cosine transform (DCT) coefficients, strips redundant metadata tags, and optimizes color lookup tables until your file precisely hits the required target (such as 20KB, 50KB, or 100KB) with minimal optical distortion."
           }
         },
         {
           "@type": "Question",
-          "name": "Are my identity photos, marksheet scans, or signatures uploaded to your server?",
+          "name": "Are my uploaded photos, ID cards, marksheet scans, or signatures stored on your servers?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Never. All compression, format conversion, and DPI adjustments are executed on-device inside your browser using JavaScript and HTML5 Canvas APIs. Zero byte payloads or metadata details are transmitted over the internet to any external server or third-party storage bucket."
+            "text": "Never. All image compression, DPI configuration, format conversion, and PDF optimization happen entirely on your local device memory using client-side JavaScript and HTML5 Canvas APIs. Zero byte payloads or metadata details are transmitted over the internet to any external server or third-party storage bucket."
           }
         },
         {
           "@type": "Question",
-          "name": "Why do exam portals reject photos even when the file is under 50KB?",
+          "name": "Why do government recruitment portals reject photos even when the file is under 50KB?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Government portals (like SSC, UPSC, IBPS, and State PSCs) employ multi-layered server verification. Beyond file weight limits, their automated systems evaluate pixel aspect ratios (e.g., 200x230 pixels), physical dimensions (3.5 cm x 4.5 cm), and embedded DPI metadata (usually 200 or 300 DPI). If an image has the correct KB size but lacks the expected DPI header, the intake script rejects it. Our tools synchronize all three parameters simultaneously."
+            "text": "Government portals employ multi-layered server verification. Beyond file weight limits, their automated systems evaluate pixel aspect ratios (e.g., 200x230 pixels), physical dimensions (3.5 cm x 4.5 cm), and embedded DPI metadata (usually 200 or 300 DPI). If an image has the correct KB size but lacks the expected DPI header, the intake script rejects it. Our tools synchronize all three parameters simultaneously."
           }
         },
         {
@@ -72,11 +72,21 @@ const schemaData = {
             "@type": "Answer",
             "text": "Resizing changes the physical dimensions or total number of pixels (for example, lowering a 4000x3000 photo to 600x800). Compression optimizes the underlying binary data within those pixels, reducing color redundancy and discarding unneeded EXIF headers to lower byte weight while maintaining identical canvas dimensions."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I resize a signature to 10KB-20KB with 140x60 pixels?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Select our specialized 140x60 Pixel Signature Resizer. The tool sets your canvas to the exact 140 x 60 pixel aspect ratio, adjusts contrast to keep ink strokes sharp against a pure white background, and compresses the final file to fit between 10KB and 20KB for banking (IBPS/SBI) and government forms."
+          }
         }
       ]
     }
   ]
 };
+
+const schemaJson = JSON.stringify(schemaData);
 ---
 
 <!DOCTYPE html>
@@ -84,24 +94,25 @@ const schemaData = {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title}</title>
-  <meta name="description" content={description} />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
   
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
   <meta property="og:url" content={canonicalURL} />
   <meta property="og:type" content="website" />
   <meta name="robots" content="index, follow" />
 
-  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  <script type="application/ld+json" set:html={schemaJson}></script>
 
   <style>
     :root {
       --primary: #2563eb;
-      --primary-dark: #1d4ed8;
+      --primary-hover: #1d4ed8;
       --primary-light: #eff6ff;
       --accent: #0ea5e9;
+      --accent-glow: rgba(14, 165, 233, 0.15);
       --text-main: #0f172a;
       --text-muted: #475569;
       --text-light: #64748b;
@@ -109,10 +120,12 @@ const schemaData = {
       --bg-card: #ffffff;
       --border: #e2e8f0;
       --border-hover: #cbd5e1;
-      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
-      --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.08), 0 6px 12px -4px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 14px 28px -4px rgba(0, 0, 0, 0.08), 0 8px 12px -4px rgba(0, 0, 0, 0.03);
     }
 
     *, *::before, *::after {
@@ -171,7 +184,6 @@ const schemaData = {
       border-radius: 6px;
       font-size: 0.9rem;
       font-weight: 700;
-      letter-spacing: 0;
     }
 
     /* Desktop Navigation & Mega-Menus */
@@ -194,7 +206,7 @@ const schemaData = {
       font-weight: 600;
       color: var(--text-muted);
       text-decoration: none;
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
       transition: all 0.2s ease;
     }
 
@@ -210,7 +222,7 @@ const schemaData = {
       left: 0;
       background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: var(--radius-md);
       box-shadow: var(--shadow-lg);
       padding: 24px;
       gap: 24px;
@@ -280,7 +292,7 @@ const schemaData = {
       font-size: 0.85rem;
     }
 
-    /* Mobile Drawer Checkbox Hack (Zero JS Required) */
+    /* Mobile Drawer Checkbox Pattern */
     .mobile-menu-toggle {
       display: none;
     }
@@ -300,7 +312,6 @@ const schemaData = {
       background: var(--text-main);
       margin: 5px 0;
       border-radius: 2px;
-      transition: all 0.3s ease;
     }
 
     .mobile-drawer {
@@ -407,7 +418,7 @@ const schemaData = {
     .hub-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: var(--radius-md);
       padding: 28px;
       box-shadow: var(--shadow-sm);
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -439,7 +450,6 @@ const schemaData = {
       justify-content: center;
       font-weight: 800;
       font-size: 0.95rem;
-      letter-spacing: -0.02em;
     }
 
     .hub-card-header h3 {
@@ -516,7 +526,7 @@ const schemaData = {
     }
 
     .hub-card-action a:hover {
-      color: var(--primary-dark);
+      color: var(--primary-hover);
       text-decoration: underline;
     }
 
@@ -576,7 +586,7 @@ const schemaData = {
       overflow-x: auto;
       margin: 30px 0;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: var(--radius-md);
     }
 
     .specs-table {
@@ -612,7 +622,7 @@ const schemaData = {
     .faq-item {
       background: var(--bg-body);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: var(--radius-md);
       padding: 24px;
       margin-bottom: 20px;
     }
@@ -635,15 +645,15 @@ const schemaData = {
     .site-footer {
       background: #0f172a;
       color: #94a3b8;
-      padding: 70px 0 35px;
+      padding: 60px 0 35px;
       font-size: 0.9rem;
     }
 
-    .footer-grid {
+    .footer-top {
       display: grid;
-      grid-template-columns: 2fr repeat(4, 1fr);
-      gap: 36px;
-      margin-bottom: 50px;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
     }
 
     .footer-brand h3 {
@@ -657,11 +667,12 @@ const schemaData = {
       line-height: 1.65;
       margin-bottom: 16px;
       color: #94a3b8;
+      max-width: 520px;
     }
 
     .footer-col h4 {
       color: #ffffff;
-      font-size: 0.825rem;
+      font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       margin-bottom: 16px;
@@ -673,7 +684,7 @@ const schemaData = {
     }
 
     .footer-col li {
-      margin-bottom: 9px;
+      margin-bottom: 10px;
     }
 
     .footer-col a {
@@ -688,7 +699,7 @@ const schemaData = {
 
     .footer-bottom {
       border-top: 1px solid #1e293b;
-      padding-top: 28px;
+      padding-top: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -716,7 +727,6 @@ const schemaData = {
       .nav-root { display: none; }
       .mobile-hamburger { display: block; }
 
-      /* Mobile Navigation Drawer */
       .mobile-menu-toggle:checked ~ .mobile-drawer {
         display: block;
       }
@@ -752,13 +762,12 @@ const schemaData = {
         font-size: 0.9rem;
       }
 
-      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 680px) {
       .hero-title { font-size: 2.2rem; }
       .hub-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
       .mobile-nav-group ul { grid-template-columns: 1fr; }
       .footer-bottom { flex-direction: column; text-align: center; }
       .legal-nav { flex-wrap: wrap; justify-content: center; }
@@ -774,13 +783,13 @@ const schemaData = {
         CONVERT<span class="brand-badge">kb</span>
       </a>
 
-      <!-- Desktop Nav with Strict Mega-Menus -->
+      <!-- Desktop Nav with Multi-Column Mega-Menus -->
       <nav aria-label="Main Navigation">
         <ul class="nav-root">
           
           <!-- MENU 1: IMAGE -->
           <li class="nav-item has-megamenu">
-            <a href="/image/" class="nav-link">Image ▾</a>
+            <a href="/image/" class="nav-link">Image &blacktriangledown;</a>
             <div class="megamenu-panel cols-3">
               <div class="megamenu-col">
                 <h4>Target Sizes</h4>
@@ -795,7 +804,7 @@ const schemaData = {
                 </ul>
               </div>
               <div class="megamenu-col">
-                <h4>DPI & Dimensions</h4>
+                <h4>DPI &amp; Dimensions</h4>
                 <ul>
                   <li><a href="/change-dpi-to-200/">Change Image DPI to 200</a></li>
                   <li><a href="/convert-image-to-300-dpi/">Convert Image to 300 DPI</a></li>
@@ -811,8 +820,8 @@ const schemaData = {
                   <li><a href="/reduce-image-size-below-50kb/">Reduce Below 50KB</a></li>
                   <li><a href="/increase-image-size-in-kb/">Increase Image Size in KB</a></li>
                   <li><a href="/convert-photo-to-50kb/">Convert Photo to 50KB</a></li>
-                  <li><a href="/image-kb-reducer/">Image KB Reducer & Resizer</a></li>
-                  <li><a href="/image/" class="hub-pill">All Image Tools →</a></li>
+                  <li><a href="/image-kb-reducer/">Image KB Reducer &amp; Resizer</a></li>
+                  <li><a href="/image/" class="hub-pill">All Image Tools &rarr;</a></li>
                 </ul>
               </div>
             </div>
@@ -820,7 +829,7 @@ const schemaData = {
 
           <!-- MENU 2: PDF -->
           <li class="nav-item has-megamenu">
-            <a href="/pdf/" class="nav-link">PDF ▾</a>
+            <a href="/pdf/" class="nav-link">PDF &blacktriangledown;</a>
             <div class="megamenu-panel cols-2">
               <div class="megamenu-col">
                 <h4>Target PDF Sizes</h4>
@@ -834,15 +843,15 @@ const schemaData = {
                 </ul>
               </div>
               <div class="megamenu-col">
-                <h4>Document & Scans</h4>
+                <h4>Document &amp; Scans</h4>
                 <ul>
-                  <li><a href="/merge-compress-pdf-200kb/">Merge & Compress to 200KB</a></li>
-                  <li><a href="/combine-pdf-compress-100kb/">Combine & Compress to 100KB</a></li>
+                  <li><a href="/merge-compress-pdf-200kb/">Merge &amp; Compress to 200KB</a></li>
+                  <li><a href="/combine-pdf-compress-100kb/">Combine &amp; Compress to 100KB</a></li>
                   <li><a href="/compress-scanned-pdf-100kb/">Compress Scanned PDF 100KB</a></li>
                   <li><a href="/pdf-300-dpi-converter/">PDF 300 DPI Converter</a></li>
                   <li><a href="/convert-jpg-to-pdf-200kb/">Convert JPG to PDF under 200KB</a></li>
                   <li><a href="/pdf-size-reducer-online/">PDF Size Reducer Online</a></li>
-                  <li><a href="/pdf/" class="hub-pill">All PDF Tools →</a></li>
+                  <li><a href="/pdf/" class="hub-pill">All PDF Tools &rarr;</a></li>
                 </ul>
               </div>
             </div>
@@ -850,10 +859,10 @@ const schemaData = {
 
           <!-- MENU 3: IMAGE FORMATS -->
           <li class="nav-item has-megamenu">
-            <a href="/image-formats/" class="nav-link">Image Formats ▾</a>
+            <a href="/image-formats/" class="nav-link">Image Formats &blacktriangledown;</a>
             <div class="megamenu-panel cols-3">
               <div class="megamenu-col">
-                <h4>JPG & JPEG</h4>
+                <h4>JPG &amp; JPEG</h4>
                 <ul>
                   <li><a href="/compress-jpg-to-20kb/">Compress JPG to 20KB</a></li>
                   <li><a href="/compress-jpg-to-50kb/">Compress JPG to 50KB</a></li>
@@ -864,7 +873,7 @@ const schemaData = {
                 </ul>
               </div>
               <div class="megamenu-col">
-                <h4>PNG & WebP</h4>
+                <h4>PNG &amp; WebP</h4>
                 <ul>
                   <li><a href="/compress-png-to-20kb/">Compress PNG to 20KB</a></li>
                   <li><a href="/compress-png-to-50kb/">Compress PNG to 50KB</a></li>
@@ -875,14 +884,14 @@ const schemaData = {
                 </ul>
               </div>
               <div class="megamenu-col">
-                <h4>Modern & Raw</h4>
+                <h4>Modern &amp; Raw</h4>
                 <ul>
                   <li><a href="/convert-heic-to-jpg-50kb/">HEIC to JPG under 50KB</a></li>
                   <li><a href="/heic-to-jpg-100kb/">HEIC to JPG under 100KB</a></li>
                   <li><a href="/compress-tiff-to-100kb/">Compress TIFF to 100KB</a></li>
                   <li><a href="/convert-bmp-to-jpg-50kb/">BMP to JPG under 50KB</a></li>
                   <li><a href="/convert-jpg-to-webp-50kb/">JPG to WebP under 50KB</a></li>
-                  <li><a href="/image-formats/" class="hub-pill">All Formats →</a></li>
+                  <li><a href="/image-formats/" class="hub-pill">All Formats &rarr;</a></li>
                 </ul>
               </div>
             </div>
@@ -890,37 +899,37 @@ const schemaData = {
 
           <!-- MENU 4: EXAMS -->
           <li class="nav-item has-megamenu">
-            <a href="/exams/" class="nav-link">Exams ▾</a>
+            <a href="/exams/" class="nav-link">Exams &blacktriangledown;</a>
             <div class="megamenu-panel cols-3">
               <div class="megamenu-col">
                 <h4>National Boards</h4>
                 <ul>
-                  <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo & Signature</a></li>
+                  <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo &amp; Signature</a></li>
                   <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo (20-300 KB)</a></li>
-                  <li><a href="/gate-photo-size-in-kb/">GATE Photo & Sign Size</a></li>
+                  <li><a href="/gate-photo-size-in-kb/">GATE Photo &amp; Sign Size</a></li>
                   <li><a href="/neet-photo-resize-in-kb/">NEET Photo Resize in KB</a></li>
-                  <li><a href="/ibps-photo-signature-resize/">IBPS Photo & Sign Size</a></li>
+                  <li><a href="/ibps-photo-signature-resize/">IBPS Photo &amp; Sign Size</a></li>
                 </ul>
               </div>
               <div class="megamenu-col">
-                <h4>State & Banking</h4>
+                <h4>State &amp; Banking</h4>
                 <ul>
-                  <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo & Sign</a></li>
+                  <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo &amp; Sign</a></li>
                   <li><a href="/bpsc-photo-resize-in-kb/">BPSC Photo Resize in KB</a></li>
-                  <li><a href="/uppsc-photo-signature-size/">UPPSC Photo & Sign Size</a></li>
+                  <li><a href="/uppsc-photo-signature-size/">UPPSC Photo &amp; Sign Size</a></li>
                   <li><a href="/rrb-photo-signature-size/">RRB Railway Resizer</a></li>
-                  <li><a href="/sbi-po-photo-signature-resize/">SBI PO Photo & Signature</a></li>
+                  <li><a href="/sbi-po-photo-signature-resize/">SBI PO Photo &amp; Signature</a></li>
                 </ul>
               </div>
               <div class="megamenu-col">
-                <h4>Signatures & Sizing</h4>
+                <h4>Signatures &amp; Sizing</h4>
                 <ul>
                   <li><a href="/signature-compressor-20kb/">Signature to 20KB</a></li>
                   <li><a href="/resize-signature-10kb-to-20kb/">Signature 10KB to 20KB</a></li>
                   <li><a href="/change-signature-dpi-200/">Signature 200 DPI Converter</a></li>
                   <li><a href="/140x60-pixel-signature-20kb/">140x60 px Signature</a></li>
                   <li><a href="/resize-photo-20kb-to-50kb/">Photo 20KB to 50KB</a></li>
-                  <li><a href="/exams/" class="hub-pill">All Exam Portals →</a></li>
+                  <li><a href="/exams/" class="hub-pill">All Exam Portals &rarr;</a></li>
                 </ul>
               </div>
             </div>
@@ -928,17 +937,17 @@ const schemaData = {
 
           <!-- MENU 5: TOOLS -->
           <li class="nav-item has-megamenu">
-            <a href="/tools/" class="nav-link">Tools ▾</a>
+            <a href="/tools/" class="nav-link">Tools &blacktriangledown;</a>
             <div class="megamenu-panel cols-2">
               <div class="megamenu-col">
-                <h4>Passports & IDs</h4>
+                <h4>Passports &amp; IDs</h4>
                 <ul>
                   <li><a href="/convert-photo-to-passport-size-50kb/">Passport Photo Size 50KB</a></li>
                   <li><a href="/passport-photo-3-5-x-4-5-cm/">Passport Photo 3.5 x 4.5 cm</a></li>
                   <li><a href="/pan-card-photo-resize-in-kb/">PAN Card Photo Resizer</a></li>
                   <li><a href="/pan-card-signature-resize-in-kb/">PAN Card Signature Resizer</a></li>
                   <li><a href="/aadhaar-card-photo-resize-in-kb/">Aadhaar Card Photo Resize</a></li>
-                  <li><a href="/us-visa-photo-2x2-inches/">US Visa (2x2" / 240KB)</a></li>
+                  <li><a href="/us-visa-photo-2x2-inches/">US Visa (2x2 Inches / 240KB)</a></li>
                 </ul>
               </div>
               <div class="megamenu-col">
@@ -950,7 +959,7 @@ const schemaData = {
                   <li><a href="/kb-to-bytes/">KB to Bytes Converter</a></li>
                   <li><a href="/bytes-to-kb/">Bytes to KB Converter</a></li>
                   <li><a href="/1024-kb-to-mb/">1024 KB to MB</a></li>
-                  <li><a href="/tools/" class="hub-pill">All Utilities →</a></li>
+                  <li><a href="/tools/" class="hub-pill">All Utilities &rarr;</a></li>
                 </ul>
               </div>
             </div>
@@ -967,10 +976,10 @@ const schemaData = {
       </label>
     </div>
 
-    <!-- Hidden Checkbox for Mobile Toggle -->
+    <!-- Hidden Checkbox for Mobile Drawer Toggle -->
     <input type="checkbox" id="menu-toggle" class="mobile-menu-toggle" />
 
-    <!-- Mobile Drawer -->
+    <!-- Mobile Navigation Drawer -->
     <div class="mobile-drawer">
       <div class="mobile-nav-group">
         <h4>Image Compress</h4>
@@ -1000,7 +1009,7 @@ const schemaData = {
         </ul>
       </div>
       <div class="mobile-nav-group">
-        <h4>Exams & Signatures</h4>
+        <h4>Exams &amp; Signatures</h4>
         <ul>
           <li><a href="/ssc-photo-and-signature-resizer/">SSC Resizer</a></li>
           <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo</a></li>
@@ -1009,7 +1018,7 @@ const schemaData = {
         </ul>
       </div>
       <div class="mobile-nav-group">
-        <h4>IDs & Converters</h4>
+        <h4>IDs &amp; Converters</h4>
         <ul>
           <li><a href="/convert-photo-to-passport-size-50kb/">Passport 50KB</a></li>
           <li><a href="/pan-card-photo-resize-in-kb/">PAN Card Tool</a></li>
@@ -1021,19 +1030,19 @@ const schemaData = {
   </header>
 
   <main>
-    <!-- ==================== HERO ==================== -->
+    <!-- ==================== HERO SECTION ==================== -->
     <section class="hero">
       <div class="container">
-        <div class="hero-badge">Verified 2026 Client-Side Architecture</div>
-        <h1 class="hero-title">Compress Images & PDFs to <span>Exact KB</span></h1>
+        <div class="hero-badge">Verified Client-Side Architecture</div>
+        <h1 class="hero-title">Compress Images &amp; PDFs to <span>Exact KB</span></h1>
         <p class="hero-subtitle">
           Calibrate photos, certificates, marksheet scans, and signatures to exact file boundaries (20KB, 50KB, 100KB) and required 200/300 DPI specifications directly inside your web browser.
         </p>
         <div class="hero-stats">
-          <div class="stat-badge"><span>🔒</span> 100% In-Browser Privacy</div>
-          <div class="stat-badge"><span>⚡</span> Zero Network Latency</div>
-          <div class="stat-badge"><span>📐</span> Strict DPI & Pixel Precision</div>
-          <div class="stat-badge"><span>✨</span> Free Forever</div>
+          <div class="stat-badge"><span>&check;</span> 100% In-Browser Privacy</div>
+          <div class="stat-badge"><span>&check;</span> Zero Network Latency</div>
+          <div class="stat-badge"><span>&check;</span> Strict DPI &amp; Pixel Precision</div>
+          <div class="stat-badge"><span>&check;</span> Free Forever</div>
         </div>
       </div>
     </section>
@@ -1042,7 +1051,7 @@ const schemaData = {
     <section class="hub-section">
       <div class="container">
         <div class="section-intro">
-          <h2>Application Sizing & Document Tools</h2>
+          <h2>Application Sizing &amp; Document Tools</h2>
           <p>Select your required threshold or portal guideline to launch our on-device optimizer.</p>
         </div>
 
@@ -1068,7 +1077,7 @@ const schemaData = {
             </div>
 
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>DPI & Dimension Calibration</span></div>
+              <div class="hub-subgroup-title"><span>DPI &amp; Dimension Calibration</span></div>
               <ul class="hub-links-list">
                 <li><a href="/change-dpi-to-200/">Change Image DPI to 200 <span>42K/mo</span></a></li>
                 <li><a href="/convert-image-to-300-dpi/">Convert Image to 300 DPI <span>65K/mo</span></a></li>
@@ -1102,9 +1111,9 @@ const schemaData = {
             </div>
 
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>Scans & Document Merging</span></div>
+              <div class="hub-subgroup-title"><span>Scans &amp; Document Merging</span></div>
               <ul class="hub-links-list">
-                <li><a href="/merge-compress-pdf-200kb/">Merge & Compress PDF 200KB <span>26K/mo</span></a></li>
+                <li><a href="/merge-compress-pdf-200kb/">Merge &amp; Compress PDF 200KB <span>26K/mo</span></a></li>
                 <li><a href="/compress-scanned-pdf-100kb/">Compress Scanned PDF 100KB <span>21K/mo</span></a></li>
                 <li><a href="/pdf-300-dpi-converter/">PDF 300 DPI Converter <span>22K/mo</span></a></li>
                 <li><a href="/convert-jpg-to-pdf-200kb/">Convert JPG to PDF 200KB <span>48K/mo</span></a></li>
@@ -1136,7 +1145,7 @@ const schemaData = {
             </div>
 
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>Modern Mobile & Legacy Formats</span></div>
+              <div class="hub-subgroup-title"><span>Modern Mobile &amp; Legacy Formats</span></div>
               <ul class="hub-links-list">
                 <li><a href="/convert-heic-to-jpg-50kb/">HEIC to JPG under 50KB <span>35K/mo</span></a></li>
                 <li><a href="/compress-tiff-to-100kb/">Compress TIFF to 100KB <span>12K/mo</span></a></li>
@@ -1154,25 +1163,25 @@ const schemaData = {
           <article class="hub-card">
             <div class="hub-card-header">
               <div class="hub-icon">EXM</div>
-              <h3>Recruitment & Exams</h3>
+              <h3>Recruitment &amp; Exams</h3>
             </div>
             <p class="hub-card-desc">Presets for Staff Selection, Civil Services, Banking boards, Engineering tests, and Medical entrance portals.</p>
             
             <div class="hub-subgroup">
               <div class="hub-subgroup-title"><span>National Board Presets</span> <span>Search Vol</span></div>
               <ul class="hub-links-list">
-                <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo & Signature Resizer <span>25K/mo</span></a></li>
+                <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo &amp; Signature Resizer <span>25K/mo</span></a></li>
                 <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo Resize (20-300KB) <span>18K/mo</span></a></li>
-                <li><a href="/gate-photo-size-in-kb/">GATE Photo & Signature Size <span>12K/mo</span></a></li>
+                <li><a href="/gate-photo-size-in-kb/">GATE Photo &amp; Signature Size <span>12K/mo</span></a></li>
                 <li><a href="/neet-photo-resize-in-kb/">NEET Photo Resize in KB <span>14K/mo</span></a></li>
-                <li><a href="/ibps-photo-signature-resize/">IBPS Photo & Sign Resizer <span>11K/mo</span></a></li>
+                <li><a href="/ibps-photo-signature-resize/">IBPS Photo &amp; Sign Resizer <span>11K/mo</span></a></li>
               </ul>
             </div>
 
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>State PSCs & Quick Signatures</span></div>
+              <div class="hub-subgroup-title"><span>State PSCs &amp; Quick Signatures</span></div>
               <ul class="hub-links-list">
-                <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo & Sign Resizer <span>22K/mo</span></a></li>
+                <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo &amp; Sign Resizer <span>22K/mo</span></a></li>
                 <li><a href="/signature-resize-in-kb/">Signature Resize in KB <span>28K/mo</span></a></li>
                 <li><a href="/signature-compressor-20kb/">Signature Compressor to 20KB <span>19K/mo</span></a></li>
                 <li><a href="/140x60-pixel-signature-20kb/">140x60 Pixel Signature <span>14K/mo</span></a></li>
@@ -1188,12 +1197,12 @@ const schemaData = {
           <article class="hub-card">
             <div class="hub-card-header">
               <div class="hub-icon">UTL</div>
-              <h3>ID Tools & Converters</h3>
+              <h3>ID Tools &amp; Converters</h3>
             </div>
             <p class="hub-card-desc">International passport guidelines, national identity cards, visa constraints, and exact digital storage formulas.</p>
             
             <div class="hub-subgroup">
-              <div class="hub-subgroup-title"><span>Identity & Travel Passes</span> <span>Search Vol</span></div>
+              <div class="hub-subgroup-title"><span>Identity &amp; Travel Passes</span> <span>Search Vol</span></div>
               <ul class="hub-links-list">
                 <li><a href="/passport-photo-size-in-kb/">Passport Photo Size in KB <span>35K/mo</span></a></li>
                 <li><a href="/convert-photo-to-passport-size-50kb/">Passport Photo Size 50KB <span>22K/mo</span></a></li>
@@ -1214,7 +1223,7 @@ const schemaData = {
             </div>
 
             <div class="hub-card-action">
-              <a href="/tools/">Explore All ID & Unit Calculators &rarr;</a>
+              <a href="/tools/">Explore All ID &amp; Unit Calculators &rarr;</a>
             </div>
           </article>
 
@@ -1222,23 +1231,23 @@ const schemaData = {
       </div>
     </section>
 
-    <!-- ==================== 1300+ WORDS EDITORIAL SEO CONTENT ==================== -->
+    <!-- ==================== 1400+ WORDS EDITORIAL SEO CONTENT ==================== -->
     <section class="content-section">
       <div class="container content-wrapper">
         <h2>Engineering Precision File Sizing for Strict Modern Web Portals</h2>
         <p>
-          Anyone who has submitted a competitive job application, uploaded an identity verification photo, or attached financial records to an official government portal understands the frustration of upload rejections. You take a crisp photo with a modern smartphone, navigate to the upload form, and immediately hit a validation error: <em>"File size exceeds 50 KB"</em>, <em>"Resolution must be exactly 200 DPI"</em>, or <em>"Dimensions must match 3.5 cm x 4.5 cm"</em>.
+          Anyone who has submitted a competitive job application, uploaded an identity verification photo, or attached financial records to an official government portal understands the frustration of upload rejections. You take a crisp photo with a modern smartphone, navigate to the upload form, and immediately hit a validation error: <em>&ldquo;File size exceeds 50 KB&rdquo;</em>, <em>&ldquo;Resolution must be exactly 200 DPI&rdquo;</em>, or <em>&ldquo;Dimensions must match 3.5 cm x 4.5 cm&rdquo;</em>.
         </p>
         <p>
-          CONVERTkb was built to resolve this exact technical barrier. Unlike basic graphic design utilities or generic compression tools that operate on rough percentage sliders, our browser-native system uses programmatic binary calibration. We enable students, public sector applicants, web engineers, and administrative teams to hit strict target thresholds—such as 20KB, 50KB, 100KB, or 200KB—without technical expertise, software installation, or security risks.
+          CONVERTkb was built to resolve this exact technical barrier. Unlike basic graphic design utilities or generic compression tools that operate on rough percentage sliders, our browser-native system uses programmatic binary calibration. We enable students, public sector applicants, web engineers, and administrative teams to hit strict target thresholds&mdash;such as 20KB, 50KB, 100KB, or 200KB&mdash;without technical expertise, software installation, or security risks.
         </p>
 
-        <h3>Why Do Recruitment & Government Portals Enforce Strict KB Limits?</h3>
+        <h3>Why Do Recruitment &amp; Government Portals Enforce Strict KB Limits?</h3>
         <p>
           To understand why exact file optimization is required, consider how large institutional server platforms operate. When agencies like the Staff Selection Commission (SSC), Union Public Service Commission (UPSC), Railway Recruitment Boards (RRB), or national passport divisions open an intake window, their servers receive millions of digital submissions within a 30-day window.
         </p>
         <p>
-          If each applicant uploaded an uncompressed 8-megabyte smartphone snapshot, the agency's storage infrastructure would struggle with petabytes of redundant data, driving up hosting costs and slowing server response times on closing day. Furthermore, automated validation pipelines must insert these applicant photos and signatures into standardized database cells to render examination admit cards, security badges, and verification rosters at scale. 
+          If each applicant uploaded an uncompressed 8-megabyte smartphone snapshot, the agency storage infrastructure would struggle with petabytes of redundant data, driving up hosting costs and slowing server response times on closing day. Furthermore, automated validation pipelines must insert these applicant photos and signatures into standardized database cells to render examination admit cards, security badges, and verification rosters at scale.
         </p>
         <p>
           By capping files at exactly 20KB or 50KB and requiring standard 200 or 300 DPI metadata, institutional systems ensure that thousands of documents can be printed daily without color distortion, server crashes, or bandwidth bottlenecks.
@@ -1294,12 +1303,12 @@ const schemaData = {
           Most basic compression tools apply linear quality reduction. If you move a slider to 60%, the encoder simply lowers quantization quality globally. However, because every photograph contains unique spatial frequencies, color variations, and lighting conditions, an arbitrary quality reduction might shrink one image to 18KB while another stays at 68KB.
         </p>
         <p>
-          CONVERTkb solves this by executing a client-side binary search routine directly within your browser's JavaScript environment:
+          CONVERTkb solves this by executing a client-side binary search routine directly within your browser JavaScript environment:
         </p>
         <ol>
           <li><strong>Image Canvas Decoding:</strong> Your original image (JPG, PNG, WebP, or HEIC) is parsed into an in-memory HTML5 Canvas element. The raw pixel arrays are decoded locally without leaving device memory.</li>
           <li><strong>Metadata Separation:</strong> Redundant EXIF tags, GPS coordinates, shutter settings, and thumbnail caches are extracted and stripped. This alone frequently shaves 15KB to 60KB of unnecessary file bloat.</li>
-          <li><strong>Iterative Binary Search Compression:</strong> The engine executes an optimization loop. It tests a compression factor of $0.50$. If the resulting byte buffer is larger than your target (say, 50KB), it halves the interval to $0.25$; if smaller, it adjusts upward to $0.375$. Within five to seven micro-iterations (taking under 250 milliseconds), it finds the highest possible visual quality that remains strictly under your target limit.</li>
+          <li><strong>Iterative Binary Search Compression:</strong> The engine executes an optimization loop. It tests a compression factor of 0.50. If the resulting byte buffer is larger than your target (say, 50KB), it halves the interval to 0.25; if smaller, it adjusts upward to 0.375. Within five to seven micro-iterations (taking under 250 milliseconds), it finds the highest possible visual quality that remains strictly under your target limit.</li>
           <li><strong>DPI Header Injection:</strong> If you requested 200 or 300 DPI, our engine modifies the JFIF resolution units directly inside the output blob, setting horizontal and vertical pixel density flags to ensure server verification scripts approve the file on the first attempt.</li>
         </ol>
 
@@ -1308,24 +1317,24 @@ const schemaData = {
           Conventional document converter tools upload your files to third-party web servers. This architecture introduces serious privacy vulnerabilities: your passport photos, personal signatures, educational degrees, and government identity cards sit on cloud storage buckets where they could be logged, indexed, or breached.
         </p>
         <p>
-          At CONVERTkb, our core architectural principle is <strong>zero data transmission</strong>. We do not maintain server-side image processing queues. Because our application is written with modern client-side APIs and WebAssembly binaries, 100% of the mathematical compression, canvas rendering, and byte adjustments happen directly in your device's RAM. 
+          At CONVERTkb, our core architectural principle is <strong>zero data transmission</strong>. We do not maintain server-side image processing queues. Because our application is written with modern client-side APIs and WebAssembly binaries, 100% of the mathematical compression, canvas rendering, and byte adjustments happen directly in your device RAM.
         </p>
         <p>
-          Whether you are resizing an Aadhaar card photo, a sensitive PAN card signature, or confidential legal affidavits, your files never cross the network. You can even disconnect your internet after loading the tool—our compression engines continue working completely offline.
+          Whether you are resizing an Aadhaar card photo, a sensitive PAN card signature, or confidential legal affidavits, your files never cross the network. You can even disconnect your internet after loading the tool&mdash;our compression engines continue working completely offline.
         </p>
 
         <h3>Resolving DPI and Resolution Pitfalls</h3>
         <p>
-          A common mistake made by applicants is confusing <em>pixel dimensions</em> with <em>DPI density</em>. Pixels represent the actual width and height of an image on a digital screen (e.g., $600 \times 800\text{ pixels}$). DPI (Dots Per Inch) is a physical printing directive: it tells a printer how many of those digital pixels should be squeezed into an inch of paper.
+          A common mistake made by applicants is confusing <em>pixel dimensions</em> with <em>DPI density</em>. Pixels represent the actual width and height of an image on a digital screen (for example, 600 x 800 pixels). DPI (Dots Per Inch) is a physical printing directive: it tells a printer how many of those digital pixels should be squeezed into an inch of paper.
         </p>
         <p>
-          A photo can have high resolution (such as $1200 \times 1600\text{ pixels}$) yet carry an unconfigured screen default tag of 72 or 96 DPI. When an applicant uploads this file to an automated portal like TNPSC, UPSC, or GATE, the portal's ingest pipeline reads the metadata header, flags the 96 DPI value, and rejects the upload with an error. 
+          A photo can have high resolution (such as 1200 x 1600 pixels) yet carry an unconfigured screen default tag of 72 or 96 DPI. When an applicant uploads this file to an automated portal like TNPSC, UPSC, or GATE, the portal ingest pipeline reads the metadata header, flags the 96 DPI value, and rejects the upload with an error.
         </p>
         <p>
-          Using our dedicated DPI adjustment tools, you can inject standard 200 DPI or 300 DPI tags directly into the JPEG file header without distorting your image's physical aspect ratio or ballooning the byte weight.
+          Using our dedicated DPI adjustment tools, you can inject standard 200 DPI or 300 DPI tags directly into the JPEG file header without distorting your image physical aspect ratio or ballooning the byte weight.
         </p>
 
-        <h3>PDF Sizing: Scans, Marksheets & Affidavits</h3>
+        <h3>PDF Sizing: Scans, Marksheets &amp; Affidavits</h3>
         <p>
           While photographs and signatures demand pixel precision, academic and employment verifications almost universally mandate PDF format under strict caps (typically 100KB or 200KB). When applicants scan a 10th-grade marksheet or degree certificate on a flatbed home scanner, the scanner software often exports an uncompressed 300 DPI color PDF weighing 5MB to 15MB.
         </p>
@@ -1347,7 +1356,7 @@ const schemaData = {
           <div class="faq-item">
             <div class="faq-question">What is DPI and why is 200 DPI or 300 DPI required?</div>
             <div class="faq-answer">
-              DPI stands for Dots Per Inch, an instruction used by physical printers to control output density on paper. Official recruitment authorities mandate 200 or 300 DPI to guarantee that admit cards and identity credentials print clearly without pixelation. Our tools adjust the embedded JFIF density tags without altering your image's visual framing.
+              DPI stands for Dots Per Inch, an instruction used by physical printers to control output density on paper. Official recruitment authorities mandate 200 or 300 DPI to guarantee that admit cards and identity credentials print clearly without pixelation. Our tools adjust the embedded JFIF density tags without altering your image visual framing.
             </div>
           </div>
 
@@ -1368,7 +1377,14 @@ const schemaData = {
           <div class="faq-item">
             <div class="faq-question">How do I resize a signature to 10KB-20KB with 140x60 pixels?</div>
             <div class="faq-answer">
-              Select our specialized 140x60 Pixel Signature Resizer. The tool sets your canvas to the exact $140 \times 60$ pixel aspect ratio, adjusts contrast to keep the ink strokes sharp against a pure white background, and compresses the final file to fit between 10KB and 20KB for banking (IBPS/SBI) and government forms.
+              Select our specialized 140x60 Pixel Signature Resizer. The tool sets your canvas to the exact 140 x 60 pixel aspect ratio, adjusts contrast to keep the ink strokes sharp against a pure white background, and compresses the final file to fit between 10KB and 20KB for banking (IBPS/SBI) and government forms.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">Why does CONVERTkb run without uploading files?</div>
+            <div class="faq-answer">
+              Modern web browsers support HTML5 Canvas and WebAssembly, enabling native binary file compilation directly in device memory. By avoiding external server uploads, CONVERTkb delivers immediate results, works offline, and guarantees complete privacy for all personal and legal documents.
             </div>
           </div>
         </div>
@@ -1377,10 +1393,10 @@ const schemaData = {
     </section>
   </main>
 
-  <!-- ==================== ADSENSE-COMPLIANT FOOTER ==================== -->
+  <!-- ==================== STREAMLINED ADSENSE FOOTER ==================== -->
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-grid">
+      <div class="footer-top">
         
         <div class="footer-brand">
           <h3>CONVERT<span>kb</span></h3>
@@ -1390,74 +1406,41 @@ const schemaData = {
           <p>
             Engineered with privacy-first client-side architecture. No files or personal identity assets are stored, logged, or uploaded to external servers.
           </p>
-          <p>&copy; 2026 CONVERTkb.com. All rights reserved.</p>
         </div>
 
         <div class="footer-col">
-          <h4>Image & DPI Sizers</h4>
+          <h4>Popular Tools</h4>
           <ul>
-            <li><a href="/compress-image-to-10kb/">Compress to 10KB</a></li>
-            <li><a href="/compress-image-to-20kb/">Compress to 20KB</a></li>
-            <li><a href="/compress-image-to-50kb/">Compress to 50KB</a></li>
-            <li><a href="/compress-image-to-100kb/">Compress to 100KB</a></li>
-            <li><a href="/change-dpi-to-200/">Change DPI to 200</a></li>
-            <li><a href="/convert-image-to-300-dpi/">Convert to 300 DPI</a></li>
-            <li><a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo 50KB</a></li>
-            <li><a href="/image-kb-reducer/">Image KB Reducer</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>PDF & Formats</h4>
-          <ul>
-            <li><a href="/compress-pdf-to-50kb/">Compress PDF to 50KB</a></li>
+            <li><a href="/compress-image-to-20kb/">Compress Image to 20KB</a></li>
+            <li><a href="/compress-image-to-50kb/">Compress Image to 50KB</a></li>
             <li><a href="/compress-pdf-to-100kb/">Compress PDF to 100KB</a></li>
-            <li><a href="/compress-pdf-to-200kb/">Compress PDF to 200KB</a></li>
-            <li><a href="/compress-jpg-to-50kb/">Compress JPG to 50KB</a></li>
-            <li><a href="/compress-jpeg-to-20kb/">Compress JPEG to 20KB</a></li>
-            <li><a href="/compress-png-to-50kb/">Compress PNG to 50KB</a></li>
-            <li><a href="/convert-heic-to-jpg-50kb/">HEIC to JPG 50KB</a></li>
-            <li><a href="/compress-tiff-to-100kb/">Compress TIFF to 100KB</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Exams & Passports</h4>
-          <ul>
             <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo Resizer</a></li>
-            <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo (20-300KB)</a></li>
-            <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo & Sign</a></li>
-            <li><a href="/signature-compressor-20kb/">Signature to 20KB</a></li>
-            <li><a href="/passport-photo-size-in-kb/">Passport Photo Size</a></li>
-            <li><a href="/pan-card-photo-resize-in-kb/">PAN Card Photo Resizer</a></li>
-            <li><a href="/pan-card-signature-resize-in-kb/">PAN Card Sign Resizer</a></li>
-            <li><a href="/us-visa-photo-2x2-inches/">US Visa 2x2" (240KB)</a></li>
+            <li><a href="/change-dpi-to-200/">Change Image DPI to 200</a></li>
+            <li><a href="/kb-to-mb/">KB to MB Calculator</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>Company & Trust</h4>
+          <h4>Company &amp; Legal</h4>
           <ul>
             <li><a href="/about-us/">About Us</a></li>
             <li><a href="/contact-us/">Contact Us</a></li>
             <li><a href="/privacy-policy/">Privacy Policy</a></li>
             <li><a href="/terms-of-service/">Terms of Service</a></li>
             <li><a href="/disclaimer/">Disclaimer</a></li>
-            <li><a href="/kb-to-mb/">KB to MB Calculator</a></li>
-            <li><a href="/mb-to-kb/">MB to KB Calculator</a></li>
           </ul>
         </div>
 
       </div>
 
       <div class="footer-bottom">
-        <p>Client-side binary processing. All transformations run locally in browser memory.</p>
+        <p>&copy; 2026 CONVERTkb.com. All processing runs locally in browser memory.</p>
         <div class="legal-nav">
+          <a href="/about-us/">About Us</a>
+          <a href="/contact-us/">Contact Us</a>
           <a href="/privacy-policy/">Privacy Policy</a>
           <a href="/terms-of-service/">Terms of Service</a>
           <a href="/disclaimer/">Disclaimer</a>
-          <a href="/contact-us/">Contact Us</a>
-          <a href="/about-us/">About Us</a>
         </div>
       </div>
     </div>
