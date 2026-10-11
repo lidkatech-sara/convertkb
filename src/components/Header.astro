@@ -4,83 +4,80 @@ import { SITE_TITLE } from '../consts';
 ---
 
 <header>
-	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
-		<div class="internal-links">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
-		</div>
-		<div class="social-links">
-			<a href="https://m.webtoo.ls/@astro" target="_blank">
-				<span class="sr-only">Follow Astro on Mastodon</span>
-				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
-					><path
-						fill="currentColor"
-						d="M11.19 12.195c2.016-.24 3.77-1.475 3.99-2.603.348-1.778.32-4.339.32-4.339 0-3.47-2.286-4.488-2.286-4.488C12.062.238 10.083.017 8.027 0h-.05C5.92.017 3.942.238 2.79.765c0 0-2.285 1.017-2.2[...]
-					></path></svg
-				>
-			</a>
-			<a href="https://twitter.com/astrodotbuild" target="_blank">
-				<span class="sr-only">Follow Astro on Twitter</span>
-				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
-					><path
-						fill="currentColor"
-						d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.2[...]
-					></path></svg
-				>
-			</a>
-			<a href="https://github.com/withastro/astro" target="_blank">
-				<span class="sr-only">Go to Astro's GitHub repo</span>
-				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
-					><path
-						fill="currentColor"
-						d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.[...]
-					></path></svg
-				>
-			</a>
-		</div>
-	</nav>
+  <nav>
+    <h2><a href="/">{SITE_TITLE}</a></h2>
+    <div class="internal-links">
+      <HeaderLink href="/">Home</HeaderLink>
+      <HeaderLink href="/blog">Blog</HeaderLink>
+      <HeaderLink href="/about">About</HeaderLink>
+    </div>
+    <div class="social-links">
+      <a href="https://m.webtoo.ls/@astro" target="_blank">
+        <span class="sr-only">Follow Astro on Mastodon</span>
+        <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32">
+          <path fill="currentColor" d="M11.19 12.195c2.016-.24 3.77-1.475 3.99-2.603.348-1.778.32-4.339.32-4.339 0-3.47-2.286-4.488-2.286-4.488C12.062.238 10.083.017 8.027 0h-.05C5.92.017 3.942.238 2.79.765c0 0-2.285 1.017-2.285 1.017C2.323 1.9 2.07 2.65 2.07 2.65c0 0-.164 1.5-.164 1.5C1.906 5.06 2.24 5.774 2.24 5.774c0 0 1.314 1.69 1.314 1.69.18.227.414.42.697.577.51.29 1.107.447 1.72.468.563.02 1.13-.03 1.665-.19.55-.16 1.66-.918 1.66-.918l-.08-.12.38.048c.932-.005 1.77-.31 2.56-.87.37-.265.69-.58.96-.937.26-.342.465-.716.596-1.12.13-.405.196-.836.196-1.27 0-.434-.066-.865-.196-1.27-.131-.404-.335-.778-.596-1.12-.27-.357-.59-.672-.96-.937-.79-.56-1.628-.865-2.56-.87H11.19Z"/>
+        </svg>
+      </a>
+      <a href="https://twitter.com/astrodotbuild" target="_blank">
+        <span class="sr-only">Follow Astro on Twitter</span>
+        <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32">
+          <path fill="currentColor" d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 8.06 5.333c0-.14.006-.28.02-.42A9.326 9.326 0 0 1 1.36 2.75a3.328 3.328 0 0 0 1.02 4.445A3.234 3.234 0 0 1 .64 6.58v.04c0 1.547.96 2.81 2.24 3.1A3.19 3.19 0 0 1 2.08 9.9a3.3 3.3 0 0 0 3.08 2.292A6.611 6.611 0 0 1 0 13.4 9.289 9.289 0 0 0 5.026 15Z"/>
+        </svg>
+      </a>
+      <a href="https://github.com/withastro/astro" target="_blank">
+        <span class="sr-only">Go to Astro's GitHub repo</span>
+        <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32">
+          <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.42.18 1.74.82 2.72 1.47.8.76 1.57 1.26 2.37 1.26.8 0 1.13-.5 1.13-.5s0-1.5.02-2.92c0-1.98-.7-3.03-1.56-3.64.48-.12 1.04-.35 1.22-.84.34-.96.14-1.9-.38-2.4-.5-.47-1.34-.65-2.1-.51-.51.09-.97.34-1.35.71-.16-.09-.34-.15-.53-.2-.4-.09-.9-.14-1.34-.14-.44 0-.94.05-1.34.14-.19.05-.36.11-.53.2-.38-.37-.84-.62-1.35-.71-.76-.14-1.6.04-2.1.51-.52.5-.72 1.44-.38 2.4.18.49.74.72 1.22.84-.86.61-1.56 1.66-1.56 3.64 0 1.42.01 2.92.01 2.92s.32.5 1.13.5c.81 0 1.57-.5 2.37-1.26.99-.65 2.31-1.29 2.72-1.47.15-.24.57-.82 1.23-.82.63 0 .77.38.77.38.24.8.22 1.63.22 1.63v2.64c0 .21.15.31.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+        </svg>
+      </a>
+    </div>
+  </nav>
 </header>
 
 <style>
-	header {
-		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-	}
+  header {
+    margin: 0;
+    padding: 0 1em;
+    background: white;
+    box-shadow: 0 2px 8px rgba(var(--black), 5%);
+  }
 
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-	}
-	nav {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
-	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
-	}
-	.social-links,
-	.social-links a {
-		display: flex;
-	}
-	@media (max-width: 720px) {
-		.social-links {
-			display: none;
-		}
-	}
+  h2 {
+    margin: 0;
+    font-size: 1em;
+  }
+
+  h2 a,
+  h2 a.active {
+    text-decoration: none;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  nav a {
+    padding: 1em 0.5em;
+    color: var(--black);
+    border-bottom: 4px solid transparent;
+    text-decoration: none;
+  }
+
+  nav a.active {
+    text-decoration: none;
+    border-bottom-color: var(--accent);
+  }
+
+  .social-links,
+  .social-links a {
+    display: flex;
+  }
+
+  @media (max-width: 720px) {
+    .social-links {
+      display: none;
+    }
+  }
 </style>
