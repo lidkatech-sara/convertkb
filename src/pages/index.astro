@@ -183,35 +183,41 @@ const canonicalURL = "https://convertkb.com/";
         border-color: var(--primary);
       }
 
-      .mobile-nav-panel {
+      .mobile-nav-overlay {
         display: none;
         position: fixed;
-        top: 72px;
+        top: 0;
         left: 0;
         right: 0;
         bottom: 0;
         background: rgba(0,0,0,0.5);
         z-index: 40;
-        animation: fadeIn 0.3s ease;
+        opacity: 0;
+        transition: opacity 0.3s ease;
       }
 
-      .mobile-nav-panel.is-open { display: block; }
+      .mobile-nav-overlay.is-open {
+        display: block;
+        opacity: 1;
+      }
 
-      .mobile-nav-content {
+      .mobile-nav-panel {
+        display: none;
         position: fixed;
         top: 72px;
         left: 0;
-        width: 100%;
-        max-width: 100%;
-        max-height: calc(100vh - 72px);
+        width: min(100%, 360px);
+        height: calc(100vh - 72px);
         background: #fff;
         overflow-y: auto;
+        z-index: 41;
         transform: translateX(-100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 41;
+        box-shadow: var(--shadow-md);
       }
 
-      .mobile-nav-panel.is-open .mobile-nav-content {
+      .mobile-nav-panel.is-open {
+        display: block;
         transform: translateX(0);
       }
 
@@ -227,7 +233,9 @@ const canonicalURL = "https://convertkb.com/";
 
       .mobile-nav-item > a,
       .mobile-nav-submenu-toggle {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         text-decoration: none;
         font-weight: 600;
         color: var(--text-main);
@@ -238,7 +246,7 @@ const canonicalURL = "https://convertkb.com/";
         text-align: left;
         cursor: pointer;
         font-size: 1rem;
-        transition: background 0.2s ease;
+        transition: all 0.2s ease;
       }
 
       .mobile-nav-item > a:active,
@@ -247,11 +255,16 @@ const canonicalURL = "https://convertkb.com/";
         color: var(--primary);
       }
 
+      .mobile-nav-submenu-toggle {
+        padding: 16px 18px;
+      }
+
       .mobile-nav-submenu-toggle::after {
         content: "›";
-        float: right;
-        font-size: 1.3rem;
-        transition: transform 0.3s ease;
+        font-size: 1.4rem;
+        font-weight: 300;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-left: auto;
       }
 
       .mobile-nav-submenu-toggle.expanded::after {
@@ -259,24 +272,22 @@ const canonicalURL = "https://convertkb.com/";
       }
 
       .mobile-nav-submenu {
-        display: none;
-        background: #f8fafc;
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.3s ease;
+        background: #f8fafc;
+        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       .mobile-nav-submenu.is-open {
-        display: block;
-        max-height: 500px;
+        max-height: 1000px;
       }
 
       .mobile-nav-submenu a {
         display: block;
         text-decoration: none;
         color: var(--text-muted);
-        padding: 12px 18px 12px 36px;
-        border-bottom: 1px solid var(--border);
+        padding: 12px 18px 12px 40px;
+        border-bottom: 1px solid #e8ecf1;
         font-weight: 500;
         font-size: 0.95rem;
         transition: all 0.2s ease;
@@ -285,11 +296,7 @@ const canonicalURL = "https://convertkb.com/";
       .mobile-nav-submenu a:active {
         background: var(--primary-light);
         color: var(--primary);
-      }
-
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        font-weight: 600;
       }
 
       .hero {
@@ -564,7 +571,7 @@ const canonicalURL = "https://convertkb.com/";
         }
 
         .mobile-nav-submenu a {
-          padding: 14px 18px 14px 40px;
+          padding: 14px 18px 14px 44px;
           font-size: 1rem;
         }
       }
@@ -711,81 +718,80 @@ const canonicalURL = "https://convertkb.com/";
         </div>
       </div>
 
+      <div class="mobile-nav-overlay" id="mobile-overlay"></div>
       <div class="mobile-nav-panel" id="mobile-menu">
-        <div class="mobile-nav-content">
-          <nav aria-label="Mobile navigation">
-            <ul class="mobile-nav-list">
-              <li class="mobile-nav-item">
-                <button class="mobile-nav-submenu-toggle" data-menu="image">Image</button>
-                <div class="mobile-nav-submenu" id="image-submenu">
-                  <a href="/compress-image-to-20kb/">Compress to 20KB</a>
-                  <a href="/compress-image-to-50kb/">Compress to 50KB</a>
-                  <a href="/compress-image-to-100kb/">Compress to 100KB</a>
-                  <a href="/compress-image-to-200kb/">Compress to 200KB</a>
-                  <a href="/change-dpi-to-200/">Change DPI to 200</a>
-                  <a href="/convert-image-to-300-dpi/">Convert to 300 DPI</a>
-                  <a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo</a>
-                  <a href="/image/">View All Image Tools</a>
-                </div>
-              </li>
+        <nav aria-label="Mobile navigation">
+          <ul class="mobile-nav-list">
+            <li class="mobile-nav-item">
+              <button class="mobile-nav-submenu-toggle" data-submenu="image">Image</button>
+              <div class="mobile-nav-submenu" id="image">
+                <a href="/compress-image-to-20kb/">Compress to 20KB</a>
+                <a href="/compress-image-to-50kb/">Compress to 50KB</a>
+                <a href="/compress-image-to-100kb/">Compress to 100KB</a>
+                <a href="/compress-image-to-200kb/">Compress to 200KB</a>
+                <a href="/change-dpi-to-200/">Change DPI to 200</a>
+                <a href="/convert-image-to-300-dpi/">Convert to 300 DPI</a>
+                <a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo</a>
+                <a href="/image/">View All Image Tools</a>
+              </div>
+            </li>
 
-              <li class="mobile-nav-item">
-                <button class="mobile-nav-submenu-toggle" data-menu="pdf">PDF</button>
-                <div class="mobile-nav-submenu" id="pdf-submenu">
-                  <a href="/compress-pdf-to-50kb/">Compress to 50KB</a>
-                  <a href="/compress-pdf-to-100kb/">Compress to 100KB</a>
-                  <a href="/compress-pdf-to-200kb/">Compress to 200KB</a>
-                  <a href="/compress-pdf-to-500kb/">Compress to 500KB</a>
-                  <a href="/merge-compress-pdf-200kb/">Merge & Compress</a>
-                  <a href="/pdf-300-dpi-converter/">PDF 300 DPI</a>
-                  <a href="/pdf/">View All PDF Tools</a>
-                </div>
-              </li>
+            <li class="mobile-nav-item">
+              <button class="mobile-nav-submenu-toggle" data-submenu="pdf">PDF</button>
+              <div class="mobile-nav-submenu" id="pdf">
+                <a href="/compress-pdf-to-50kb/">Compress to 50KB</a>
+                <a href="/compress-pdf-to-100kb/">Compress to 100KB</a>
+                <a href="/compress-pdf-to-200kb/">Compress to 200KB</a>
+                <a href="/compress-pdf-to-500kb/">Compress to 500KB</a>
+                <a href="/merge-compress-pdf-200kb/">Merge & Compress</a>
+                <a href="/pdf-300-dpi-converter/">PDF 300 DPI</a>
+                <a href="/pdf/">View All PDF Tools</a>
+              </div>
+            </li>
 
-              <li class="mobile-nav-item">
-                <button class="mobile-nav-submenu-toggle" data-menu="formats">Formats</button>
-                <div class="mobile-nav-submenu" id="formats-submenu">
-                  <a href="/compress-jpg-to-50kb/">Compress JPG</a>
-                  <a href="/compress-jpeg-to-20kb/">Compress JPEG</a>
-                  <a href="/compress-png-to-50kb/">Compress PNG</a>
-                  <a href="/compress-webp-to-50kb/">Compress WebP</a>
-                  <a href="/compress-transparent-png-50kb/">Transparent PNG</a>
-                  <a href="/convert-heic-to-jpg-50kb/">HEIC to JPG</a>
-                  <a href="/compress-tiff-to-100kb/">TIFF to 100KB</a>
-                  <a href="/image-formats/">View All Formats</a>
-                </div>
-              </li>
+            <li class="mobile-nav-item">
+              <button class="mobile-nav-submenu-toggle" data-submenu="formats">Formats</button>
+              <div class="mobile-nav-submenu" id="formats">
+                <a href="/compress-jpg-to-50kb/">Compress JPG</a>
+                <a href="/compress-jpeg-to-20kb/">Compress JPEG</a>
+                <a href="/compress-png-to-50kb/">Compress PNG</a>
+                <a href="/compress-webp-to-50kb/">Compress WebP</a>
+                <a href="/compress-transparent-png-50kb/">Transparent PNG</a>
+                <a href="/convert-heic-to-jpg-50kb/">HEIC to JPG</a>
+                <a href="/compress-tiff-to-100kb/">TIFF to 100KB</a>
+                <a href="/image-formats/">View All Formats</a>
+              </div>
+            </li>
 
-              <li class="mobile-nav-item">
-                <button class="mobile-nav-submenu-toggle" data-menu="exams">Exams & Recruitment</button>
-                <div class="mobile-nav-submenu" id="exams-submenu">
-                  <a href="/ssc-photo-and-signature-resizer/">SSC Photo & Signature</a>
-                  <a href="/upsc-photo-resize-in-kb/">UPSC Photo Resize</a>
-                  <a href="/gate-photo-size-in-kb/">GATE Photo & Sign</a>
-                  <a href="/neet-photo-resize-in-kb/">NEET Photo Resize</a>
-                  <a href="/tnpsc-photo-signature-resizer/">TNPSC Photo & Sign</a>
-                  <a href="/bpsc-photo-resize-in-kb/">BPSC Photo Resize</a>
-                  <a href="/signature-compressor-20kb/">Signature Compressor</a>
-                  <a href="/exams/">View All Exam Tools</a>
-                </div>
-              </li>
+            <li class="mobile-nav-item">
+              <button class="mobile-nav-submenu-toggle" data-submenu="exams">Exams & Recruitment</button>
+              <div class="mobile-nav-submenu" id="exams">
+                <a href="/ssc-photo-and-signature-resizer/">SSC Photo & Signature</a>
+                <a href="/upsc-photo-resize-in-kb/">UPSC Photo Resize</a>
+                <a href="/gate-photo-size-in-kb/">GATE Photo & Sign</a>
+                <a href="/neet-photo-resize-in-kb/">NEET Photo Resize</a>
+                <a href="/tnpsc-photo-signature-resizer/">TNPSC Photo & Sign</a>
+                <a href="/bpsc-photo-resize-in-kb/">BPSC Photo Resize</a>
+                <a href="/signature-compressor-20kb/">Signature Compressor</a>
+                <a href="/exams/">View All Exam Tools</a>
+              </div>
+            </li>
 
-              <li class="mobile-nav-item">
-                <button class="mobile-nav-submenu-toggle" data-menu="tools">ID Tools & Units</button>
-                <div class="mobile-nav-submenu" id="tools-submenu">
-                  <a href="/convert-photo-to-passport-size-50kb/">Passport Photo 50KB</a>
-                  <a href="/passport-photo-3-5-x-4-5-cm/">Passport Photo 3.5x4.5cm</a>
-                  <a href="/pan-card-photo-resize-in-kb/">PAN Card Photo</a>
-                  <a href="/us-visa-photo-2x2-inches/">US Visa Photo</a>
-                  <a href="/aadhaar-card-photo-resize-in-kb/">Aadhaar Card Photo</a>
-                  <a href="/kb-to-mb/">KB to MB Calculator</a>
-                  <a href="/mb-to-kb/">MB to KB Calculator</a>
-                  <a href="/tools/">View All Tools</a>
-                </div>
-              </li>
-            </ul>
-          </nav>
-        </div>
+            <li class="mobile-nav-item">
+              <button class="mobile-nav-submenu-toggle" data-submenu="tools">ID Tools & Units</button>
+              <div class="mobile-nav-submenu" id="tools">
+                <a href="/convert-photo-to-passport-size-50kb/">Passport Photo 50KB</a>
+                <a href="/passport-photo-3-5-x-4-5-cm/">Passport Photo 3.5x4.5cm</a>
+                <a href="/pan-card-photo-resize-in-kb/">PAN Card Photo</a>
+                <a href="/us-visa-photo-2x2-inches/">US Visa Photo</a>
+                <a href="/aadhaar-card-photo-resize-in-kb/">Aadhaar Card Photo</a>
+                <a href="/kb-to-mb/">KB to MB Calculator</a>
+                <a href="/mb-to-kb/">MB to KB Calculator</a>
+                <a href="/tools/">View All Tools</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
 
@@ -1045,62 +1051,75 @@ const canonicalURL = "https://convertkb.com/";
     <script>
       const menuBtn = document.getElementById('menuBtn');
       const mobileMenu = document.getElementById('mobile-menu');
+      const mobileOverlay = document.getElementById('mobile-overlay');
       const submenuToggles = document.querySelectorAll('.mobile-nav-submenu-toggle');
-      const mobileNavPanel = document.querySelector('.mobile-nav-panel');
 
-      // Menu toggle
-      if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', () => {
-          const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
-          menuBtn.setAttribute('aria-expanded', String(!isOpen));
-          menuBtn.classList.toggle('open', !isOpen);
-          mobileMenu.classList.toggle('is-open', !isOpen);
-        });
+      // Toggle menu on hamburger click
+      menuBtn.addEventListener('click', () => {
+        const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
+        toggleMenu(!isOpen);
+      });
+
+      // Close menu when clicking overlay
+      mobileOverlay.addEventListener('click', () => {
+        toggleMenu(false);
+      });
+
+      function toggleMenu(shouldOpen) {
+        menuBtn.setAttribute('aria-expanded', String(shouldOpen));
+        menuBtn.classList.toggle('open', shouldOpen);
+        mobileMenu.classList.toggle('is-open', shouldOpen);
+        mobileOverlay.classList.toggle('is-open', shouldOpen);
+
+        if (shouldOpen) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+          // Close all submenus when closing main menu
+          submenuToggles.forEach(toggle => {
+            toggle.classList.remove('expanded');
+          });
+          document.querySelectorAll('.mobile-nav-submenu').forEach(menu => {
+            menu.classList.remove('is-open');
+          });
+        }
       }
 
-      // Close menu when clicking on the dark overlay
-      if (mobileNavPanel) {
-        mobileNavPanel.addEventListener('click', (e) => {
-          if (e.target === mobileNavPanel) {
-            menuBtn.setAttribute('aria-expanded', 'false');
-            menuBtn.classList.remove('open');
-            mobileMenu.classList.remove('is-open');
-          }
-        });
-      }
-
-      // Submenu toggles
+      // Handle submenu toggle
       submenuToggles.forEach(toggle => {
-        toggle.addEventListener('click', () => {
-          const menuId = toggle.getAttribute('data-menu');
-          const submenu = document.getElementById(menuId + '-submenu');
-          
-          if (submenu) {
-            const isOpen = submenu.classList.contains('is-open');
-            
-            // Close all other submenus
+        toggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          const submenuId = toggle.getAttribute('data-submenu');
+          const submenu = document.getElementById(submenuId);
+
+          if (!submenu) return;
+
+          const isOpen = submenu.classList.contains('is-open');
+
+          if (isOpen) {
+            // Close submenu
+            submenu.classList.remove('is-open');
+            toggle.classList.remove('expanded');
+          } else {
+            // Close other submenus
             document.querySelectorAll('.mobile-nav-submenu').forEach(menu => {
               menu.classList.remove('is-open');
             });
-            document.querySelectorAll('.mobile-nav-submenu-toggle').forEach(btn => {
+            submenuToggles.forEach(btn => {
               btn.classList.remove('expanded');
             });
 
-            // Toggle current submenu
-            if (!isOpen) {
-              submenu.classList.add('is-open');
-              toggle.classList.add('expanded');
-            }
+            // Open current submenu
+            submenu.classList.add('is-open');
+            toggle.classList.add('expanded');
           }
         });
       });
 
-      // Close menu when clicking a link
+      // Close menu when clicking a submenu link
       document.querySelectorAll('.mobile-nav-submenu a').forEach(link => {
         link.addEventListener('click', () => {
-          menuBtn.setAttribute('aria-expanded', 'false');
-          menuBtn.classList.remove('open');
-          mobileMenu.classList.remove('is-open');
+          toggleMenu(false);
         });
       });
     </script>
