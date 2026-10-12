@@ -1,160 +1,273 @@
 ---
-// Page Metadata & Configuration
-const title = "ConvertKB - Compress Images & PDFs to Exact KB";
-const description = "Calibrate photos, certificates, marksheet scans, and signatures to exact file boundaries (20KB, 50KB, 100KB) directly inside your web browser.";
+// Page Metadata & Canonical URLs
+const siteUrl = "https://convertkb.com";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
+const pageTitle = "ConvertKB — Compress Images & PDFs to Exact KB Online";
+const pageDescription = "Calibrate photos, certificates, signature scans, and documents to exact file targets (20KB, 50KB, 100KB, 200KB) and print-ready 200/300 DPI specifications 100% client-side.";
 
-const menuCategories = [
+// Unified Crawlable Directory Architecture
+const toolCategories = [
   {
-    id: "popular",
-    name: "Popular Sizes",
-    defaultOpen: true,
+    id: "popular-sizes",
+    name: "Popular Target Sizes",
+    description: "Targeted binary size compression engines for online portals.",
+    badge: "Most Used",
     items: [
-      { label: "Compress to 20KB", badge: "Exact", badgeColor: "bg-blue-50 text-blue-600", href: "/compress-to-20kb" },
-      { label: "Compress to 50KB", badge: "Exact", badgeColor: "bg-blue-50 text-blue-600", href: "/compress-to-50kb" },
-      { label: "Compress to 100KB", badge: "Max", badgeColor: "bg-blue-50 text-blue-600", href: "/compress-to-100kb" },
-      { label: "PDF to 100KB", badge: "PDF", badgeColor: "bg-red-50 text-red-600", href: "/pdf-to-100kb" },
+      { name: "Compress Image to 20KB", href: "/compress-image-to-20kb", tag: "Exact 20KB", tagStyle: "bg-blue-50 text-blue-700 border-blue-200" },
+      { name: "Compress Image to 50KB", href: "/compress-image-to-50kb", tag: "Exact 50KB", tagStyle: "bg-blue-50 text-blue-700 border-blue-200" },
+      { name: "Compress Image to 100KB", href: "/compress-image-to-100kb", tag: "Max 100KB", tagStyle: "bg-indigo-50 text-indigo-700 border-indigo-200" },
+      { name: "Compress Image to 200KB", href: "/compress-image-to-200kb", tag: "Standard", tagStyle: "bg-slate-100 text-slate-700 border-slate-200" },
+      { name: "Compress PDF to 100KB", href: "/compress-pdf-to-100kb", tag: "PDF Engine", tagStyle: "bg-rose-50 text-rose-700 border-rose-200" },
+      { name: "Compress PDF to 200KB", href: "/compress-pdf-to-200kb", tag: "PDF Engine", tagStyle: "bg-rose-50 text-rose-700 border-rose-200" }
     ]
   },
   {
-    id: "identity",
-    name: "Identity & Visas",
-    defaultOpen: true,
+    id: "identity-visas",
+    name: "Identity, Visas & Passports",
+    description: "Official biometric dimension and print resolution calibration.",
+    badge: "Official Specs",
     items: [
-      { label: "Passport Photo 50KB", badge: "3.5x4.5", badgeColor: "bg-purple-50 text-purple-600", href: "/passport-photo-50kb" },
-      { label: "US Visa 2x2\" (240KB)", badge: "DS-160", badgeColor: "bg-indigo-50 text-indigo-600", href: "/us-visa-photo" },
-      { label: "Change to 200 DPI", badge: "Print", badgeColor: "bg-emerald-50 text-emerald-600", href: "/change-to-200-dpi" },
-      { label: "Convert to 300 DPI", badge: "HD", badgeColor: "bg-emerald-50 text-emerald-600", href: "/convert-to-300-dpi" },
+      { name: "Passport Photo 50KB (3.5x4.5 cm)", href: "/passport-photo-size-50kb", tag: "35x45 mm", tagStyle: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+      { name: "US Visa Photo 2x2 Inch (240KB)", href: "/us-visa-photo-size", tag: "DS-160 Ready", tagStyle: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+      { name: "Schengen Visa Photo Resizer", href: "/schengen-visa-photo", tag: "EU Spec", tagStyle: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+      { name: "Convert Image to 200 DPI", href: "/convert-to-200-dpi", tag: "Print Standard", tagStyle: "bg-purple-50 text-purple-700 border-purple-200" },
+      { name: "Convert Image to 300 DPI", href: "/convert-to-300-dpi", tag: "HD Print", tagStyle: "bg-purple-50 text-purple-700 border-purple-200" }
     ]
   },
   {
-    id: "exams",
-    name: "Exams & Signatures",
-    defaultOpen: false,
+    id: "government-exams",
+    name: "Exams & Public Service Portals",
+    description: "Strict dimension, DPI, and file limits for recruitment portals.",
+    badge: "Govt Portals",
     items: [
-      { label: "SSC Photo & Sign", badge: "SSC CGL", badgeColor: "bg-amber-50 text-amber-700", href: "/ssc-photo-signature" },
-      { label: "UPSC Document Calibrator", badge: "UPSC", badgeColor: "bg-amber-50 text-amber-700", href: "/upsc-resizer" },
-      { label: "Signature Compress 10KB - 20KB", badge: "Sign", badgeColor: "bg-sky-50 text-sky-700", href: "/signature-compress" },
+      { name: "SSC CGL / CHSL Photo & Sign Resizer", href: "/ssc-photo-signature-resizer", tag: "SSC Standard", tagStyle: "bg-amber-50 text-amber-800 border-amber-200" },
+      { name: "UPSC Civil Services Photo & Document", href: "/upsc-photo-signature-resizer", tag: "UPSC Format", tagStyle: "bg-amber-50 text-amber-800 border-amber-200" },
+      { name: "Signature Resizer 10KB to 20KB", href: "/signature-resizer-10kb-20kb", tag: "Exact Sign", tagStyle: "bg-sky-50 text-sky-700 border-sky-200" },
+      { name: "IBPS / Banking Exam Photo Resizer", href: "/ibps-photo-signature-compressor", tag: "Banking Format", tagStyle: "bg-amber-50 text-amber-800 border-amber-200" }
+    ]
+  },
+  {
+    id: "format-converters",
+    name: "Encoders & Converters",
+    description: "Next-gen web encoders and document conversions with zero quality loss.",
+    badge: "High Speed",
+    items: [
+      { name: "JPG to WebP Compressor", href: "/jpg-to-webp-compressor", tag: "WebP Ultra", tagStyle: "bg-cyan-50 text-cyan-700 border-cyan-200" },
+      { name: "PNG to JPG 50KB Calibrator", href: "/png-to-jpg-50kb", tag: "Color Balance", tagStyle: "bg-cyan-50 text-cyan-700 border-cyan-200" },
+      { name: "HEIC to JPG Converter", href: "/heic-to-jpg", tag: "Apple HEIC", tagStyle: "bg-slate-100 text-slate-700 border-slate-200" },
+      { name: "Image to PDF Multi-Page Merger", href: "/image-to-pdf-merger", tag: "Batch PDF", tagStyle: "bg-rose-50 text-rose-700 border-rose-200" }
     ]
   }
 ];
+
+const faqs = [
+  {
+    question: "How does ConvertKB hit exact KB boundaries (like exactly 20KB or 50KB)?",
+    answer: "Unlike typical lossy tools that apply a static compression slider, ConvertKB executes an in-browser binary search iteration over WebAssembly/Canvas encoding matrixes. It calculates the resulting byte count directly in memory until the target file boundary is achieved without exceeding limits."
+  },
+  {
+    question: "Are my photos, certificates, or signature uploads saved to a server?",
+    answer: "No. All calibration, DPI adjustment, and compression logic is executed 100% client-side via JavaScript and HTML5 Canvas API inside your browser. No files are ever uploaded or transmitted across an external network."
+  },
+  {
+    question: "Does reducing image file size remove DPI resolution?",
+    answer: "No. You can explicitly calibrate your DPI (e.g., 200 DPI or 300 DPI) while compressing file bytes. Our engine embeds proper EXIF and JFIF metadata density headers so government validators accept your file."
+  }
+];
+
+// Structured Data (JSON-LD)
+const schemaWebApplication = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "ConvertKB",
+  "url": siteUrl,
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript. Requires HTML5 Canvas.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": pageDescription
+};
+
+const schemaFaq = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+};
 ---
 
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+  <!-- Essential Meta Tags -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>{title}</title>
-  <meta name="description" content={description} />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <link rel="canonical" href={canonicalURL} />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="theme-color" content="#2563eb" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:site_name" content="ConvertKB" />
+  <meta property="og:image" content={`${siteUrl}/og-image.jpg`} />
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={pageDescription} />
+  <meta name="twitter:image" content={`${siteUrl}/og-image.jpg`} />
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Structured Data JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(schemaWebApplication)} />
+  <script type="application/ld+json" set:html={JSON.stringify(schemaFaq)} />
+
   <style>
-    /* Prevent accidental horizontal page shifting */
+    /* Strict viewport overflow lock to prevent horizontal scroll bars */
     html, body {
       overflow-x: hidden;
       width: 100%;
+      position: relative;
+    }
+    
+    /* Smooth transitions for submenu accordions */
+    .accordion-content {
+      transition: max-height 0.25s cubic-bezier(0, 1, 0, 1);
+    }
+    .accordion-content.collapsed {
+      max-height: 0;
+      overflow: hidden;
+    }
+    .accordion-content.expanded {
+      max-height: 600px;
+      transition: max-height 0.3s ease-in-out;
     }
   </style>
 </head>
 
-<body class="bg-slate-50 text-slate-900 antialiased font-sans selection:bg-blue-600 selection:text-white min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
 
-  <!-- ==================== TOP NAVIGATION ==================== -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+  <!-- ======================== NAVIGATION HEADER ======================== -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-2 text-xl font-extrabold tracking-tight text-slate-900">
-        <span class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-black text-sm shadow-sm">
+      <a href="/" class="flex items-center gap-2.5 group focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-lg p-1">
+        <span class="w-9 h-9 rounded-xl bg-blue-600 text-white font-black text-base flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
           KB
         </span>
-        <span>Convert<span class="text-blue-600">KB</span></span>
+        <span class="text-xl font-black tracking-tight text-slate-900">
+          Convert<span class="text-blue-600">KB</span>
+        </span>
       </a>
 
-      <!-- Desktop Navigation Links -->
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-        <a href="#tools" class="hover:text-blue-600 transition">Tools</a>
-        <a href="#format-encoders" class="hover:text-blue-600 transition">Format Encoders</a>
-        <a href="#platforms" class="hover:text-blue-600 transition">Platforms</a>
-        <a href="#exam-presets" class="hover:text-blue-600 transition">Exam Presets</a>
+      <!-- Desktop Crawlable Navigation -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-600">
+        <a href="#popular-sizes" class="hover:text-blue-600 transition">Popular Sizes</a>
+        <a href="#identity-visas" class="hover:text-blue-600 transition">Visas & Passports</a>
+        <a href="#government-exams" class="hover:text-blue-600 transition">Exam Portals</a>
+        <a href="#format-converters" class="hover:text-blue-600 transition">Encoders</a>
+        <a href="#faqs" class="hover:text-blue-600 transition">FAQ</a>
       </nav>
 
-      <!-- Desktop CTA & Hamburger Button -->
+      <!-- Right Header Actions -->
       <div class="flex items-center gap-3">
-        <a href="#compressor" class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm transition">
-          Quick Compress
+        <a 
+          href="#interactive-compressor" 
+          class="hidden sm:inline-flex items-center px-4 py-2 text-xs font-bold uppercase tracking-wider text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm hover:shadow transition"
+        >
+          Compress Now
         </a>
 
-        <!-- Hamburger Toggle Button -->
+        <!-- Mobile Drawer Toggle Button -->
         <button
-          id="menu-open-btn"
+          id="mobile-menu-trigger"
           type="button"
-          aria-label="Open mobile navigation menu"
+          aria-label="Open directory menu"
           aria-expanded="false"
-          aria-controls="mobile-drawer"
-          class="p-2 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
+          aria-controls="mobile-side-drawer"
+          class="md:hidden p-2.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
       </div>
+
     </div>
   </header>
 
-  <!-- ==================== MOBILE MENU OVERLAY & DRAWER ==================== -->
+  <!-- ======================== MOBILE SLIDE-OUT DRAWER ======================== -->
   
-  <!-- Backdrop (Dim Background) -->
+  <!-- Backdrop Overlay -->
   <div 
-    id="menu-backdrop" 
-    class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out"
+    id="drawer-backdrop" 
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out"
     aria-hidden="true"
   ></div>
 
-  <!-- Slide-out Drawer -->
-  <aside 
-    id="mobile-drawer"
-    class="fixed top-0 right-0 bottom-0 z-50 w-full max-w-xs sm:max-w-sm bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-out"
-    aria-modal="true"
+  <!-- Side-Drawer Menu -->
+  <aside
+    id="mobile-side-drawer"
+    class="fixed top-0 right-0 bottom-0 z-50 w-[86vw] max-w-sm bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-in-out"
     role="dialog"
-    aria-label="Navigation Menu"
+    aria-modal="true"
+    aria-label="Mobile Navigation"
   >
     <!-- Drawer Header -->
-    <div class="h-16 px-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/60">
+    <div class="h-16 px-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
       <div class="flex items-center gap-2">
-        <span class="w-7 h-7 rounded-md bg-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+        <span class="w-8 h-8 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center">
           KB
         </span>
-        <span class="font-bold text-slate-900 tracking-tight">Convert<span class="text-blue-600">KB</span></span>
+        <span class="font-extrabold text-slate-900">Convert<span class="text-blue-600">KB</span></span>
       </div>
-      
-      <!-- Close Button -->
-      <button 
-        id="menu-close-btn"
+      <button
+        id="drawer-close-btn"
         type="button"
-        aria-label="Close menu"
-        class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 rounded-lg transition"
+        aria-label="Close directory menu"
+        class="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 rounded-lg transition"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
 
-    <!-- Scrollable Drawer Body (Sub-menu Accordions) -->
-    <div class="flex-1 overflow-y-auto px-4 py-4 divide-y divide-slate-100 space-y-4">
-      {menuCategories.map((cat) => (
-        <div class="pt-3 first:pt-0 group">
-          <!-- Accordion Header Button -->
+    <!-- Scrollable Sub-Menu Accordion Body -->
+    <nav class="flex-1 overflow-y-auto px-4 py-4 divide-y divide-slate-100 space-y-4">
+      {toolCategories.map((cat, idx) => (
+        <div class="pt-3 first:pt-0">
+          <!-- Accordion Toggle Button -->
           <button
             type="button"
-            class="submenu-toggle w-full flex items-center justify-between py-2 text-left text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition"
-            aria-expanded={cat.defaultOpen ? "true" : "false"}
-            data-target={`submenu-${cat.id}`}
+            class="accordion-trigger w-full flex items-center justify-between py-2 text-left font-bold text-xs uppercase tracking-wider text-slate-500 hover:text-blue-600 transition"
+            aria-expanded={idx === 0 ? "true" : "false"}
+            data-target={`drawer-sub-${cat.id}`}
           >
-            <span>{cat.name}</span>
+            <span class="flex items-center gap-2">
+              {cat.name}
+            </span>
             <svg 
-              class={`w-4 h-4 transition-transform duration-200 text-slate-400 ${cat.defaultOpen ? "rotate-180" : ""}`}
+              class={`w-4 h-4 text-slate-400 transition-transform duration-200 ${idx === 0 ? "rotate-180" : ""}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -163,193 +276,318 @@ const menuCategories = [
             </svg>
           </button>
 
-          <!-- Collapsible Sub-menu List -->
+          <!-- Collapsible Sub-menu Links -->
           <div 
-            id={`submenu-${cat.id}`} 
-            class={`submenu-content flex flex-col gap-1 mt-1 transition-all duration-200 overflow-hidden ${cat.defaultOpen ? "" : "hidden"}`}
+            id={`drawer-sub-${cat.id}`}
+            class={`accordion-content flex flex-col gap-1.5 mt-2 ${idx === 0 ? "expanded" : "collapsed"}`}
           >
-            {cat.items.map((item) => (
-              <a 
-                href={item.href}
-                class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition"
+            {cat.items.map((tool) => (
+              <a
+                href={tool.href}
+                class="mobile-nav-link flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-blue-700 hover:bg-blue-50/80 border border-transparent hover:border-blue-100 transition"
               >
-                <span>{item.label}</span>
-                <span class={`text-[11px] font-semibold px-2 py-0.5 rounded-md border border-slate-200/50 ${item.badgeColor}`}>
-                  {item.badge}
+                <span>{tool.name}</span>
+                <span class={`text-[10px] font-bold px-2 py-0.5 rounded border ${tool.tagStyle}`}>
+                  {tool.tag}
                 </span>
               </a>
             ))}
           </div>
         </div>
       ))}
-    </div>
+    </nav>
 
-    <!-- Drawer Footer Note -->
-    <div class="p-4 border-t border-slate-100 bg-slate-50 text-center">
-      <p class="text-xs text-slate-500 font-medium">
-        🔒 100% Client-Side. No server uploads.
-      </p>
+    <!-- Drawer Footer -->
+    <div class="p-4 border-t border-slate-100 bg-slate-50/80 text-center">
+      <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        Zero Server Uploads • Private
+      </div>
     </div>
   </aside>
 
-  <!-- ==================== MAIN HERO CONTENT ==================== -->
-  <main class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16 text-center">
-    
-    <!-- Verified Badge -->
-    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200/60 mb-6">
-      <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
-      Verified Client-Side Engine
-    </div>
+  <!-- ======================== MAIN CONTENT ======================== -->
+  <main class="flex-1">
 
-    <!-- Hero Title -->
-    <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-4">
-      Compress Images & PDFs to <span class="text-blue-600">Exact KB</span>
-    </h1>
-
-    <!-- Subtitle -->
-    <p class="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
-      Calibrate photos, certificates, marksheet scans, and signatures to exact file boundaries (20KB, 50KB, 100KB) and required 200/300 DPI specifications directly inside your web browser.
-    </p>
-
-    <!-- Key Guarantee Badges -->
-    <div class="flex flex-wrap items-center justify-center gap-2.5 text-xs font-medium text-slate-700 mb-8">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-200 shadow-2xs">
-        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
-        In-Browser Privacy
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-200 shadow-2xs">
-        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
-        Zero Network Delay
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-200 shadow-2xs">
-        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
-        Strict DPI Precision
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-200 shadow-2xs">
-        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
-        Free Forever
-      </span>
-    </div>
-
-    <!-- Search Bar -->
-    <div class="max-w-lg mx-auto relative mb-12">
-      <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
+    <!-- HERO SECTION -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-14 text-center">
+      
+      <!-- Micro Badge -->
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 mb-6">
+        <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+        Verified Client-Side Binary Engine
       </div>
-      <input
-        type="search"
-        placeholder="Search tools: 20kb, youtube 2mb, discord..."
-        class="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl shadow-xs text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
-      />
-    </div>
 
-    <!-- Application Sizing & Document Section -->
-    <section class="text-left mt-16 pt-12 border-t border-slate-200">
-      <div class="text-center mb-8">
-        <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">
+      <!-- Main SEO H1 Heading -->
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.15] mb-5">
+        Compress Images & PDFs to <span class="text-blue-600 inline-block">Exact KB</span>
+      </h1>
+
+      <!-- Description Subtitle -->
+      <p class="text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed mb-8">
+        Calibrate photos, certificates, marksheet scans, and signatures to precise file size constraints (20KB, 50KB, 100KB) and required 200/300 DPI specifications directly inside your web browser.
+      </p>
+
+      <!-- Trust Badges -->
+      <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-semibold text-slate-700 mb-10">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 shadow-2xs">
+          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
+          In-Browser Privacy
+        </span>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 shadow-2xs">
+          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
+          Zero Network Delay
+        </span>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 shadow-2xs">
+          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
+          Strict DPI Precision
+        </span>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 shadow-2xs">
+          <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
+          Free Forever
+        </span>
+      </div>
+
+      <!-- Real-time Filter & Search Input -->
+      <div class="max-w-xl mx-auto relative mb-6">
+        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <input
+          id="tool-search-input"
+          type="search"
+          placeholder="Search tools: 20kb, 50kb, ssc photo, 300 dpi, pdf..."
+          class="w-full pl-10 pr-4 py-3.5 bg-white border border-slate-300 rounded-xl shadow-xs text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+        />
+      </div>
+      <p id="search-feedback" class="text-xs text-slate-400 hidden">Showing filtered results below.</p>
+    </section>
+
+    <!-- ======================== CRAWLABLE APPLICATION INDEX GRID ======================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t border-slate-200">
+      
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
           Application Sizing & Document Tools
         </h2>
-        <p class="text-sm text-slate-500 mt-1">
-          Every tool, preset, and format converter organized in a unified, crawlable index.
+        <p class="text-sm text-slate-500 mt-2">
+          Every preset, format encoder, and calibration engine indexed with clear crawlable anchor paths.
         </p>
       </div>
 
-      <!-- Card Component -->
-      <div class="max-w-md mx-auto bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-        <div class="flex items-center gap-3 mb-3">
-          <span class="px-2 py-1 text-xs font-bold bg-blue-100 text-blue-700 rounded">IMG</span>
-          <h3 class="text-lg font-bold text-slate-900">Image Compress</h3>
-        </div>
-        <p class="text-xs text-slate-500 mb-5 leading-relaxed">
-          Targeted compression algorithms calibrated for identity cards, profile pictures, and online admissions.
-        </p>
+      <!-- Categories Responsive Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        {toolCategories.map((category) => (
+          <article 
+            id={category.id} 
+            class="category-card bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
+          >
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                  {category.name}
+                </h3>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                  {category.badge}
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mb-5 leading-relaxed">
+                {category.description}
+              </p>
 
-        <div class="border-t border-slate-100 pt-3 space-y-2">
-          <div class="flex justify-between items-center text-xs font-semibold text-slate-400 uppercase tracking-wider pb-1">
-            <span>Target KB Sizes</span>
-            <span>Precision</span>
-          </div>
-          <div class="flex justify-between items-center text-sm py-1.5 border-b border-slate-50">
-            <span class="text-slate-700">Compress Image to 50KB</span>
-            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-600 border border-blue-100">Exact 50KB</span>
-          </div>
-          <div class="flex justify-between items-center text-sm py-1.5 border-b border-slate-50">
-            <span class="text-slate-700">Compress Image to 20KB</span>
-            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-600 border border-blue-100">Exact 20KB</span>
-          </div>
-          <div class="flex justify-between items-center text-sm py-1.5 border-b border-slate-50">
-            <span class="text-slate-700">Compress Image to 100KB</span>
-            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-100">Under 100KB</span>
-          </div>
-          <div class="flex justify-between items-center text-sm py-1.5">
-            <span class="text-slate-700">Compress Image to 200KB</span>
-            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600">Web Standard</span>
-          </div>
-        </div>
+              <!-- Crawlable Inner Links List -->
+              <ul class="space-y-2 border-t border-slate-100 pt-3">
+                {category.items.map((tool) => (
+                  <li class="tool-list-item">
+                    <a
+                      href={tool.href}
+                      class="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 text-slate-700 hover:text-blue-700 transition"
+                    >
+                      <span class="text-sm font-semibold group-hover:underline underline-offset-2">
+                        {tool.name}
+                      </span>
+                      <span class={`text-[11px] font-bold px-2 py-0.5 rounded border transition-colors ${tool.tagStyle}`}>
+                        {tool.tag}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div class="mt-4 pt-3 border-t border-slate-50 flex justify-end">
+              <a href={`#${category.id}`} class="text-xs font-semibold text-blue-600 hover:text-blue-800 transition">
+                Explore {category.name} &rarr;
+              </a>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
+
+    <!-- ======================== FAQ SECTION (CRAWLABLE SCHEMA) ======================== -->
+    <section id="faqs" class="max-w-4xl mx-auto px-4 sm:px-6 py-14 border-t border-slate-200">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          Frequently Asked Questions
+        </h2>
+        <p class="text-sm text-slate-500 mt-1">
+          Everything you need to know about exact byte compression and privacy.
+        </p>
+      </div>
+
+      <div class="space-y-4">
+        {faqs.map((faq) => (
+          <details class="group bg-white rounded-xl border border-slate-200 p-5 open:shadow-xs transition">
+            <summary class="flex justify-between items-center font-bold text-slate-800 cursor-pointer list-none text-sm sm:text-base">
+              <span>{faq.question}</span>
+              <span class="transition group-open:rotate-180 text-blue-600 ml-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+              </span>
+            </summary>
+            <p class="text-slate-600 text-sm mt-3 leading-relaxed border-t border-slate-100 pt-3">
+              {faq.answer}
+            </p>
+          </details>
+        ))}
+      </div>
+    </section>
+
   </main>
 
-  <!-- ==================== CLIENT JAVASCRIPT ==================== -->
+  <!-- ======================== FOOTER ======================== -->
+  <footer class="bg-white border-t border-slate-200 mt-auto py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500">
+      
+      <div class="flex items-center gap-2">
+        <span class="w-6 h-6 rounded-md bg-blue-600 text-white font-bold flex items-center justify-center text-xs">KB</span>
+        <span class="font-bold text-slate-800">ConvertKB.com</span>
+        <span>&copy; {new Date().getFullYear()} All rights reserved.</span>
+      </div>
+
+      <nav class="flex flex-wrap justify-center gap-6 font-medium">
+        <a href="/privacy-policy" class="hover:text-blue-600 transition">Privacy Policy</a>
+        <a href="/terms-of-service" class="hover:text-blue-600 transition">Terms of Service</a>
+        <a href="/sitemap.xml" class="hover:text-blue-600 transition">XML Sitemap</a>
+        <a href="#interactive-compressor" class="hover:text-blue-600 transition">Back to Top</a>
+      </nav>
+
+      <p class="text-slate-400 text-center md:text-right">
+        Secure in-browser WebAssembly calibration.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ======================== CLIENT JAVASCRIPT LOGIC ======================== -->
   <script is:inline>
-    (function initMenu() {
-      const openBtn = document.getElementById('menu-open-btn');
-      const closeBtn = document.getElementById('menu-close-btn');
-      const backdrop = document.getElementById('menu-backdrop');
-      const drawer = document.getElementById('mobile-drawer');
-      const submenuToggles = document.querySelectorAll('.submenu-toggle');
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Mobile Drawer Navigation Controller
+      const menuTrigger = document.getElementById('mobile-menu-trigger');
+      const drawerClose = document.getElementById('drawer-close-btn');
+      const backdrop = document.getElementById('drawer-backdrop');
+      const drawer = document.getElementById('mobile-side-drawer');
+      const navLinks = document.querySelectorAll('.mobile-nav-link');
 
       function openDrawer() {
         drawer.classList.remove('translate-x-full');
         backdrop.classList.remove('opacity-0', 'pointer-events-none');
         backdrop.classList.add('opacity-100', 'pointer-events-auto');
-        document.body.style.overflow = 'hidden';
-        openBtn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden'; // Lock background scrolling
+        menuTrigger.setAttribute('aria-expanded', 'true');
       }
 
       function closeDrawer() {
         drawer.classList.add('translate-x-full');
         backdrop.classList.remove('opacity-100', 'pointer-events-auto');
         backdrop.classList.add('opacity-0', 'pointer-events-none');
-        document.body.style.overflow = '';
-        openBtn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = ''; // Unlock scrolling
+        menuTrigger.setAttribute('aria-expanded', 'false');
       }
 
-      // Event Listeners for Open / Close
-      if (openBtn) openBtn.addEventListener('click', openDrawer);
-      if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+      if (menuTrigger) menuTrigger.addEventListener('click', openDrawer);
+      if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
       if (backdrop) backdrop.addEventListener('click', closeDrawer);
 
-      // Close on ESC key
+      // Close on clicking any sub link
+      navLinks.forEach(link => {
+        link.addEventListener('click', closeDrawer);
+      });
+
+      // Close on ESC key press
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !drawer.classList.contains('translate-x-full')) {
           closeDrawer();
         }
       });
 
-      // Sub-menu Accordion Toggle Handler
-      submenuToggles.forEach((button) => {
-        button.addEventListener('click', () => {
-          const targetId = button.getAttribute('data-target');
+      // 2. Mobile Drawer Sub-Menu Accordion Logic
+      const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+      accordionTriggers.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-target');
           const content = document.getElementById(targetId);
-          const icon = button.querySelector('svg');
-          const isExpanded = button.getAttribute('aria-expanded') === 'true';
+          const icon = btn.querySelector('svg');
+          const isExpanded = btn.getAttribute('aria-expanded') === 'true';
 
           if (isExpanded) {
-            content.classList.add('hidden');
-            button.setAttribute('aria-expanded', 'false');
+            content.classList.remove('expanded');
+            content.classList.add('collapsed');
+            btn.setAttribute('aria-expanded', 'false');
             if (icon) icon.classList.remove('rotate-180');
           } else {
-            content.classList.remove('hidden');
-            button.setAttribute('aria-expanded', 'true');
+            content.classList.remove('collapsed');
+            content.classList.add('expanded');
+            btn.setAttribute('aria-expanded', 'true');
             if (icon) icon.classList.add('rotate-180');
           }
         });
       });
-    })();
-  </script>
 
+      // 3. Fast Client-side Tool Filter (Instant Search)
+      const searchInput = document.getElementById('tool-search-input');
+      const toolItems = document.querySelectorAll('.tool-list-item');
+      const categoryCards = document.querySelectorAll('.category-card');
+      const feedback = document.getElementById('search-feedback');
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase().trim();
+
+          if (query === '') {
+            toolItems.forEach(el => el.classList.remove('hidden'));
+            categoryCards.forEach(card => card.classList.remove('hidden'));
+            feedback.classList.add('hidden');
+            return;
+          }
+
+          feedback.classList.remove('hidden');
+
+          categoryCards.forEach(card => {
+            const itemsInCard = card.querySelectorAll('.tool-list-item');
+            let hasVisibleMatch = false;
+
+            itemsInCard.forEach(item => {
+              const text = item.textContent.toLowerCase();
+              if (text.includes(query)) {
+                item.classList.remove('hidden');
+                hasVisibleMatch = true;
+              } else {
+                item.classList.add('hidden');
+              }
+            });
+
+            // If no child links match, hide the whole category card
+            if (hasVisibleMatch) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+        });
+      }
+    });
+  </script>
 </body>
 </html>
