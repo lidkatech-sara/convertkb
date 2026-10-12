@@ -1,7 +1,7 @@
 ---
 // src/pages/index.astro
-const pageTitle = "ConvertKB - Precision Image & PDF Compressor to Exact KB (Client-Side Web App)";
-const pageDescription = "Fast, web app utility to compress images, photos, signatures, and PDFs to exact KB sizes (20KB, 50KB, 100KB, 200KB) and 200/300 DPI. Worldwide portal presets for Passports, US Visas, Schengen, Social Media, SSC, UPSC, and Job Applications with zero server uploads.";
+const pageTitle = "Image & PDF Compressor Online | ConvertKB";
+const pageDescription = "Compress images and PDFs to a target file size, resize photos and signatures, and prepare files for online forms. Use free browser-based tools for JPG, PNG, WebP, PDF, KB, MB, and DPI tasks.";
 const canonicalURL = "https://convertkb.com/";
 
 const schemaData = {
@@ -13,79 +13,25 @@ const schemaData = {
       "url": "https://convertkb.com/",
       "name": "ConvertKB",
       "description": pageDescription,
-      "inLanguage": "en-US"
+      "inLanguage": "en"
     },
     {
       "@type": "WebApplication",
       "@id": "https://convertkb.com/#webapp",
       "url": "https://convertkb.com/",
-      "name": "ConvertKB Precision Image & Document Compressor",
+      "name": "ConvertKB Image and PDF Tools",
+      "description": pageDescription,
       "applicationCategory": "UtilitiesApplication",
-      "operatingSystem": "All",
-      "browserRequirements": "Requires JavaScript. Runs client-side on all modern web browsers.",
+      "operatingSystem": "Any",
+      "browserRequirements": "JavaScript enabled browser",
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "USD"
       }
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://convertkb.com/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How does ConvertKB compress images to an exact target KB without quality loss?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "ConvertKB uses client-side HTML5 Canvas and native WebAssembly binary search algorithms. Rather than applying a single arbitrary compression level, our engine runs a sub-second iterative search directly in your browser memory. It adjusts discrete cosine transform (DCT) coefficients, strips redundant metadata tags, and optimizes color lookup tables until your file precisely hits the required target (such as 20KB, 50KB, or 100KB) with minimal optical distortion."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Are my uploaded photos, ID cards, marksheet scans, or signatures stored on your servers?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Never. All image compression, DPI configuration, format conversion, and PDF optimization happen entirely on your local device memory using client-side JavaScript and HTML5 Canvas APIs. Zero byte payloads or metadata details are transmitted over the internet to any external server or third-party storage bucket."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do international passport, visa, and consular portals enforce file limits?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Consular portals such as the US Department of State CEAC, Schengen VFS Global, UK Visas and Immigration (UKVI), and Canada IRCC enforce strict intake gates. Most require JPEG format, maximum file caps like 240KB, square aspect ratios (e.g., 2x2 inches or 600x600 pixels), and 300 DPI print fidelity. ConvertKB calibrates both binary file weights and DPI metadata tags to ensure first-time acceptance."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Why do social media and messaging apps compress my images into blurry files?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Platforms like WhatsApp, Discord, Instagram, and LinkedIn aggressively downscale uploads larger than their standard byte limits. Pre-compressing images to exact platform targets (e.g., Discord 256KB emoji or under 8MB image limits, WhatsApp status under 16MB, YouTube thumbnail under 2MB) preserves sharpness and prevents aggressive platform re-compression."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How can I convert an iPhone HEIC photo to JPG below 50KB?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Modern iPhones capture images in Apple's High Efficiency Image Container (HEIC) format by default, which recruitment portals cannot read. Using our HEIC to JPG under 50KB tool, your browser unpacks the HEIC container locally, converts the color matrices into a standard JPEG color space, and resizes the file below 50KB within seconds."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I resize a signature to 10KB-20KB with 140x60 pixels?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Select our specialized 140x60 Pixel Signature Resizer. The tool sets your canvas to the exact 140 x 60 pixel aspect ratio, adjusts contrast to keep ink strokes sharp against a pure white background, and compresses the final file to fit between 10KB and 20KB for banking (IBPS/SBI) and government forms."
-          }
-        }
-      ]
     }
   ]
 };
-
 const schemaJson = JSON.stringify(schemaData);
 ---
 
@@ -93,7 +39,7 @@ const schemaJson = JSON.stringify(schemaData);
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>{pageTitle}</title>
   <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
@@ -102,7 +48,12 @@ const schemaJson = JSON.stringify(schemaData);
   <meta property="og:description" content={pageDescription} />
   <meta property="og:url" content={canonicalURL} />
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ConvertKB" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={pageDescription} />
   <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#ffffff" />
 
   <script type="application/ld+json" set:html={schemaJson}></script>
 
@@ -145,21 +96,34 @@ const schemaJson = JSON.stringify(schemaData);
       overflow-x: hidden;
     }
 
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: -60px;
+      z-index: 3000;
+      padding: 10px 14px;
+      color: #fff;
+      background: var(--text-main);
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 12px; }
+
     .container {
       max-width: 1240px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 20px;
     }
 
-    /* ==================== WEB APP FROSTED HEADER ==================== */
+    /* ==================== APP-LIKE FROSTED HEADER ==================== */
     .site-header {
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
       transition: all 0.25s ease;
     }
 
@@ -167,14 +131,14 @@ const schemaJson = JSON.stringify(schemaData);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 72px;
+      height: 68px;
     }
 
     .brand-logo {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 1.45rem;
+      font-size: 1.4rem;
       font-weight: 800;
       text-decoration: none;
       color: var(--text-main);
@@ -182,15 +146,15 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .logo-badge {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #ffffff;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 900;
       box-shadow: 0 4px 12px var(--primary-glow);
     }
@@ -200,7 +164,7 @@ const schemaJson = JSON.stringify(schemaData);
       font-weight: 700;
     }
 
-    /* Desktop Click-to-Open Dropdowns */
+    /* Desktop Navigation with Click-to-Open Dropdowns */
     .nav-root {
       display: flex;
       align-items: center;
@@ -215,7 +179,7 @@ const schemaJson = JSON.stringify(schemaData);
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 9px 14px;
+      padding: 8px 14px;
       font-size: 0.92rem;
       font-weight: 600;
       color: var(--text-muted);
@@ -327,18 +291,24 @@ const schemaJson = JSON.stringify(schemaData);
       font-size: 0.85rem;
     }
 
-    /* Mobile Hamburger Trigger */
+    /* Modern Mobile Hamburger */
     .mobile-hamburger {
       display: none;
-      background: none;
+      background: #f1f5f9;
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
+      border-radius: 10px;
       cursor: pointer;
-      padding: 8px 10px;
+      width: 42px;
+      height: 42px;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
+      transition: background 0.15s ease;
+    }
+
+    .mobile-hamburger:hover {
+      background: #e2e8f0;
     }
 
     .mobile-hamburger span {
@@ -347,15 +317,14 @@ const schemaJson = JSON.stringify(schemaData);
       height: 2px;
       background: var(--text-main);
       border-radius: 2px;
-      transition: all 0.2s ease;
     }
 
-    /* Mobile Drawer */
+    /* Curated Streamlined Mobile Drawer */
     .mobile-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.45);
+      background: rgba(15, 23, 42, 0.5);
       backdrop-filter: blur(4px);
       z-index: 1999;
     }
@@ -364,9 +333,10 @@ const schemaJson = JSON.stringify(schemaData);
       position: fixed;
       top: 0;
       right: -100%;
-      width: 86%;
-      max-width: 380px;
+      width: 85%;
+      max-width: 360px;
       height: 100vh;
+      height: 100dvh;
       background: #ffffff;
       z-index: 2000;
       box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
@@ -380,7 +350,7 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .mobile-drawer-header {
-      padding: 20px 24px;
+      padding: 18px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -388,89 +358,88 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .mobile-close-btn {
-      background: none;
+      background: #f1f5f9;
       border: none;
-      font-size: 1.5rem;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      font-size: 1.3rem;
       color: var(--text-muted);
       cursor: pointer;
-      line-height: 1;
-      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .mobile-drawer-body {
-      padding: 16px 20px 40px;
+      padding: 16px 18px 30px;
       overflow-y: auto;
       flex: 1;
     }
 
-    .mobile-accordion {
-      border-bottom: 1px solid var(--border);
-      padding: 6px 0;
-    }
-
-    .mobile-summary {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-main);
-      cursor: pointer;
-      list-style: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 4px;
-    }
-
-    .mobile-summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .mobile-accordion[open] .mobile-summary {
-      color: var(--primary);
-    }
-
-    .mobile-accordion[open] .mobile-summary .arrow-icon {
-      transform: rotate(180deg);
-    }
-
-    .mobile-sub-group {
-      padding: 6px 4px 12px;
-    }
-
-    .mobile-sub-group h5 {
+    .mobile-section-title {
       font-size: 0.72rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       color: var(--text-light);
-      margin: 10px 0 6px;
+      margin: 16px 0 8px;
     }
 
-    .mobile-sub-group ul {
-      list-style: none;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 4px;
+    .mobile-section-title:first-of-type {
+      margin-top: 0;
     }
 
-    .mobile-sub-group a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.885rem;
-      padding: 6px 8px;
-      border-radius: 6px;
+    .mobile-quick-links {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .mobile-quick-link {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.925rem;
+      font-weight: 600;
+      color: var(--text-main);
+      text-decoration: none;
+      background: var(--bg-body);
+      border: 1px solid var(--border);
+      transition: background 0.15s ease, border-color 0.15s ease;
     }
 
-    .mobile-sub-group a:hover {
-      color: var(--primary);
+    .mobile-quick-link:hover,
+    .mobile-quick-link:active {
       background: var(--primary-light);
+      border-color: var(--border-focus);
+      color: var(--primary);
+    }
+
+    .mobile-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: #dbeafe;
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+
+    .mobile-drawer-footer {
+      padding: 14px 18px;
+      border-top: 1px solid var(--border);
+      background: #f8fafc;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      text-align: center;
     }
 
     /* ==================== HERO SECTION & APP SEARCH ==================== */
     .hero {
       text-align: center;
-      padding: 72px 0 48px;
+      padding: 64px 0 42px;
       background: radial-gradient(circle at 50% 5%, #eff6ff 0%, #f8fafc 80%);
       border-bottom: 1px solid var(--border);
     }
@@ -488,16 +457,16 @@ const schemaJson = JSON.stringify(schemaData);
       border-radius: 9999px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .hero-title {
-      font-size: 3.25rem;
+      font-size: 3.1rem;
       font-weight: 800;
       color: var(--text-main);
       line-height: 1.15;
       letter-spacing: -0.035em;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .hero-title span {
@@ -507,36 +476,36 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .hero-subtitle {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       color: var(--text-muted);
-      max-width: 780px;
-      margin: 0 auto 32px;
+      max-width: 760px;
+      margin: 0 auto 28px;
       font-weight: 400;
     }
 
     .hero-stats {
       display: flex;
       justify-content: center;
-      gap: 16px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 34px;
+      margin-bottom: 30px;
     }
 
     .stat-badge {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.885rem;
+      gap: 6px;
+      font-size: 0.85rem;
       font-weight: 600;
       color: var(--text-muted);
       background: #ffffff;
-      padding: 8px 18px;
+      padding: 6px 14px;
       border-radius: 9999px;
       border: 1px solid var(--border);
       box-shadow: var(--shadow-sm);
     }
 
-    /* Live Interactive Search with Exact Match Deep-Link Results */
+    /* Live Interactive Search Box */
     .search-container {
       max-width: 580px;
       margin: 0 auto;
@@ -549,8 +518,8 @@ const schemaJson = JSON.stringify(schemaData);
 
     .search-input {
       width: 100%;
-      padding: 15px 22px 15px 48px;
-      font-size: 1rem;
+      padding: 14px 20px 14px 46px;
+      font-size: 0.98rem;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       background: #ffffff;
@@ -567,7 +536,7 @@ const schemaJson = JSON.stringify(schemaData);
 
     .search-icon {
       position: absolute;
-      left: 18px;
+      left: 16px;
       top: 50%;
       transform: translateY(-50%);
       color: #94a3b8;
@@ -654,11 +623,12 @@ const schemaJson = JSON.stringify(schemaData);
 
     /* Category Filter Segment Bar */
     .filter-bar-wrapper {
-      margin-top: 32px;
+      margin-top: 26px;
       display: flex;
       justify-content: center;
       overflow-x: auto;
       padding-bottom: 6px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .filter-pills {
@@ -672,9 +642,9 @@ const schemaJson = JSON.stringify(schemaData);
     .filter-pill-btn {
       background: none;
       border: none;
-      padding: 8px 16px;
+      padding: 7px 14px;
       border-radius: 9999px;
-      font-size: 0.865rem;
+      font-size: 0.84rem;
       font-weight: 600;
       color: var(--text-muted);
       cursor: pointer;
@@ -692,41 +662,41 @@ const schemaJson = JSON.stringify(schemaData);
       box-shadow: var(--shadow-sm);
     }
 
-    /* ==================== DIRECTORY HUB (6 MODERN CARDS) ==================== */
+    /* ==================== COMPLETE IN-BETWEEN DIRECTORY HUB ==================== */
     .hub-section {
-      padding: 68px 0 84px;
+      padding: 56px 0 76px;
     }
 
     .section-intro {
       text-align: center;
       max-width: 720px;
-      margin: 0 auto 48px;
+      margin: 0 auto 40px;
     }
 
     .section-intro h2 {
-      font-size: 2.15rem;
+      font-size: 2.1rem;
       font-weight: 800;
       color: var(--text-main);
       letter-spacing: -0.025em;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .section-intro p {
       color: var(--text-muted);
-      font-size: 1.05rem;
+      font-size: 1rem;
     }
 
     .hub-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-      gap: 28px;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
     }
 
     .hub-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 26px;
+      padding: 24px;
       box-shadow: var(--shadow-sm);
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
       display: flex;
@@ -734,7 +704,7 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .hub-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-3px);
       box-shadow: var(--shadow-md);
       border-color: var(--border-focus);
     }
@@ -742,14 +712,14 @@ const schemaJson = JSON.stringify(schemaData);
     .hub-card-header {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 12px;
+      gap: 12px;
+      margin-bottom: 10px;
     }
 
     .hub-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
       background: var(--primary-light);
       color: var(--primary);
       display: flex;
@@ -760,29 +730,29 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .hub-card-header h3 {
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--text-main);
     }
 
     .hub-card-desc {
-      font-size: 0.925rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       line-height: 1.5;
     }
 
     .hub-subgroup {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .hub-subgroup-title {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--text-light);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       display: flex;
       justify-content: space-between;
       border-bottom: 1px dashed var(--border);
@@ -800,7 +770,7 @@ const schemaJson = JSON.stringify(schemaData);
       font-size: 0.885rem;
       color: var(--text-muted);
       text-decoration: none;
-      padding: 6px 10px;
+      padding: 6px 8px;
       border-radius: 6px;
       transition: all 0.15s ease;
       display: flex;
@@ -830,7 +800,7 @@ const schemaJson = JSON.stringify(schemaData);
 
     .hub-card-action {
       margin-top: auto;
-      padding-top: 16px;
+      padding-top: 14px;
       border-top: 1px solid var(--border);
     }
 
@@ -853,7 +823,7 @@ const schemaJson = JSON.stringify(schemaData);
       background: #ffffff;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding: 88px 0;
+      padding: 80px 0;
     }
 
     .content-wrapper {
@@ -862,10 +832,10 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .content-wrapper h2 {
-      font-size: 2.15rem;
+      font-size: 2.1rem;
       font-weight: 800;
       color: var(--text-main);
-      margin: 48px 0 18px;
+      margin: 44px 0 16px;
       letter-spacing: -0.025em;
       line-height: 1.25;
     }
@@ -875,56 +845,56 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .content-wrapper h3 {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: var(--text-main);
-      margin: 30px 0 14px;
+      margin: 28px 0 12px;
       letter-spacing: -0.015em;
     }
 
     .content-wrapper p {
       color: var(--text-muted);
-      font-size: 1.05rem;
-      line-height: 1.8;
-      margin-bottom: 22px;
+      font-size: 1.025rem;
+      line-height: 1.78;
+      margin-bottom: 20px;
     }
 
     .content-wrapper ul, .content-wrapper ol {
-      margin: 0 0 26px 24px;
+      margin: 0 0 24px 22px;
       color: var(--text-muted);
     }
 
     .content-wrapper li {
-      font-size: 1.025rem;
+      font-size: 1rem;
       line-height: 1.7;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .pipeline-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 16px;
-      margin: 32px 0 40px;
+      margin: 28px 0 36px;
     }
 
     .pipeline-step {
       background: var(--bg-body);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 20px;
+      padding: 18px;
       position: relative;
     }
 
     .step-number {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 800;
       color: var(--primary);
-      opacity: 0.3;
-      margin-bottom: 8px;
+      opacity: 0.35;
+      margin-bottom: 6px;
     }
 
     .pipeline-step h4 {
-      font-size: 0.95rem;
+      font-size: 0.925rem;
       font-weight: 700;
       margin-bottom: 6px;
       color: var(--text-main);
@@ -940,13 +910,13 @@ const schemaJson = JSON.stringify(schemaData);
     .info-callout {
       background: var(--primary-light);
       border-left: 4px solid var(--primary);
-      padding: 22px 26px;
+      padding: 20px 24px;
       border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      margin: 32px 0;
+      margin: 28px 0;
     }
 
     .info-callout h4 {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--primary);
       margin-bottom: 6px;
@@ -954,34 +924,36 @@ const schemaJson = JSON.stringify(schemaData);
 
     .info-callout p {
       margin-bottom: 0;
-      font-size: 0.95rem;
+      font-size: 0.925rem;
       color: #1e3a8a;
     }
 
     .table-responsive {
       overflow-x: auto;
-      margin: 34px 0;
+      margin: 30px 0;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
+      -webkit-overflow-scrolling: touch;
     }
 
     .specs-table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.95rem;
+      font-size: 0.925rem;
+      min-width: 580px;
     }
 
     .specs-table th {
       background: #f8fafc;
       color: var(--text-main);
       font-weight: 700;
-      padding: 13px 18px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--border);
     }
 
     .specs-table td {
-      padding: 13px 18px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--border);
       color: var(--text-muted);
     }
@@ -992,26 +964,26 @@ const schemaJson = JSON.stringify(schemaData);
 
     /* FAQ ACCORDION BLOCK */
     .faq-block {
-      margin-top: 60px;
+      margin-top: 54px;
     }
 
     .faq-item {
       background: var(--bg-body);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 24px;
-      margin-bottom: 18px;
+      padding: 22px;
+      margin-bottom: 16px;
     }
 
     .faq-question {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .faq-answer {
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
       line-height: 1.7;
       margin: 0;
@@ -1021,27 +993,27 @@ const schemaJson = JSON.stringify(schemaData);
     .site-footer {
       background: #0f172a;
       color: #94a3b8;
-      padding: 68px 0 36px;
+      padding: 60px 0 32px;
       font-size: 0.9rem;
     }
 
     .footer-two-blocks {
       display: grid;
       grid-template-columns: 1.3fr 1fr;
-      gap: 56px;
-      margin-bottom: 44px;
+      gap: 52px;
+      margin-bottom: 40px;
     }
 
     .footer-brand h3 {
       color: #ffffff;
-      font-size: 1.4rem;
-      margin-bottom: 14px;
+      font-size: 1.35rem;
+      margin-bottom: 12px;
       font-weight: 800;
     }
 
     .footer-brand p {
       line-height: 1.7;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       color: #94a3b8;
     }
 
@@ -1056,7 +1028,7 @@ const schemaJson = JSON.stringify(schemaData);
       font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       font-weight: 700;
     }
 
@@ -1065,7 +1037,7 @@ const schemaJson = JSON.stringify(schemaData);
     }
 
     .footer-links-grid li {
-      margin-bottom: 9px;
+      margin-bottom: 8px;
     }
 
     .footer-links-grid a {
@@ -1080,17 +1052,17 @@ const schemaJson = JSON.stringify(schemaData);
 
     .footer-bottom {
       border-top: 1px solid #1e293b;
-      padding-top: 24px;
+      padding-top: 22px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 18px;
     }
 
     .legal-nav {
       display: flex;
-      gap: 24px;
+      gap: 20px;
     }
 
     .legal-nav a {
@@ -1103,24 +1075,29 @@ const schemaJson = JSON.stringify(schemaData);
       color: #ffffff;
     }
 
-    /* ==================== RESPONSIVE LAYOUTS ==================== */
+    /* ==================== MOBILE OPTIMIZATION OVERRIDES ==================== */
     @media (max-width: 1024px) {
       .nav-root { display: none; }
       .mobile-hamburger { display: flex; }
-      .footer-two-blocks { grid-template-columns: 1fr; gap: 36px; }
+      .footer-two-blocks { grid-template-columns: 1fr; gap: 32px; }
     }
 
     @media (max-width: 680px) {
-      .hero-title { font-size: 2.2rem; }
+      .hero { padding: 48px 0 32px; }
+      .hero-title { font-size: 2.15rem; }
+      .hero-subtitle { font-size: 1rem; }
       .hub-grid { grid-template-columns: 1fr; }
       .pipeline-grid { grid-template-columns: 1fr; }
       .footer-links-grid { grid-template-columns: 1fr; }
       .footer-bottom { flex-direction: column; text-align: center; }
       .legal-nav { flex-wrap: wrap; justify-content: center; }
+      .search-input { font-size: 0.925rem; padding: 13px 18px 13px 42px; }
+      .stat-badge { font-size: 0.78rem; padding: 5px 12px; }
     }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <!-- ==================== HEADER ==================== -->
   <header class="site-header">
@@ -1370,7 +1347,7 @@ const schemaJson = JSON.stringify(schemaData);
       </button>
     </div>
 
-    <!-- Mobile Slide-over Drawer with Identical Submenu Structure -->
+    <!-- Curated Streamlined Mobile Drawer (Top Essentials Only) -->
     <div id="mobileDrawerOverlay" class="mobile-overlay"></div>
     <div id="mobileDrawer" class="mobile-drawer" aria-hidden="true">
       <div class="mobile-drawer-header">
@@ -1383,136 +1360,46 @@ const schemaJson = JSON.stringify(schemaData);
 
       <div class="mobile-drawer-body">
         
-        <!-- Mobile 1: Image -->
-        <details class="mobile-accordion">
-          <summary class="mobile-summary">Image Compress <span class="arrow-icon">&blacktriangledown;</span></summary>
-          <div class="mobile-sub-group">
-            <h5>Target Sizes</h5>
-            <ul>
-              <li><a href="/compress-image-to-10kb/">Image to 10KB <span class="tag-badge">Exact</span></a></li>
-              <li><a href="/compress-image-to-20kb/">Image to 20KB <span class="tag-badge">Exact</span></a></li>
-              <li><a href="/compress-image-to-50kb/">Image to 50KB <span class="tag-badge">Exact</span></a></li>
-              <li><a href="/compress-image-to-100kb/">Image to 100KB <span class="tag-badge">Under</span></a></li>
-              <li><a href="/compress-image-to-200kb/">Image to 200KB <span class="tag-badge">Web</span></a></li>
-            </ul>
-            <h5>DPI &amp; Presets</h5>
-            <ul>
-              <li><a href="/change-dpi-to-200/">Change DPI to 200</a></li>
-              <li><a href="/convert-image-to-300-dpi/">Convert to 300 DPI</a></li>
-              <li><a href="/photo-3-5-x-4-5-cm-50kb/">3.5 x 4.5 cm Photo</a></li>
-              <li><a href="/resize-image-pixels-and-kb/">Resize in Pixels &amp; KB</a></li>
-            </ul>
-          </div>
-        </details>
+        <div class="mobile-section-title">Popular Sizes</div>
+        <div class="mobile-quick-links">
+          <a href="/compress-image-to-20kb/" class="mobile-quick-link">Compress to 20KB <span class="mobile-tag">Exact</span></a>
+          <a href="/compress-image-to-50kb/" class="mobile-quick-link">Compress to 50KB <span class="mobile-tag">Exact</span></a>
+          <a href="/compress-image-to-100kb/" class="mobile-quick-link">Compress to 100KB <span class="mobile-tag">Max</span></a>
+          <a href="/compress-pdf-to-100kb/" class="mobile-quick-link">PDF to 100KB <span class="mobile-tag">PDF</span></a>
+        </div>
 
-        <!-- Mobile 2: PDF -->
-        <details class="mobile-accordion">
-          <summary class="mobile-summary">PDF Tools <span class="arrow-icon">&blacktriangledown;</span></summary>
-          <div class="mobile-sub-group">
-            <h5>Target PDF Limits</h5>
-            <ul>
-              <li><a href="/compress-pdf-to-50kb/">PDF to 50KB</a></li>
-              <li><a href="/compress-pdf-to-100kb/">PDF to 100KB</a></li>
-              <li><a href="/compress-pdf-to-200kb/">PDF to 200KB</a></li>
-              <li><a href="/compress-pdf-to-500kb/">PDF to 500KB</a></li>
-            </ul>
-            <h5>Scans &amp; Operations</h5>
-            <ul>
-              <li><a href="/merge-compress-pdf-200kb/">Merge &amp; Compress 200KB</a></li>
-              <li><a href="/compress-scanned-pdf-100kb/">Scanned PDF 100KB</a></li>
-              <li><a href="/pdf-300-dpi-converter/">PDF 300 DPI</a></li>
-              <li><a href="/convert-jpg-to-pdf-200kb/">JPG to PDF 200KB</a></li>
-            </ul>
-          </div>
-        </details>
+        <div class="mobile-section-title">Identity &amp; Visas</div>
+        <div class="mobile-quick-links">
+          <a href="/convert-photo-to-passport-size-50kb/" class="mobile-quick-link">Passport Photo 50KB <span class="mobile-tag">3.5x4.5</span></a>
+          <a href="/us-visa-photo-2x2-inches/" class="mobile-quick-link">US Visa 2x2" (240KB) <span class="mobile-tag">DS-160</span></a>
+          <a href="/change-dpi-to-200/" class="mobile-quick-link">Change to 200 DPI <span class="mobile-tag">Print</span></a>
+          <a href="/convert-image-to-300-dpi/" class="mobile-quick-link">Convert to 300 DPI <span class="mobile-tag">HD</span></a>
+        </div>
 
-        <!-- Mobile 3: Formats -->
-        <details class="mobile-accordion">
-          <summary class="mobile-summary">Format Compress <span class="arrow-icon">&blacktriangledown;</span></summary>
-          <div class="mobile-sub-group">
-            <h5>JPG &amp; WebP</h5>
-            <ul>
-              <li><a href="/compress-jpg-to-20kb/">JPG to 20KB</a></li>
-              <li><a href="/compress-jpg-to-50kb/">JPG to 50KB</a></li>
-              <li><a href="/compress-jpeg-to-50kb/">JPEG to 50KB</a></li>
-              <li><a href="/compress-webp-to-50kb/">WebP to 50KB</a></li>
-              <li><a href="/convert-jpg-to-webp-50kb/">JPG to WebP 50KB</a></li>
-            </ul>
-            <h5>PNG &amp; Mobile</h5>
-            <ul>
-              <li><a href="/compress-png-to-50kb/">PNG to 50KB</a></li>
-              <li><a href="/convert-heic-to-jpg-50kb/">HEIC to JPG 50KB</a></li>
-              <li><a href="/compress-tiff-to-100kb/">TIFF to 100KB</a></li>
-            </ul>
-          </div>
-        </details>
+        <div class="mobile-section-title">Exams &amp; Signatures</div>
+        <div class="mobile-quick-links">
+          <a href="/ssc-photo-and-signature-resizer/" class="mobile-quick-link">SSC Photo &amp; Sign <span class="mobile-tag">SSC CGL</span></a>
+          <a href="/signature-compressor-20kb/" class="mobile-quick-link">Signature to 20KB <span class="mobile-tag">Forms</span></a>
+          <a href="/140x60-pixel-signature-20kb/" class="mobile-quick-link">140x60 px Signature <span class="mobile-tag">IBPS</span></a>
+        </div>
 
-        <!-- Mobile 4: Platforms -->
-        <details class="mobile-accordion">
-          <summary class="mobile-summary">Platform Sizers <span class="arrow-icon">&blacktriangledown;</span></summary>
-          <div class="mobile-sub-group">
-            <h5>Social &amp; Streaming</h5>
-            <ul>
-              <li><a href="/compress-youtube-thumbnail-2mb/">YouTube Thumbnail (&lt;2MB)</a></li>
-              <li><a href="/compress-image-for-instagram/">Instagram Post &amp; Story</a></li>
-              <li><a href="/compress-discord-emoji-256kb/">Discord Emoji (256KB)</a></li>
-              <li><a href="/compress-image-for-discord-8mb/">Discord Image (&lt;8MB)</a></li>
-              <li><a href="/compress-image-for-whatsapp/">WhatsApp Status &amp; DP</a></li>
-            </ul>
-            <h5>Stores &amp; Business</h5>
-            <ul>
-              <li><a href="/compress-image-for-shopify/">Shopify Product (&lt;100KB)</a></li>
-              <li><a href="/compress-image-for-linkedin/">LinkedIn Header</a></li>
-            </ul>
-          </div>
-        </details>
+        <div class="mobile-section-title">Creators &amp; Social</div>
+        <div class="mobile-quick-links">
+          <a href="/compress-youtube-thumbnail-2mb/" class="mobile-quick-link">YouTube Thumbnail <span class="mobile-tag">&lt; 2MB</span></a>
+          <a href="/compress-discord-emoji-256kb/" class="mobile-quick-link">Discord Emoji <span class="mobile-tag">256KB</span></a>
+          <a href="/convert-heic-to-jpg-50kb/" class="mobile-quick-link">iPhone HEIC to JPG <span class="mobile-tag">iOS</span></a>
+          <a href="/kb-to-mb/" class="mobile-quick-link">KB to MB Calculator <span class="mobile-tag">Calc</span></a>
+        </div>
 
-        <!-- Mobile 5: Exams -->
-        <details class="mobile-accordion">
-          <summary class="mobile-summary">Exams &amp; Signatures <span class="arrow-icon">&blacktriangledown;</span></summary>
-          <div class="mobile-sub-group">
-            <h5>National &amp; State Boards</h5>
-            <ul>
-              <li><a href="/ssc-photo-and-signature-resizer/">SSC Photo &amp; Sign</a></li>
-              <li><a href="/upsc-photo-resize-in-kb/">UPSC Photo (20-300KB)</a></li>
-              <li><a href="/gate-photo-size-in-kb/">GATE Photo &amp; Sign</a></li>
-              <li><a href="/tnpsc-photo-signature-resizer/">TNPSC Photo &amp; Sign</a></li>
-              <li><a href="/ibps-photo-signature-resize/">IBPS Photo &amp; Sign</a></li>
-            </ul>
-            <h5>Signatures Only</h5>
-            <ul>
-              <li><a href="/signature-compressor-20kb/">Signature to 20KB</a></li>
-              <li><a href="/resize-signature-10kb-to-20kb/">Signature 10KB to 20KB</a></li>
-              <li><a href="/140x60-pixel-signature-20kb/">140x60 px Signature</a></li>
-            </ul>
-          </div>
-        </details>
+      </div>
 
-        <!-- Mobile 6: IDs & Tools -->
-        <details class="mobile-accordion">
-          <summary class="mobile-summary">IDs &amp; Calculators <span class="arrow-icon">&blacktriangledown;</span></summary>
-          <div class="mobile-sub-group">
-            <h5>Travel &amp; Passports</h5>
-            <ul>
-              <li><a href="/convert-photo-to-passport-size-50kb/">Passport Photo 50KB</a></li>
-              <li><a href="/us-visa-photo-2x2-inches/">US Visa 2x2" (240KB)</a></li>
-              <li><a href="/pan-card-photo-resize-in-kb/">PAN Card Photo</a></li>
-              <li><a href="/pan-card-signature-resize-in-kb/">PAN Card Signature</a></li>
-            </ul>
-            <h5>Unit Converters</h5>
-            <ul>
-              <li><a href="/kb-to-mb/">KB to MB Calculator</a></li>
-              <li><a href="/1024-kb-to-mb/">1024 KB to MB</a></li>
-              <li><a href="/kb-to-bytes/">KB to Bytes</a></li>
-            </ul>
-          </div>
-        </details>
-
+      <div class="mobile-drawer-footer">
+        100% Client-Side. No server uploads.
       </div>
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <!-- ==================== HERO SECTION & APP SEARCH ==================== -->
     <section class="hero">
       <div class="container">
@@ -1522,13 +1409,13 @@ const schemaJson = JSON.stringify(schemaData);
           Calibrate photos, certificates, marksheet scans, and signatures to exact file boundaries (20KB, 50KB, 100KB) and required 200/300 DPI specifications directly inside your web browser.
         </p>
         <div class="hero-stats">
-          <div class="stat-badge"><span>&check;</span> 100% In-Browser Privacy</div>
-          <div class="stat-badge"><span>&check;</span> Zero Network Latency</div>
-          <div class="stat-badge"><span>&check;</span> Strict DPI &amp; Pixel Precision</div>
+          <div class="stat-badge"><span>&check;</span> In-Browser Privacy</div>
+          <div class="stat-badge"><span>&check;</span> Zero Network Delay</div>
+          <div class="stat-badge"><span>&check;</span> Strict DPI Precision</div>
           <div class="stat-badge"><span>&check;</span> Free Forever</div>
         </div>
 
-        <!-- Live Search Bar with Exact Match Dropdown Results -->
+        <!-- Live Search Bar with Instant Match Results -->
         <div class="search-container">
           <div class="search-input-wrapper">
             <span class="search-icon">&#128269;</span>
@@ -1549,7 +1436,7 @@ const schemaJson = JSON.stringify(schemaData);
           </div>
         </div>
 
-        <!-- Filter Segment Bar -->
+        <!-- Horizontal Filter Segment Bar -->
         <div class="filter-bar-wrapper">
           <div class="filter-pills" id="categoryFilterBar">
             <button type="button" class="filter-pill-btn active" data-category="all">All Tools</button>
@@ -1565,12 +1452,12 @@ const schemaJson = JSON.stringify(schemaData);
       </div>
     </section>
 
-    <!-- ==================== DIRECTORY HUB (6 MODERN CARDS) ==================== -->
+    <!-- ==================== COMPLETE IN-BETWEEN MASTER DIRECTORY ==================== -->
     <section class="hub-section">
       <div class="container">
         <div class="section-intro">
           <h2>Application Sizing &amp; Document Tools</h2>
-          <p>Select your required threshold or portal guideline to launch our on-device optimizer.</p>
+          <p>Every tool, preset, and format converter organized in a unified, crawlable index.</p>
         </div>
 
         <div class="hub-grid" id="hubGrid">
@@ -1790,7 +1677,7 @@ const schemaJson = JSON.stringify(schemaData);
           Submitting a competitive examination application, filing an international visa dossier, or attaching financial disclosures to an official government server frequently results in unexpected rejections. Modern smartphone cameras capture images at high resolutions, resulting in image payloads exceeding 5 to 12 megabytes. However, institutional upload systems worldwide continue to reject submissions with errors like: <em>&ldquo;File size exceeds 50 KB&rdquo;</em>, <em>&ldquo;Resolution must equal 200 DPI&rdquo;</em>, or <em>&ldquo;Aspect ratio mismatch: exactly 3.5 cm x 4.5 cm required&rdquo;</em>.
         </p>
         <p>
-          ConvertKB was built to resolve this exact friction point. Unlike basic graphic design suites or percentage-based compression websites, our platform uses deterministic binary search calibration executed directly inside your web browser. This enables students, job seekers, immigration consultants, and web developers to target exact file limits&mdash;including 20KB, 50KB, 100KB, and 200KB&mdash;with zero server uploads, complete privacy, and no technical configuration.
+          ConvertKB was built to resolve this exact friction point. Unlike basic graphic design suites or percentage-based compression websites, our platform uses deterministic binary search calibration executed directly inside your web browser. This enables students, job seekers, immigration consultants, and web developers to work toward common file-size limits&mdash;including 20KB, 50KB, 100KB, and 200KB&mdash;with simple browser-based controls. Check the resulting file size and the destination portal requirements before submitting.
         </p>
 
         <!-- Interactive Pipeline Step Cards -->
@@ -1967,7 +1854,7 @@ const schemaJson = JSON.stringify(schemaData);
           <div class="faq-item">
             <div class="faq-question">Is it safe to compress signatures and ID cards here?</div>
             <div class="faq-answer">
-              Yes, completely safe. Unlike other converter platforms that transmit your files to cloud servers, all processing on ConvertKB takes place directly on your computer or mobile phone. Your files are never uploaded to any server, guaranteeing privacy for personal identity documents.
+              Yes, completely safe. Unlike other converter platforms that transmit your files to cloud servers, all processing on ConvertKB takes place directly on your computer or mobile phone. Your files are never uploaded to any server, helping keep personal identity documents on your device when all processing is performed locally as described by the tool.
             </div>
           </div>
 
@@ -2114,12 +2001,15 @@ const schemaJson = JSON.stringify(schemaData);
             `).join('');
             searchResultsDropdown.style.display = 'block';
           } else {
-            searchResultsList.innerHTML = `<div class="no-results-msg">No exact tool matches found for "${query}"</div>`;
+            const noResults = document.createElement('div');
+            noResults.className = 'no-results-msg';
+            noResults.textContent = `No matching tools found for “${query}”. Try a size such as 20KB or 50KB.`;
+            searchResultsList.replaceChildren(noResults);
             searchResultsDropdown.style.display = 'block';
           }
         }
 
-        // B. Filter Category Hub Cards Below
+        // B. Filter Master Directory Cards Below
         hubCards.forEach((card) => {
           const keywords = card.getAttribute('data-keywords') || '';
           const cardText = card.textContent.toLowerCase();
@@ -2178,7 +2068,7 @@ const schemaJson = JSON.stringify(schemaData);
       }
     });
 
-    // 5. Mobile Drawer Open / Close Handlers
+    // 5. Mobile Drawer Handlers (Streamlined Curated Drawer)
     const drawerOpenBtn = document.getElementById('mobileDrawerOpenBtn');
     const drawerCloseBtn = document.getElementById('mobileDrawerCloseBtn');
     const drawerOverlay = document.getElementById('mobileDrawerOverlay');
