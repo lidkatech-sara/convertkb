@@ -1,0 +1,1204 @@
+---
+// src/pages/compress-image-to-10kb.astro
+const pageTitle = "Compress Image to 10KB Online Free - Precision Photo & Signature Reducer";
+const pageDescription = "Compress images and photos to exactly under 10KB online without blur. Built-in image cropper, aspect ratio presets, and instant preview. 100% private client-side processing.";
+const canonicalURL = "https://convertkb.com/compress-image-to-10kb/";
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://convertkb.com/compress-image-to-10kb/#webapp",
+      "url": canonicalURL,
+      "name": "ConvertKB 10KB Precision Image Compressor & Cropper",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Runs client-side on all modern browsers.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://convertkb.com/compress-image-to-10kb/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://convertkb.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Image Compress",
+          "item": "https://convertkb.com/image/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Compress Image to 10KB",
+          "item": canonicalURL
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://convertkb.com/compress-image-to-10kb/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does the 10KB compressor reduce file weight without making photos unreadable?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The tool uses an iterative binary search loop on an HTML5 Canvas. Rather than only lowering quality, it balances physical dimensions (pixel resolution) and quantization tables simultaneously. By stripping heavy EXIF camera metadata and optimizing discrete cosine transform (DCT) coefficients, it fits the image into a strict 10KB budget while retaining facial features and signature strokes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do portal submission forms require images strictly below 10KB or 20KB?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "High-volume recruitment and admissions systems process millions of applicants in short windows. Standardizing photos and signatures to 10KB-20KB caps database payload sizes, prevents server timeouts on deadline days, and ensures that identity cards print at uniform resolutions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are my identity photos and signatures uploaded to external servers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. All cropping, filtering, resizing, and compression occur directly in your web browser memory using client-side JavaScript. Your files never touch an external server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What image formats are supported by the 10KB tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The tool accepts JPG, JPEG, PNG, WEBP, and modern smartphone formats like HEIC/HEIF. Outputs are cleanly exported as standardized, web-ready JPEG or WEBP files."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const schemaJson = JSON.stringify(schemaData);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <link rel="canonical" href={canonicalURL} />
+  
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:type" content="website" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#090d16" />
+
+  <script type="application/ld+json" set:html={schemaJson}></script>
+
+  <style>
+    :root {
+      --bg-dark: #07090e;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --bg-card-border: rgba(255, 255, 255, 0.08);
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-glow: rgba(59, 130, 246, 0.35);
+      --accent: #06b6d4;
+      --accent-glow: rgba(6, 182, 212, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* HEADER */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(7, 9, 14, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      height: 70px;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      text-decoration: none;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .logo-badge {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 0.9rem;
+      font-weight: 900;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* HERO SECTION */
+    .hero-section {
+      text-align: center;
+      padding: 50px 0 35px;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #93c5fd;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 18px;
+    }
+
+    .hero-title {
+      font-size: 2.85rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.12rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* APP STUDIO WRAPPER */
+    .app-studio {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      padding: 28px;
+      margin-bottom: 70px;
+    }
+
+    /* UPLOAD DROPZONE */
+    .dropzone-box {
+      border: 2px dashed rgba(59, 130, 246, 0.35);
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.4);
+      padding: 50px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .dropzone-box:hover, .dropzone-box.dragover {
+      border-color: var(--accent);
+      background: rgba(6, 182, 212, 0.05);
+      box-shadow: 0 0 25px var(--accent-glow);
+    }
+
+    .dropzone-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin: 0 auto 16px;
+    }
+
+    .dropzone-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .dropzone-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+    }
+
+    #fileInput {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* WORKBENCH INTERFACE */
+    .workbench {
+      display: none;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .viewport-card {
+      background: rgba(3, 7, 18, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 440px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .canvas-wrapper {
+      max-width: 100%;
+      max-height: 380px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #previewCanvas {
+      max-width: 100%;
+      max-height: 360px;
+      border-radius: var(--radius-sm);
+      object-fit: contain;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    /* CONTROLS PANEL */
+    .controls-card {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .panel-group-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .button-pill-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .pill-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 7px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .pill-btn:hover, .pill-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    .slider-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .modern-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+
+    .modern-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    /* STATS & METRICS BADGE */
+    .metrics-bar {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(2, 6, 23, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      margin-top: 6px;
+    }
+
+    .metric-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-label {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    .metric-value {
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .metric-value.success {
+      color: #34d399;
+    }
+
+    /* ACTION BUTTONS */
+    .action-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 0.96rem;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-compress {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 18px var(--primary-glow);
+    }
+
+    .btn-compress:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--primary-glow);
+    }
+
+    .btn-download {
+      background: #10b981;
+      color: #ffffff;
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.3);
+      display: none;
+      text-decoration: none;
+    }
+
+    .btn-download:hover {
+      background: #059669;
+      transform: translateY(-2px);
+    }
+
+    /* EDITORIAL CONTENT SECTION */
+    .editorial-section {
+      border-top: 1px solid var(--border-color);
+      padding: 60px 0;
+    }
+
+    .editorial-content {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .editorial-content h2 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      margin: 36px 0 14px;
+      letter-spacing: -0.02em;
+    }
+
+    .editorial-content h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin: 26px 0 10px;
+    }
+
+    .editorial-content p {
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      line-height: 1.8;
+      font-size: 1.02rem;
+    }
+
+    .editorial-content ul, .editorial-content ol {
+      margin: 0 0 22px 24px;
+      color: var(--text-muted);
+    }
+
+    .editorial-content li {
+      margin-bottom: 8px;
+    }
+
+    .specs-table-wrapper {
+      overflow-x: auto;
+      margin: 28px 0;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    .specs-table th {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .specs-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-muted);
+    }
+
+    .specs-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* FAQ ACCORDIONS */
+    .faq-block {
+      margin-top: 40px;
+    }
+
+    .faq-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .faq-question {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .faq-answer {
+      font-size: 0.96rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      background: #04060a;
+      border-top: 1px solid var(--border-color);
+      padding: 45px 0 25px;
+      font-size: 0.88rem;
+      color: var(--text-dim);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .footer-brand h4 {
+      color: #ffffff;
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 6px;
+    }
+
+    .footer-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .workbench {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-title {
+        font-size: 2.15rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand-logo" title="ConvertKB Home">
+        <div class="logo-badge">KB</div>
+        <span>Convert<span style="color: var(--primary);">KB</span></span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/compress-image-to-20kb/" class="nav-link">20KB Sizer</a></li>
+          <li><a href="/compress-image-to-50kb/" class="nav-link">50KB Sizer</a></li>
+          <li><a href="/change-dpi-to-200/" class="nav-link">200 DPI</a></li>
+          <li><a href="/compress-pdf-to-100kb/" class="nav-link">PDF 100KB</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="hero-badge">&check; Precision Binary Search Compression</div>
+      <h1 class="hero-title">Compress Image to <span>10KB</span> Online</h1>
+      <p class="hero-subtitle">
+        Crop, rotate, enhance, and reduce image sizes to strictly under 10KB. Ideal for online exam admit cards, job portal signatures, and government form uploads.
+      </p>
+    </section>
+
+    <!-- APP STUDIO INTERFACE -->
+    <section class="app-studio">
+      <!-- File Dropzone -->
+      <div id="dropzone" class="dropzone-box">
+        <div class="dropzone-icon">&uarr;</div>
+        <div class="dropzone-title">Click or Drop Image Here</div>
+        <div class="dropzone-subtitle">Supports JPG, JPEG, PNG, WEBP, and HEIC files</div>
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/heic,image/jpg" />
+      </div>
+
+      <!-- Processing Workbench -->
+      <div id="workbench" class="workbench">
+        <!-- Viewport Preview -->
+        <div class="viewport-card">
+          <div class="canvas-wrapper">
+            <canvas id="previewCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Editor & Compression Controls -->
+        <div class="controls-card">
+          
+          <!-- Crop & Aspect Presets -->
+          <div>
+            <div class="panel-group-title"><span>&#9986;</span> 1. Aspect Ratio &amp; Crop</div>
+            <div class="button-pill-grid">
+              <button type="button" class="pill-btn active" data-aspect="free">Freeform</button>
+              <button type="button" class="pill-btn" data-aspect="1-1">1:1 Square</button>
+              <button type="button" class="pill-btn" data-aspect="passport">3.5:4.5 Passport</button>
+              <button type="button" class="pill-btn" data-aspect="signature">7:2 Signature</button>
+              <button type="button" class="pill-btn" data-aspect="4-3">4:3 Standard</button>
+              <button type="button" class="pill-btn" data-aspect="16-9">16:9 Display</button>
+            </div>
+          </div>
+
+          <!-- Color & Adjustment Sliders -->
+          <div>
+            <div class="panel-group-title"><span>&#9881;</span> 2. Fine Adjustments</div>
+            
+            <div class="slider-item">
+              <div class="slider-header">
+                <span>Brightness</span>
+                <span id="brightnessVal">100%</span>
+              </div>
+              <input type="range" id="brightnessInput" class="modern-slider" min="50" max="150" value="100" />
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-header">
+                <span>Contrast</span>
+                <span id="contrastVal">100%</span>
+              </div>
+              <input type="range" id="contrastInput" class="modern-slider" min="50" max="150" value="100" />
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 10px;">
+              <button type="button" id="grayscaleBtn" class="pill-btn" style="flex: 1;">Grayscale Mode</button>
+              <button type="button" id="rotateBtn" class="pill-btn" style="flex: 1;">Rotate 90&deg;</button>
+            </div>
+          </div>
+
+          <!-- Metrics Feedback Bar -->
+          <div class="metrics-bar">
+            <div class="metric-col">
+              <span class="metric-label">Original Size</span>
+              <span id="origSizeText" class="metric-value">0 KB</span>
+            </div>
+            <div class="metric-col">
+              <span class="metric-label">Target Ceiling</span>
+              <span class="metric-value">10.0 KB</span>
+            </div>
+            <div class="metric-col">
+              <span class="metric-label">Output Result</span>
+              <span id="outputSizeText" class="metric-value success">--</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <button type="button" id="compressBtn" class="action-btn btn-compress">
+            <span>&#9889;</span> Compress to Under 10KB
+          </button>
+
+          <a id="downloadBtn" class="action-btn btn-download" download="compressed-10kb.jpg">
+            <span>&darr;</span> Download Optimized Image
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDITORIAL & SEO CONTENT -->
+    <section class="editorial-section">
+      <article class="editorial-content">
+        <h2>How to Compress Images to 10KB Without Degrading Legibility</h2>
+        <p>
+          Compressing a photograph or signature below a strict threshold like <strong>10 kilobytes (10KB)</strong> is one of the most common hurdles encountered when applying for public sector vacancies, university admissions, and online identity verification forms. Modern smartphone cameras capture snapshots exceeding 5 to 12 megabytes (MB). Reducing that footprint down to less than 10KB—a reduction of over 99.8%—causes standard linear compression tools to yield blocky, illegible artifacts.
+        </p>
+        <p>
+          ConvertKB tackles this limitation through <strong>programmatic binary quantization</strong>. By combining pre-compression dimension scaling, discrete cosine transform (DCT) re-indexing, and unneeded metadata removal directly in your browser, our client-side engine guarantees that your files meet strict submission caps while keeping personal signatures sharp and portraits identifiable.
+        </p>
+
+        <h3>Common Portal Specifications Requiring Images Under 10KB</h3>
+        <p>
+          Government examination commissions, banking recruitment boards, and immigration databases enforce rigid dimension and byte budgets. Submitting a file even a fraction of a kilobyte over the limit leads to instant rejection by automated intake filters.
+        </p>
+
+        <div class="specs-table-wrapper">
+          <table class="specs-table">
+            <thead>
+              <tr>
+                <th>Submission Category</th>
+                <th>Prescribed File Size</th>
+                <th>Standard Aspect / Pixels</th>
+                <th>Required File Format</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Official Candidate Signatures</strong></td>
+                <td>2 KB to 10 KB or 10 KB to 20 KB</td>
+                <td>140 x 60 pixels (7:2 or 3.5:1.5 cm)</td>
+                <td>JPEG / JPG</td>
+              </tr>
+              <tr>
+                <td><strong>Thumb Impressions</strong></td>
+                <td>3 KB to 10 KB</td>
+                <td>3:4 aspect ratio (200 x 240 pixels)</td>
+                <td>JPEG</td>
+              </tr>
+              <tr>
+                <td><strong>Exam Hall Ticket Profile Photos</strong></td>
+                <td>5 KB to 10 KB (Strict Portals)</td>
+                <td>200 x 230 pixels (3.5 x 4.5 cm)</td>
+                <td>JPG / PNG</td>
+              </tr>
+              <tr>
+                <td><strong>State PSC Document Uploads</strong></td>
+                <td>Under 10 KB</td>
+                <td>Varies by regional portal</td>
+                <td>Standard JPEG</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Why Standard Online Image Resizers Fail at 10KB</h3>
+        <p>
+          Most basic compression tools utilize simple quality sliders (such as 50% or 30%). When applied to an uncropped 4K resolution image:
+        </p>
+        <ol>
+          <li><strong>Overhead Bloat Remains:</strong> Camera headers, EXIF color profiles, thumbnail caches, and GPS coordinates remain embedded, consuming 8KB to 24KB alone—exceeding your entire budget before image pixel data is even evaluated.</li>
+          <li><strong>Extreme Color Banding:</strong> Simple encoders drop the color quantization tables uniformly. This leaves dark ink strokes on white signatures looking fuzzy, broken, or washed out.</li>
+          <li><strong>No Dimensional Downsampling:</strong> Attempting to squeeze 4000x3000 pixels into a 10KB payload forces the JPEG encoder to average pixels across giant 8x8 blocks, destroying fine text or lines.</li>
+        </ol>
+        <p>
+          ConvertKB avoids these traps. Our tool automatically scales the canvas resolution to appropriate dimensions (e.g., 200–400px width), strips all extraneous metadata tags, and optimizes black-and-white ink boundaries.
+        </p>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-block">
+          <div class="faq-item">
+            <div class="faq-question">How does ConvertKB hit exact KB limits like 10KB?</div>
+            <div class="faq-answer">
+              Our engine runs a sub-second iterative binary search algorithm directly inside device RAM. It modulates quantization matrix values and resolution factors until the exported Blob size falls strictly within the required boundary (between 7KB and 9.9KB) without unnecessary visual degradation.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">Can I crop my signature to exact ratios before compressing?</div>
+            <div class="faq-answer">
+              Yes. Use the integrated aspect ratio buttons above (such as "7:2 Signature" or "1:1 Square") to crop away excess border space. Trimming unnecessary background margins is the most effective way to preserve line clarity when compressing to 10KB.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">Is it secure to process personal signatures and documents here?</div>
+            <div class="faq-answer">
+              Yes, 100% secure. Everything executes locally in your browser memory using HTML5 Canvas APIs. Zero byte payloads or document images are transmitted across the internet or stored on our servers.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">How do I fix a signature that turns faint or grey?</div>
+            <div class="faq-answer">
+              Click the "Grayscale Mode" button, then bump the "Contrast" slider up to 120%-130%. This forces off-white scanner backgrounds to pure white (#FFFFFF) while deepening the dark ink strokes, giving you a clean, high-contrast signature that compresses efficiently.
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>ConvertKB</h4>
+          <p>
+            Client-side precision compression engines for students, job applicants, and web professionals worldwide. No uploads, complete privacy, instant optimization.
+          </p>
+        </div>
+        <div>
+          <h4>Popular Utilities</h4>
+          <ul class="footer-links">
+            <li><a href="/compress-image-to-20kb/">Compress Image to 20KB</a></li>
+            <li><a href="/compress-image-to-50kb/">Compress Image to 50KB</a></li>
+            <li><a href="/compress-image-to-100kb/">Compress Image to 100KB</a></li>
+            <li><a href="/change-dpi-to-200/">200 DPI Photo Converter</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Trust &amp; Legal</h4>
+          <ul class="footer-links">
+            <li><a href="/privacy-policy/">Privacy Policy</a></li>
+            <li><a href="/terms-of-service/">Terms of Service</a></li>
+            <li><a href="/contact-us/">Contact Us</a></li>
+            <li><a href="/about-us/">About Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 ConvertKB.com. All processing runs locally in browser memory.</span>
+        <span>Zero Server Uploads &bull; Privacy by Architecture</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CLIENT-SIDE SCRIPT LOGIC -->
+  <script is:inline>
+    // State variables
+    let rawImage = null;
+    let rotation = 0;
+    let isGrayscale = false;
+    let currentAspect = 'free';
+
+    const fileInput = document.getElementById('fileInput');
+    const dropzone = document.getElementById('dropzone');
+    const workbench = document.getElementById('workbench');
+    const previewCanvas = document.getElementById('previewCanvas');
+    const ctx = previewCanvas.getContext('2d');
+
+    const brightnessInput = document.getElementById('brightnessInput');
+    const contrastInput = document.getElementById('contrastInput');
+    const brightnessVal = document.getElementById('brightnessVal');
+    const contrastVal = document.getElementById('contrastVal');
+    const grayscaleBtn = document.getElementById('grayscaleBtn');
+    const rotateBtn = document.getElementById('rotateBtn');
+
+    const origSizeText = document.getElementById('origSizeText');
+    const outputSizeText = document.getElementById('outputSizeText');
+    const compressBtn = document.getElementById('compressBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    // Drag & Drop handlers
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('dragover');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleFile(e.target.files[0]);
+      }
+    });
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 KB';
+      const k = 1024;
+      return (bytes / k).toFixed(2) + ' KB';
+    }
+
+    function handleFile(file) {
+      origSizeText.innerText = formatBytes(file.size);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        rawImage = new Image();
+        rawImage.onload = () => {
+          workbench.style.display = 'grid';
+          downloadBtn.style.display = 'none';
+          outputSizeText.innerText = '--';
+          renderPreview();
+        };
+        rawImage.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Aspect Ratio Selectors
+    document.querySelectorAll('.button-pill-grid .pill-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.button-pill-grid .pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentAspect = btn.getAttribute('data-aspect');
+        renderPreview();
+      });
+    });
+
+    // Editor Event Listeners
+    brightnessInput.addEventListener('input', (e) => {
+      brightnessVal.innerText = e.target.value + '%';
+      renderPreview();
+    });
+
+    contrastInput.addEventListener('input', (e) => {
+      contrastVal.innerText = e.target.value + '%';
+      renderPreview();
+    });
+
+    grayscaleBtn.addEventListener('click', () => {
+      isGrayscale = !isGrayscale;
+      grayscaleBtn.classList.toggle('active', isGrayscale);
+      renderPreview();
+    });
+
+    rotateBtn.addEventListener('click', () => {
+      rotation = (rotation + 90) % 360;
+      renderPreview();
+    });
+
+    // Draw image to preview canvas considering crop, filters, and rotation
+    function renderPreview() {
+      if (!rawImage) return;
+
+      let sw = rawImage.naturalWidth;
+      let sh = rawImage.naturalHeight;
+      let sx = 0;
+      let sy = 0;
+
+      // Crop calculations based on selected aspect ratio
+      if (currentAspect === '1-1') {
+        const size = Math.min(sw, sh);
+        sx = (sw - size) / 2;
+        sy = (sh - size) / 2;
+        sw = size;
+        sh = size;
+      } else if (currentAspect === 'passport') { // 3.5 : 4.5
+        const targetRatio = 3.5 / 4.5;
+        if (sw / sh > targetRatio) {
+          const newW = sh * targetRatio;
+          sx = (sw - newW) / 2;
+          sw = newW;
+        } else {
+          const newH = sw / targetRatio;
+          sy = (sh - newH) / 2;
+          sh = newH;
+        }
+      } else if (currentAspect === 'signature') { // 7 : 2
+        const targetRatio = 7 / 2;
+        if (sw / sh > targetRatio) {
+          const newW = sh * targetRatio;
+          sx = (sw - newW) / 2;
+          sw = newW;
+        } else {
+          const newH = sw / targetRatio;
+          sy = (sh - newH) / 2;
+          sh = newH;
+        }
+      } else if (currentAspect === '4-3') {
+        const targetRatio = 4 / 3;
+        if (sw / sh > targetRatio) {
+          const newW = sh * targetRatio;
+          sx = (sw - newW) / 2;
+          sw = newW;
+        } else {
+          const newH = sw / targetRatio;
+          sy = (sh - newH) / 2;
+          sh = newH;
+        }
+      } else if (currentAspect === '16-9') {
+        const targetRatio = 16 / 9;
+        if (sw / sh > targetRatio) {
+          const newW = sh * targetRatio;
+          sx = (sw - newW) / 2;
+          sw = newW;
+        } else {
+          const newH = sw / targetRatio;
+          sy = (sh - newH) / 2;
+          sh = newH;
+        }
+      }
+
+      // Handle Canvas Dimensions accounting for 90 or 270 degree rotation
+      if (rotation === 90 || rotation === 270) {
+        previewCanvas.width = sh;
+        previewCanvas.height = sw;
+      } else {
+        previewCanvas.width = sw;
+        previewCanvas.height = sh;
+      }
+
+      ctx.save();
+      ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+
+      // Center for rotation
+      ctx.translate(previewCanvas.width / 2, previewCanvas.height / 2);
+      ctx.rotate((rotation * Math.PI) / 180);
+
+      // Apply Filter Matrix
+      const b = brightnessInput.value;
+      const c = contrastInput.value;
+      const g = isGrayscale ? 100 : 0;
+      ctx.filter = `brightness(${b}%) contrast(${c}%) grayscale(${g}%)`;
+
+      // Render image centered
+      ctx.drawImage(rawImage, sx, sy, sw, sh, -sw / 2, -sh / 2, sw, sh);
+      ctx.restore();
+    }
+
+    // Binary search compression targeting strictly <= 10KB (10240 bytes)
+    compressBtn.addEventListener('click', async () => {
+      if (!rawImage) return;
+
+      compressBtn.innerText = 'Compressing...';
+      compressBtn.disabled = true;
+
+      const targetBytes = 10 * 1024; // 10240 bytes
+      const sourceCanvas = previewCanvas;
+
+      // Downscale maximum dimension if it's too large to ever fit in 10KB
+      let maxDim = Math.max(sourceCanvas.width, sourceCanvas.height);
+      let scale = 1.0;
+      if (maxDim > 600) {
+        scale = 600 / maxDim;
+      }
+
+      let currentCanvas = document.createElement('canvas');
+      currentCanvas.width = Math.floor(sourceCanvas.width * scale);
+      currentCanvas.height = Math.floor(sourceCanvas.height * scale);
+      let cCtx = currentCanvas.getContext('2d');
+      cCtx.drawImage(sourceCanvas, 0, 0, currentCanvas.width, currentCanvas.height);
+
+      let low = 0.05;
+      let high = 0.92;
+      let bestBlob = null;
+      let bestQuality = low;
+
+      // Helper to generate blob
+      const getBlob = (canvas, q) => {
+        return new Promise(resolve => canvas.toBlob(b => resolve(b), 'image/jpeg', q));
+      };
+
+      // Perform Binary Search for Quality Level
+      for (let i = 0; i < 7; i++) {
+        let mid = (low + high) / 2;
+        let blob = await getBlob(currentCanvas, mid);
+
+        if (blob.size <= targetBytes) {
+          bestBlob = blob;
+          bestQuality = mid;
+          low = mid; // Try for higher quality
+        } else {
+          high = mid; // Too large, decrease quality
+        }
+      }
+
+      // If lowest quality is still over 10KB, progressively downsample dimensions
+      if (!bestBlob || bestBlob.size > targetBytes) {
+        let attempts = 0;
+        while ((!bestBlob || bestBlob.size > targetBytes) && attempts < 5) {
+          scale *= 0.8;
+          currentCanvas.width = Math.floor(sourceCanvas.width * scale);
+          currentCanvas.height = Math.floor(sourceCanvas.height * scale);
+          cCtx = currentCanvas.getContext('2d');
+          cCtx.drawImage(sourceCanvas, 0, 0, currentCanvas.width, currentCanvas.height);
+
+          bestBlob = await getBlob(currentCanvas, 0.45);
+          attempts++;
+        }
+      }
+
+      if (bestBlob) {
+        outputSizeText.innerText = formatBytes(bestBlob.size);
+        const downloadUrl = URL.createObjectURL(bestBlob);
+        downloadBtn.href = downloadUrl;
+        downloadBtn.style.display = 'flex';
+        downloadBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        outputSizeText.innerText = 'Failed: Scale down image';
+      }
+
+      compressBtn.innerHTML = '<span>&#9889;</span> Compress to Under 10KB';
+      compressBtn.disabled = false;
+    });
+  </script>
+
+</body>
+</html>
