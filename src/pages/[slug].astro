@@ -1,0 +1,212 @@
+---
+// src/pages/[slug].astro
+import MainLayout from '../layouts/MainLayout.astro';
+import ToolEngine from '../components/ToolEngine.astro';
+import { getPageData } from '../data/allPagesData.js';
+import { generateFullContent } from '../data/contentEngine.js';
+
+export async function getStaticPaths() {
+  const slugs = [
+    // Image Menu
+    "compress-image", "compress-image-to-10kb", "compress-image-to-20kb", "compress-image-to-30kb",
+    "compress-image-to-40kb", "compress-image-to-50kb", "compress-image-to-100kb", "compress-image-to-150kb",
+    "compress-image-to-200kb", "compress-image-to-500kb", "compress-image-to-1mb",
+    // PDF Menu
+    "compress-pdf", "compress-pdf-to-20kb", "compress-pdf-to-50kb", "compress-pdf-to-100kb",
+    "compress-pdf-to-200kb", "compress-pdf-to-300kb", "compress-pdf-to-400kb", "compress-pdf-to-500kb",
+    "compress-pdf-to-1mb", "compress-pdf-to-2mb",
+    // Image Formats Menu
+    "compress-jpeg", "compress-jpeg-to-10kb", "compress-jpeg-to-20kb", "compress-jpeg-to-30kb",
+    "compress-jpeg-to-40kb", "compress-jpeg-to-50kb", "compress-jpeg-to-100kb", "compress-jpeg-to-150kb",
+    "compress-jpeg-to-200kb", "compress-jpeg-to-500kb", "compress-jpg", "compress-jpg-to-10kb",
+    "compress-jpg-to-20kb", "compress-jpg-to-30kb", "compress-jpg-to-40kb", "compress-jpg-to-50kb",
+    "compress-jpg-to-100kb", "compress-jpg-to-150kb", "compress-jpg-to-200kb", "compress-jpg-to-500kb",
+    "compress-webp", "compress-webp-to-100kb", "compress-png", "compress-png-to-10kb", "compress-png-to-20kb",
+    "compress-png-to-30kb", "compress-png-to-40kb", "compress-png-to-50kb", "compress-png-to-100kb",
+    "compress-png-to-150kb", "compress-png-to-200kb", "compress-png-to-500kb", "compress-png-to-1mb",
+    // Resize Menu
+    "resize-image", "resize-image-to-10kb", "resize-image-to-20kb", "resize-image-to-30kb",
+    "resize-image-to-40kb", "resize-image-to-50kb", "resize-image-to-100kb", "resize-image-to-150kb",
+    "resize-image-to-200kb", "resize-image-to-500kb", "resize-image-to-1mb", "resize-pdf",
+    "resize-pdf-to-10kb", "resize-pdf-to-20kb", "resize-pdf-to-30kb", "resize-pdf-to-40kb",
+    "resize-pdf-to-50kb", "resize-pdf-to-100kb", "resize-pdf-to-150kb", "resize-pdf-to-200kb",
+    "resize-pdf-to-500kb", "resize-pdf-to-1mb",
+    // Convert Menu
+    "convert-image-to-word", "convert-image-to-excel", "convert-pdf-to-word", "convert-pdf-to-excel",
+    "convert-pdf-to-jpg", "convert-pdf-to-ppt", "heic-to-jpg", "heic-to-jpeg", "heic-to-pdf",
+    "heic-to-png", "jpg-to-excel", "jpg-to-pdf", "jpg-to-png", "jpg-to-jpeg", "jpg-to-webp",
+    "jpeg-to-jpg", "jpeg-to-pdf", "jpeg-to-png", "jpeg-to-excel", "webp-to-jpg", "webp-to-png",
+    // Tools & Exams Menu
+    "passport-photo-size", "pan-card-photo", "pan-card-signature", "youtube-thumbnail-size",
+    "instagram-photo-size", "us-visa-photo", "upsc-photo-signature", "ssc-photo-and-signature",
+    "gate-photo-and-signature", "neet-photo-and-signature", "ibps-photo-and-signature",
+    "defence-photo-and-signature", "signature-resize"
+  ];
+
+  return slugs.map((slug) => {
+    const pageConfig = getPageData(slug);
+    const content = generateFullContent(pageConfig);
+    return {
+      params: { slug },
+      props: { page: pageConfig, content }
+    };
+  });
+}
+
+const { page, content } = Astro.props;
+const canonicalUrl = `https://convertkb.com/${page.slug}`;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": `ConvertKB ${page.h1}`,
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": page.desc
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": content.faqs.map((f) => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    }
+  ]
+};
+---
+
+<MainLayout title={page.title} description={page.desc} canonicalUrl={canonicalUrl} schema={schema}>
+  <main>
+    <section class="hero-section">
+      <div class="container">
+        <h1>{page.h1}</h1>
+        <p>{content.intro}</p>
+
+        <ToolEngine
+          defaultMode={page.category === 'pdf' ? 'pdf' : 'image'}
+          defaultTargetKb={page.targetKb}
+          defaultFormat={page.format}
+          defaultRatio={page.ratio}
+        />
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="container content-body">
+        <h2>Official Specification Matrix</h2>
+        <p>Ensure your output metrics match official agency parameters prior to submission:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Specification Parameter</th>
+              <th>Prescribed Portal Standard</th>
+            </tr>
+          </thead>
+          <tbody>
+            {content.specTable.map((row, idx) => (
+              <tr key={idx}>
+                <td><strong>{row.label}</strong></td>
+                <td>{row.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {content.sections.map((sec, sIdx) => (
+          <div class="content-block" key={sIdx}>
+            <h2>{sec.h2}</h2>
+            {sec.paragraphs.map((p, pIdx) => (
+              <p key={pIdx}>{p}</p>
+            ))}
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="faq-section">
+      <div class="container content-body">
+        <h2 style="text-align: center; margin-bottom: 28px; border: none;">Frequently Asked Questions</h2>
+        {content.faqs.map((faq, fIdx) => (
+          <div class="faq-card" key={fIdx}>
+            <h4>{faq.q}</h4>
+            <p>{faq.a}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+</MainLayout>
+
+<style>
+  .hero-section {
+    padding: 44px 0 20px;
+    text-align: center;
+    background: radial-gradient(circle at 50% 0%, #edf2ff 0%, #fafbfc 75%);
+  }
+  .hero-section h1 {
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--slate-900);
+    margin-bottom: 12px;
+  }
+  .hero-section p {
+    font-size: 17px;
+    color: var(--slate-600);
+    max-width: 780px;
+    margin: 0 auto 32px;
+  }
+  .content-section {
+    padding: 60px 0;
+    background: #ffffff;
+    border-top: 1px solid var(--border);
+  }
+  .content-body {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--slate-800);
+  }
+  .content-body h2 {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 40px 0 16px;
+    color: var(--slate-900);
+    border-bottom: 2px solid var(--slate-100);
+    padding-bottom: 8px;
+  }
+  .content-block {
+    margin-bottom: 24px;
+  }
+  .content-block p {
+    margin-bottom: 14px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0 32px;
+    font-size: 14px;
+  }
+  th, td { padding: 12px; border: 1px solid var(--border); text-align: left; }
+  th { background: var(--slate-50); font-weight: 700; color: var(--slate-900); }
+  .faq-section { padding: 50px 0 80px; background: #fafbfc; }
+  .faq-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+  }
+  .faq-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .faq-card p { font-size: 15px; color: var(--slate-600); margin: 0; }
+  @media (max-width: 576px) {
+    .hero-section h1 { font-size: 30px; }
+  }
+</style>
