@@ -1,0 +1,274 @@
+---
+// src/components/navigation.astro
+const navigation = [
+  {
+    name: "Image",
+    items: [
+      { name: "Compress Image", href: "/compress-image" },
+      { name: "Compress Image to 10kb", href: "/compress-image-to-10kb" },
+      { name: "Compress Image to 20kb", href: "/compress-image-to-20kb" },
+      { name: "Compress Image to 30kb", href: "/compress-image-to-30kb" },
+      { name: "Compress Image to 40kb", href: "/compress-image-to-40kb" },
+      { name: "Compress Image to 50kb", href: "/compress-image-to-50kb" },
+      { name: "Compress Image to 100kb", href: "/compress-image-to-100kb" },
+      { name: "Compress Image to 150kb", href: "/compress-image-to-150kb" },
+      { name: "Compress Image to 200kb", href: "/compress-image-to-200kb" },
+      { name: "Compress Image to 500kb", href: "/compress-image-to-500kb" },
+      { name: "Compress Image to 1mb", href: "/compress-image-to-1mb" }
+    ]
+  },
+  {
+    name: "PDF",
+    items: [
+      { name: "Compress PDF", href: "/compress-pdf" },
+      { name: "Compress PDF to 20kb", href: "/compress-pdf-to-20kb" },
+      { name: "Compress PDF to 50kb", href: "/compress-pdf-to-50kb" },
+      { name: "Compress PDF to 100kb", href: "/compress-pdf-to-100kb" },
+      { name: "Compress PDF to 200kb", href: "/compress-pdf-to-200kb" },
+      { name: "Compress PDF to 300kb", href: "/compress-pdf-to-300kb" },
+      { name: "Compress PDF to 400kb", href: "/compress-pdf-to-400kb" },
+      { name: "Compress PDF to 500kb", href: "/compress-pdf-to-500kb" },
+      { name: "Compress PDF to 1mb", href: "/compress-pdf-to-1mb" },
+      { name: "Compress PDF to 2mb", href: "/compress-pdf-to-2mb" }
+    ]
+  },
+  {
+    name: "Image Formats",
+    items: [
+      { name: "Compress JPEG", href: "/compress-jpeg" },
+      { name: "Compress JPEG to 10kb", href: "/compress-jpeg-to-10kb" },
+      { name: "Compress JPEG to 20kb", href: "/compress-jpeg-to-20kb" },
+      { name: "Compress JPEG to 30kb", href: "/compress-jpeg-to-30kb" },
+      { name: "Compress JPEG to 40kb", href: "/compress-jpeg-to-40kb" },
+      { name: "Compress JPEG to 50kb", href: "/compress-jpeg-to-50kb" },
+      { name: "Compress JPEG to 100kb", href: "/compress-jpeg-to-100kb" },
+      { name: "Compress JPEG to 150kb", href: "/compress-jpeg-to-150kb" },
+      { name: "Compress JPEG to 200kb", href: "/compress-jpeg-to-200kb" },
+      { name: "Compress JPEG to 500kb", href: "/compress-jpeg-to-500kb" },
+      { name: "Compress JPG", href: "/compress-jpg" },
+      { name: "Compress JPG to 10kb", href: "/compress-jpg-to-10kb" },
+      { name: "Compress JPG to 20kb", href: "/compress-jpg-to-20kb" },
+      { name: "Compress JPG to 30kb", href: "/compress-jpg-to-30kb" },
+      { name: "Compress JPG to 40kb", href: "/compress-jpg-to-40kb" },
+      { name: "Compress JPG to 50kb", href: "/compress-jpg-to-50kb" },
+      { name: "Compress JPG to 100kb", href: "/compress-jpg-to-100kb" },
+      { name: "Compress JPG to 150kb", href: "/compress-jpg-to-150kb" },
+      { name: "Compress JPG to 200kb", href: "/compress-jpg-to-200kb" },
+      { name: "Compress JPG to 500kb", href: "/compress-jpg-to-500kb" },
+      { name: "Compress WebP", href: "/compress-webp" },
+      { name: "Compress WebP to 100kb", href: "/compress-webp-to-100kb" },
+      { name: "Compress PNG", href: "/compress-png" },
+      { name: "Compress PNG to 10kb", href: "/compress-png-to-10kb" },
+      { name: "Compress PNG to 20kb", href: "/compress-png-to-20kb" },
+      { name: "Compress PNG to 30kb", href: "/compress-png-to-30kb" },
+      { name: "Compress PNG to 40kb", href: "/compress-png-to-40kb" },
+      { name: "Compress PNG to 50kb", href: "/compress-png-to-50kb" },
+      { name: "Compress PNG to 100kb", href: "/compress-png-to-100kb" },
+      { name: "Compress PNG to 150kb", href: "/compress-png-to-150kb" },
+      { name: "Compress PNG to 200kb", href: "/compress-png-to-200kb" },
+      { name: "Compress PNG to 500kb", href: "/compress-png-to-500kb" },
+      { name: "Compress PNG to 1mb", href: "/compress-png-to-1mb" }
+    ]
+  },
+  {
+    name: "Resize",
+    items: [
+      { name: "Resize Image", href: "/resize-image" },
+      { name: "Resize Image to 10kb", href: "/resize-image-to-10kb" },
+      { name: "Resize Image to 20kb", href: "/resize-image-to-20kb" },
+      { name: "Resize Image to 30kb", href: "/resize-image-to-30kb" },
+      { name: "Resize Image to 40kb", href: "/resize-image-to-40kb" },
+      { name: "Resize Image to 50kb", href: "/resize-image-to-50kb" },
+      { name: "Resize Image to 100kb", href: "/resize-image-to-100kb" },
+      { name: "Resize Image to 150kb", href: "/resize-image-to-150kb" },
+      { name: "Resize Image to 200kb", href: "/resize-image-to-200kb" },
+      { name: "Resize Image to 500kb", href: "/resize-image-to-500kb" },
+      { name: "Resize Image to 1mb", href: "/resize-image-to-1mb" },
+      { name: "Resize PDF", href: "/resize-pdf" },
+      { name: "Resize PDF to 10kb", href: "/resize-pdf-to-10kb" },
+      { name: "Resize PDF to 20kb", href: "/resize-pdf-to-20kb" },
+      { name: "Resize PDF to 30kb", href: "/resize-pdf-to-30kb" },
+      { name: "Resize PDF to 40kb", href: "/resize-pdf-to-40kb" },
+      { name: "Resize PDF to 50kb", href: "/resize-pdf-to-50kb" },
+      { name: "Resize PDF to 100kb", href: "/resize-pdf-to-100kb" },
+      { name: "Resize PDF to 150kb", href: "/resize-pdf-to-150kb" },
+      { name: "Resize PDF to 200kb", href: "/resize-pdf-to-200kb" },
+      { name: "Resize PDF to 500kb", href: "/resize-pdf-to-500kb" },
+      { name: "Resize PDF to 1mb", href: "/resize-pdf-to-1mb" }
+    ]
+  },
+  {
+    name: "Convert",
+    items: [
+      { name: "Convert Image to Word", href: "/convert-image-to-word" },
+      { name: "Convert Image to Excel", href: "/convert-image-to-excel" },
+      { name: "Convert PDF to Word", href: "/convert-pdf-to-word" },
+      { name: "Convert PDF to Excel", href: "/convert-pdf-to-excel" },
+      { name: "Convert PDF to JPG", href: "/convert-pdf-to-jpg" },
+      { name: "Convert PDF to PPT", href: "/convert-pdf-to-ppt" },
+      { name: "HEIC to JPG", href: "/heic-to-jpg" },
+      { name: "HEIC to JPEG", href: "/heic-to-jpeg" },
+      { name: "HEIC to PDF", href: "/heic-to-pdf" },
+      { name: "HEIC to PNG", href: "/heic-to-png" },
+      { name: "JPG to Excel", href: "/jpg-to-excel" },
+      { name: "JPG to PDF", href: "/jpg-to-pdf" },
+      { name: "JPG to PNG", href: "/jpg-to-png" },
+      { name: "JPG to JPEG", href: "/jpg-to-jpeg" },
+      { name: "JPG to WebP", href: "/jpg-to-webp" },
+      { name: "JPEG to JPG", href: "/jpeg-to-jpg" },
+      { name: "JPEG to PDF", href: "/jpeg-to-pdf" },
+      { name: "JPEG to PNG", href: "/jpeg-to-png" },
+      { name: "JPEG to Excel", href: "/jpeg-to-excel" },
+      { name: "WebP to JPG", href: "/webp-to-jpg" },
+      { name: "WebP to PNG", href: "/webp-to-png" }
+    ]
+  },
+  {
+    name: "Tools",
+    items: [
+      { name: "Passport Photo Size", href: "/passport-photo-size" },
+      { name: "PAN Card Photo", href: "/pan-card-photo" },
+      { name: "PAN Card Signature", href: "/pan-card-signature" },
+      { name: "YouTube Thumbnail Size", href: "/youtube-thumbnail-size" },
+      { name: "Instagram Photo Size", href: "/instagram-photo-size" },
+      { name: "US Visa Photo", href: "/us-visa-photo" }
+    ]
+  },
+  {
+    name: "Exams",
+    items: [
+      { name: "UPSC Photo & Signature", href: "/upsc-photo-signature" },
+      { name: "SSC Photo & Signature", href: "/ssc-photo-and-signature" },
+      { name: "GATE Photo & Signature", href: "/gate-photo-and-signature" },
+      { name: "NEET Photo & Signature", href: "/neet-photo-and-signature" },
+      { name: "IBPS Photo & Signature", href: "/ibps-photo-and-signature" },
+      { name: "Defence Photo & Signature", href: "/defence-photo-and-signature" },
+      { name: "Signature Resize", href: "/signature-resize" }
+    ]
+  }
+];
+---
+
+<header class="main-header">
+  <div class="nav-container">
+    <a href="/" class="brand-logo">
+      <span class="dot"></span> ConvertKB
+    </a>
+
+    <nav class="desktop-nav">
+      {navigation.map((menu) => (
+        <div class="nav-menu-item">
+          <button class="nav-menu-btn" type="button" aria-haspopup="true">
+            {menu.name}
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+            </svg>
+          </button>
+          <div class="dropdown-content">
+            {menu.items.map((sub) => (
+              <a href={sub.href}>{sub.name}</a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .main-header {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .nav-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+  .brand-logo {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+  .brand-logo .dot {
+    width: 10px;
+    height: 10px;
+    background: #4f46e5;
+    border-radius: 50%;
+  }
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .nav-menu-item {
+    position: relative;
+  }
+  .nav-menu-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .nav-menu-btn:hover {
+    background: #f1f5f9;
+    color: #4f46e5;
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    min-width: 270px;
+    max-height: 460px;
+    overflow-y: auto;
+    box-shadow: 0 18px 38px -6px rgba(15, 23, 42, 0.12);
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 8px 0;
+    z-index: 1100;
+  }
+  .nav-menu-item:hover .dropdown-content {
+    display: block;
+  }
+  .dropdown-content a {
+    display: block;
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .dropdown-content a:hover {
+    background: #eef2ff;
+    color: #4f46e5;
+  }
+  @media (max-width: 992px) {
+    .desktop-nav {
+      display: none;
+    }
+  }
+</style>
