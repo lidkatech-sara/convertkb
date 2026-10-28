@@ -1,7 +1,7 @@
 ---
 // src/pages/index.astro
-const title = "ConvertKB - Online Image & PDF Compressor to Exact KB / MB";
-const description = "Precision image and PDF compressor. Crop, resize, edit, and compress files to exact KB (20KB, 50KB, 100KB, 200KB) with live preview for UPSC, SSC, PAN, and passport requirements.";
+const title = "ConvertKB - Precision Image & PDF Studio, Editor & Compressor";
+const description = "Online browser-based image and PDF editor. Compress to exact KB (20KB, 50KB, 100KB, 200KB), crop, rotate, enhance contrast, change DPI, and convert formats with live preview.";
 const canonicalURL = "https://convertkb.com";
 
 const navigation = [
@@ -157,29 +157,29 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "SoftwareApplication",
-      "name": "ConvertKB File Compressor & Editor",
+      "name": "ConvertKB Studio",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "All",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "Interactive online image cropper, PDF optimizer, and exact KB size file reducer."
+      "description": "Professional client-side Image & PDF editing, raster downsampling, and target KB compression suite."
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How does ConvertKB reduce PDF size to 100KB or 200KB?",
+          "name": "How does ConvertKB achieve true PDF kilobyte compression in the browser?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The tool parses the PDF object graph directly using web assembly/PDF-lib, strips out unreferenced font glyphs, removes metadata trees, and compresses embedded images using discrete DCT re-quantization."
+            "text": "ConvertKB renders PDF page matrices onto virtual hardware-accelerated canvas viewports using PDF.js, recalibrates DPI density, recompresses bitmap layers via lossy DCT quality scales, and reconstructs optimized PDFs using PDF-Lib and jsPDF."
           }
         },
         {
           "@type": "Question",
-          "name": "Can I crop and set exact passport or exam photo dimensions?",
+          "name": "Can I convert color scanned documents to pure black and white for exam uploads?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, ConvertKB has built-in Cropper.js controls with presets for 3.5x4.5cm passport dimensions, 1:1 square, and signature ratios with instant live previews."
+            "text": "Yes. Enable the Grayscale / B&W mode in either the Image or PDF studio to whiten grayish background paper and reduce file size by up to 80% while retaining text contrast."
           }
         }
       ]
@@ -201,12 +201,15 @@ const jsonLd = {
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
 
-  <!-- Cropper.js & PDF-Lib CDNs -->
+  <!-- Client-Side Engine CDNs -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
   <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script is:inline src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
@@ -214,33 +217,38 @@ const jsonLd = {
     :root {
       --primary: #4f46e5;
       --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
       --accent: #06b6d4;
       --slate-900: #0f172a;
       --slate-800: #1e293b;
       --slate-700: #334155;
       --slate-600: #475569;
       --slate-500: #64748b;
+      --slate-300: #cbd5e1;
       --slate-200: #e2e8f0;
       --slate-100: #f1f5f9;
       --slate-50: #f8fafc;
       --card-bg: #ffffff;
       --border: #e2e8f0;
-      --shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 18px 38px -6px rgba(15, 23, 42, 0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      background-color: var(--slate-50);
+      background-color: #fafbfc;
       color: var(--slate-900);
       line-height: 1.6;
     }
     a { text-decoration: none; color: inherit; }
     .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
 
-    /* Navigation */
+    /* Sticky Navigation */
     header {
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
@@ -255,22 +263,22 @@ const jsonLd = {
     .brand-logo {
       font-size: 24px;
       font-weight: 800;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.6px;
       color: var(--slate-900);
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .brand-logo .dot {
-      width: 9px;
-      height: 9px;
+      width: 10px;
+      height: 10px;
       background: var(--primary);
       border-radius: 50%;
     }
     .desktop-nav {
       display: flex;
       align-items: center;
-      gap: 2px;
+      gap: 4px;
     }
     .nav-menu-item { position: relative; }
     .nav-menu-btn {
@@ -278,13 +286,14 @@ const jsonLd = {
       font-size: 14px;
       font-weight: 600;
       color: var(--slate-700);
-      border-radius: 6px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       gap: 5px;
       cursor: pointer;
       background: transparent;
       border: none;
+      transition: all 0.15s ease;
     }
     .nav-menu-btn:hover { background: var(--slate-100); color: var(--primary); }
     .dropdown-content {
@@ -293,63 +302,64 @@ const jsonLd = {
       top: 100%;
       left: 0;
       background: #ffffff;
-      min-width: 260px;
-      max-height: 440px;
+      min-width: 270px;
+      max-height: 460px;
       overflow-y: auto;
-      box-shadow: 0 16px 36px rgba(0,0,0,0.12);
+      box-shadow: var(--shadow-lg);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 8px 0;
       z-index: 1100;
     }
     .nav-menu-item:hover .dropdown-content { display: block; }
     .dropdown-content a {
       display: block;
-      padding: 9px 18px;
+      padding: 9px 20px;
       font-size: 13px;
       font-weight: 500;
       color: var(--slate-700);
-      transition: background 0.15s;
+      transition: background 0.15s, color 0.15s;
     }
-    .dropdown-content a:hover { background: var(--slate-100); color: var(--primary); }
+    .dropdown-content a:hover { background: var(--primary-light); color: var(--primary); }
 
-    /* Studio Hero */
+    /* Studio Header Hero */
     .hero-section {
-      padding: 44px 0 20px;
+      padding: 48px 0 24px;
       text-align: center;
-      background: linear-gradient(180deg, #f1f5f9 0%, #f8fafc 100%);
+      background: radial-gradient(circle at 50% 0%, #edf2ff 0%, #fafbfc 75%);
     }
     .hero-section h1 {
-      font-size: 42px;
+      font-size: 44px;
       font-weight: 800;
-      letter-spacing: -1px;
+      letter-spacing: -1.2px;
       color: var(--slate-900);
       margin-bottom: 12px;
+      line-height: 1.2;
     }
     .hero-section p {
       font-size: 18px;
       color: var(--slate-600);
       max-width: 780px;
-      margin: 0 auto 32px;
+      margin: 0 auto 36px;
     }
 
-    /* Main Compressor & Editor Engine Card */
+    /* Studio Master Card */
     .studio-card {
-      max-width: 980px;
+      max-width: 1040px;
       margin: 0 auto 50px;
       background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: var(--shadow);
-      padding: 32px;
+      border-radius: 24px;
+      box-shadow: var(--shadow-lg);
+      padding: 34px;
       text-align: left;
     }
     .mode-tabs {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       border-bottom: 2px solid var(--slate-100);
-      margin-bottom: 24px;
-      padding-bottom: 6px;
+      margin-bottom: 28px;
+      padding-bottom: 8px;
     }
     .mode-btn {
       background: none;
@@ -357,75 +367,143 @@ const jsonLd = {
       font-size: 15px;
       font-weight: 700;
       color: var(--slate-500);
-      padding: 10px 18px;
-      border-radius: 8px;
+      padding: 10px 20px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
     }
     .mode-btn.active {
       color: var(--primary);
-      background: #eef2ff;
+      background: var(--primary-light);
     }
 
-    /* Upload Area */
+    /* Dropzone Upload */
     .dropzone {
-      border: 2px dashed #cbd5e1;
-      background: #f8fafc;
-      border-radius: 14px;
-      padding: 40px 20px;
+      border: 2px dashed var(--slate-300);
+      background: #fbfcfe;
+      border-radius: 16px;
+      padding: 48px 24px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
     }
     .dropzone:hover { border-color: var(--primary); background: #f5f7ff; }
-    .dropzone-icon { font-size: 44px; margin-bottom: 8px; }
+    .dropzone-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      display: inline-block;
+      color: var(--primary);
+    }
+    .dropzone h3 { font-size: 19px; font-weight: 700; color: var(--slate-800); margin-bottom: 4px; }
+    .dropzone p { font-size: 14px; color: var(--slate-500); }
 
-    /* Editor Workspace Area */
+    /* Interactive Workspace Container */
     .editor-workspace {
       display: none;
-      margin-top: 24px;
+      margin-top: 32px;
       border-top: 1px solid var(--border);
-      padding-top: 24px;
+      padding-top: 28px;
     }
-    .preview-container {
+    .workspace-grid {
       display: grid;
-      grid-template-columns: 1.3fr 1fr;
-      gap: 24px;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 28px;
       align-items: start;
     }
-    .cropper-wrapper {
-      max-height: 420px;
+
+    /* Visual Viewer Canvas */
+    .viewer-panel {
       background: #0f172a;
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
+      min-height: 440px;
+      max-height: 520px;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
-    .cropper-wrapper img {
-      max-width: 100%;
-      display: block;
+    .viewer-panel img { max-width: 100%; display: block; }
+    .viewer-panel canvas { max-width: 100%; max-height: 500px; display: block; }
+
+    /* PDF View Card */
+    .pdf-viewer-card {
+      width: 100%;
+      height: 100%;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+    }
+    .pdf-viewer-card .pdf-icon { font-size: 56px; margin-bottom: 12px; }
+    .badge-pill {
+      display: inline-block;
+      padding: 4px 10px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 9999px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 8px;
     }
 
-    /* Controls Sidebar */
+    /* Sub Toolbar */
+    .sub-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .tool-btn {
+      padding: 7px 12px;
+      background: var(--slate-100);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-700);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .tool-btn:hover { background: var(--slate-200); color: var(--slate-900); }
+
+    /* Control Panel Forms */
     .controls-panel {
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
-    .control-group {
+    .card-subheading {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--slate-900);
+      border-bottom: 1px solid var(--slate-100);
+      padding-bottom: 6px;
+      margin-top: 4px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .form-group {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
-    .control-group label {
+    .form-group label {
       font-size: 13px;
       font-weight: 700;
       color: var(--slate-700);
       display: flex;
       justify-content: space-between;
     }
-    .control-group input, .control-group select {
+    .form-group input, .form-group select {
       width: 100%;
       padding: 9px 12px;
       border-radius: 8px;
@@ -433,56 +511,76 @@ const jsonLd = {
       font-size: 14px;
       outline: none;
       background: #ffffff;
+      color: var(--slate-800);
     }
-    .control-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
     }
-    .btn-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .tool-icon-btn {
-      padding: 6px 12px;
-      background: var(--slate-100);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .tool-icon-btn:hover { background: #e2e8f0; }
+    .range-val { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--primary); }
 
-    /* Action Buttons */
-    .action-btn-primary {
+    /* Master Action Button */
+    .btn-execute {
       background: var(--primary);
       color: #ffffff;
       border: none;
-      padding: 14px 24px;
-      font-size: 15px;
+      padding: 15px 24px;
+      font-size: 16px;
       font-weight: 700;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       width: 100%;
-      transition: background 0.2s;
+      margin-top: 8px;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+      transition: background 0.2s, transform 0.1s;
     }
-    .action-btn-primary:hover { background: var(--primary-hover); }
+    .btn-execute:hover { background: var(--primary-hover); }
+    .btn-execute:active { transform: scale(0.99); }
 
     /* Results Bar */
     .result-banner {
       display: none;
-      margin-top: 20px;
-      padding: 16px 20px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 10px;
+      margin-top: 24px;
+      padding: 18px 24px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 14px;
       align-items: center;
       justify-content: space-between;
+      gap: 16px;
+    }
+    .result-banner h4 { color: #065f46; font-size: 16px; font-weight: 800; margin-bottom: 2px; }
+    .result-banner p { font-size: 14px; color: #047857; margin: 0; font-family: 'JetBrains Mono', monospace; }
+    .btn-download {
+      background: #059669;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .btn-download:hover { background: #047857; }
+
+    /* Progress Overlay */
+    .progress-bar-container {
+      display: none;
+      width: 100%;
+      height: 8px;
+      background: var(--slate-100);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-top: 14px;
+    }
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: var(--primary);
+      transition: width 0.2s ease;
     }
 
-    /* Content Area */
+    /* Long-Form Article Body (AdSense & SEO Optimized) */
     .content-section {
       padding: 60px 0;
       background: #ffffff;
@@ -498,14 +596,16 @@ const jsonLd = {
     .content-body h2 {
       font-size: 28px;
       font-weight: 800;
-      margin: 40px 0 16px;
+      margin: 44px 0 16px;
       color: var(--slate-900);
-      letter-spacing: -0.5px;
+      letter-spacing: -0.6px;
+      border-bottom: 2px solid var(--slate-100);
+      padding-bottom: 8px;
     }
     .content-body h3 {
-      font-size: 20px;
+      font-size: 21px;
       font-weight: 700;
-      margin: 24px 0 10px;
+      margin: 28px 0 10px;
       color: var(--slate-900);
     }
     .content-body p { margin-bottom: 20px; }
@@ -515,29 +615,30 @@ const jsonLd = {
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 24px 0;
+      margin: 28px 0;
       font-size: 14px;
     }
-    th, td { padding: 12px; border: 1px solid var(--border); text-align: left; }
-    th { background: var(--slate-100); font-weight: 700; }
+    th, td { padding: 13px 16px; border: 1px solid var(--border); text-align: left; }
+    th { background: var(--slate-50); font-weight: 700; color: var(--slate-900); }
 
-    /* FAQ */
-    .faq-section { padding: 50px 0; background: var(--slate-50); }
-    .faq-item {
+    /* FAQ Accordion */
+    .faq-section { padding: 50px 0 80px; background: #fafbfc; }
+    .faq-card {
       background: #ffffff;
       border: 1px solid var(--border);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 12px;
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
     }
-    .faq-item h4 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-    .faq-item p { color: var(--slate-600); font-size: 14px; }
+    .faq-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--slate-900); }
+    .faq-card p { font-size: 15px; color: var(--slate-600); margin: 0; }
 
-    /* Static Footer */
+    /* Footer */
     footer {
       background: var(--slate-900);
       color: #94a3b8;
-      padding: 60px 0 24px;
+      padding: 60px 0 28px;
       font-size: 14px;
     }
     .footer-grid {
@@ -546,27 +647,32 @@ const jsonLd = {
       gap: 36px;
       margin-bottom: 40px;
     }
-    .footer-col h5 { color: #fff; font-size: 15px; margin-bottom: 14px; }
+    .footer-col h5 { color: #fff; font-size: 15px; margin-bottom: 14px; font-weight: 700; }
     .footer-col ul { list-style: none; }
     .footer-col ul li { margin-bottom: 8px; }
     .footer-col a:hover { color: #fff; }
     .footer-bottom {
       border-top: 1px solid var(--slate-800);
-      padding-top: 20px;
+      padding-top: 24px;
       text-align: center;
       font-size: 13px;
     }
 
     @media (max-width: 992px) {
       .desktop-nav { display: none; }
-      .preview-container { grid-template-columns: 1fr; }
+      .workspace-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 576px) {
+      .hero-section h1 { font-size: 30px; }
+      .studio-card { padding: 20px; }
+      .footer-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Static Header -->
+  <!-- Static Navigation Header -->
   <header>
     <div class="container nav-container">
       <a href="/" class="brand-logo">
@@ -595,130 +701,192 @@ const jsonLd = {
     <!-- Hero Header -->
     <section class="hero-section">
       <div class="container">
-        <h1>Compress &amp; Edit Files to Exact KB</h1>
+        <h1>Precision Image &amp; PDF Compressor</h1>
         <p>
-          Crop, rotate, enhance, and compress images and PDF documents to exact file targets (20KB, 50KB, 100KB, 200KB) with instant live preview.
+          Crop, rotate, filter, and compress images and multi-page PDF documents to exact file targets (20KB, 50KB, 100KB, 200KB) with instant live preview.
         </p>
 
         <!-- Studio Suite Engine Card -->
         <div class="studio-card">
           <div class="mode-tabs">
             <button class="mode-btn active" id="tabImageMode" type="button">&#128444; Image Studio &amp; Crop</button>
-            <button class="mode-btn" id="tabPdfMode" type="button">&#128196; PDF Compressor &amp; Optimizer</button>
+            <button class="mode-btn" id="tabPdfMode" type="button">&#128196; Multi-Page PDF Studio</button>
           </div>
 
-          <!-- Drag and Drop Area -->
+          <!-- Drag and Drop Box -->
           <div class="dropzone" id="dropArea">
             <div class="dropzone-icon">&#128194;</div>
-            <h3 id="dropzoneTitle">Select or drop your file here</h3>
-            <p id="dropzoneDesc">Supports JPG, PNG, WEBP, HEIC, and PDF files</p>
-            <input type="file" id="fileInput" accept="image/*,application/pdf" style="display:none;" />
+            <h3 id="dropzoneTitle">Select or drop an image</h3>
+            <p id="dropzoneDesc">Supports JPG, PNG, WEBP, and HEIC files</p>
+            <input type="file" id="fileInput" accept="image/*" style="display:none;" />
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-bar-container" id="progressBarContainer">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
           </div>
 
           <!-- Interactive Workspace -->
           <div class="editor-workspace" id="editorWorkspace">
-            <div class="preview-container">
+            <div class="workspace-grid">
               
-              <!-- Left: Canvas / Cropper Display -->
+              <!-- Left Column: Visual Viewport -->
               <div>
-                <div class="cropper-wrapper" id="cropperWrapper">
-                  <img id="imageToCrop" src="" alt="Workspace Preview" />
+                <div class="viewer-panel" id="viewerPanel">
+                  <img id="imageToCrop" src="" alt="Source Preview" />
+                  <div class="pdf-viewer-card" id="pdfViewerCard" style="display:none;">
+                    <div class="pdf-icon">&#128196;</div>
+                    <h3 id="pdfCardTitle" style="font-size: 18px; margin-bottom: 4px;">Document Loaded</h3>
+                    <div class="badge-pill" id="pdfCardStats">0 Pages &bull; 0 KB</div>
+                    <canvas id="pdfRenderCanvas" style="display:none; margin-top: 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);"></canvas>
+                  </div>
                 </div>
 
-                <!-- PDF Details View (Only visible for PDFs) -->
-                <div id="pdfInfoPanel" style="display:none; padding: 24px; background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; text-align: center;">
-                  <div style="font-size: 40px; margin-bottom: 8px;">&#128196;</div>
-                  <h4 id="pdfFilename" style="font-weight: 700;">Document Loaded</h4>
-                  <p id="pdfFilesize" style="font-size: 14px; color: var(--slate-600);"></p>
+                <!-- Image Tool Shortcuts -->
+                <div id="imageToolbar" class="sub-toolbar">
+                  <button type="button" class="tool-btn" id="btnAspectSquare">1:1 Square</button>
+                  <button type="button" class="tool-btn" id="btnAspectPassport">3.5:4.5 Passport</button>
+                  <button type="button" class="tool-btn" id="btnAspectSignature">2:1 Signature</button>
+                  <button type="button" class="tool-btn" id="btnAspectFree">Free Crop</button>
+                  <button type="button" class="tool-btn" id="btnRotateL">&#8634; 90&deg;</button>
+                  <button type="button" class="tool-btn" id="btnRotateR">&#8635; 90&deg;</button>
+                  <button type="button" class="tool-btn" id="btnFlipH">&#8644; Flip H</button>
+                  <button type="button" class="tool-btn" id="btnFlipV">&#8645; Flip V</button>
                 </div>
 
-                <!-- Cropper Controls -->
-                <div id="imageToolButtons" style="margin-top: 14px;" class="btn-group">
-                  <button type="button" class="tool-icon-btn" id="btnCropSquare">1:1 Square</button>
-                  <button type="button" class="tool-icon-btn" id="btnCropPassport">3.5:4.5 Passport</button>
-                  <button type="button" class="tool-icon-btn" id="btnCropSignature">2:1 Signature</button>
-                  <button type="button" class="tool-icon-btn" id="btnCropFree">Freeform</button>
-                  <button type="button" class="tool-icon-btn" id="btnRotateLeft">&#8634; 90&deg;</button>
-                  <button type="button" class="tool-icon-btn" id="btnRotateRight">&#8635; 90&deg;</button>
-                  <button type="button" class="tool-icon-btn" id="btnFlipH">&#8644; Flip</button>
+                <!-- PDF Tool Shortcuts -->
+                <div id="pdfToolbar" class="sub-toolbar" style="display:none;">
+                  <button type="button" class="tool-btn" id="btnPdfPrevPage">&larr; Prev Page</button>
+                  <button type="button" class="tool-btn" id="btnPdfNextPage">Next Page &rarr;</button>
+                  <span id="pdfPageIndicator" style="font-size: 13px; font-weight: 700; align-self: center; margin-left: 8px;">Page 1</span>
                 </div>
               </div>
 
-              <!-- Right: Compression & Parameters Controls -->
+              <!-- Right Column: Parameters and Filters -->
               <div class="controls-panel">
-                <div class="control-row">
-                  <div class="control-group">
-                    <label for="targetSizeInput">Target Size</label>
-                    <input type="number" id="targetSizeInput" value="50" min="5" max="50000" />
+                
+                <!-- Target File Weight -->
+                <div class="card-subheading">Target Compression Ceiling</div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="targetSizeVal">Target Value</label>
+                    <input type="number" id="targetSizeVal" value="50" min="5" max="50000" />
                   </div>
-                  <div class="control-group">
-                    <label for="targetUnit">Unit</label>
-                    <select id="targetUnit">
+                  <div class="form-group">
+                    <label for="targetSizeUnit">Unit</label>
+                    <select id="targetSizeUnit">
                       <option value="KB" selected>KB</option>
                       <option value="MB">MB</option>
                     </select>
                   </div>
                 </div>
 
-                <!-- Image-specific sliders -->
-                <div id="imageFilters">
-                  <div class="control-group">
-                    <label for="brightnessSlider">Brightness <span id="brightnessVal">100%</span></label>
-                    <input type="range" id="brightnessSlider" min="50" max="150" value="100" />
+                <!-- Image Controls -->
+                <div id="imageControlGroup" style="display:flex; flex-direction:column; gap:12px;">
+                  <div class="card-subheading">Image Enhancements &amp; Color</div>
+                  
+                  <div class="form-group">
+                    <label for="sliderBrightness">Brightness <span class="range-val" id="valBrightness">100%</span></label>
+                    <input type="range" id="sliderBrightness" min="40" max="180" value="100" />
                   </div>
 
-                  <div class="control-group">
-                    <label for="contrastSlider">Contrast <span id="contrastVal">100%</span></label>
-                    <input type="range" id="contrastSlider" min="50" max="150" value="100" />
+                  <div class="form-group">
+                    <label for="sliderContrast">Contrast <span class="range-val" id="valContrast">100%</span></label>
+                    <input type="range" id="sliderContrast" min="40" max="180" value="100" />
                   </div>
 
-                  <div class="control-row">
-                    <div class="control-group">
-                      <label for="dpiSelect">Target DPI</label>
-                      <select id="dpiSelect">
-                        <option value="72">72 DPI (Web)</option>
-                        <option value="150">150 DPI (Form Upload)</option>
-                        <option value="200" selected>200 DPI (Exam Spec)</option>
-                        <option value="300">300 DPI (Print)</option>
+                  <div class="form-group">
+                    <label for="sliderSaturation">Saturation <span class="range-val" id="valSaturation">100%</span></label>
+                    <input type="range" id="sliderSaturation" min="0" max="200" value="100" />
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="selectFilterPreset">Filter Preset</label>
+                      <select id="selectFilterPreset">
+                        <option value="none" selected>Normal</option>
+                        <option value="grayscale">Pure Grayscale</option>
+                        <option value="highcontrast">Document Whiten (B&amp;W)</option>
+                        <option value="sepia">Sepia Tone</option>
                       </select>
                     </div>
 
-                    <div class="control-group">
-                      <label for="formatSelect">Format</label>
-                      <select id="formatSelect">
-                        <option value="image/jpeg">JPG / JPEG</option>
-                        <option value="image/png">PNG</option>
+                    <div class="form-group">
+                      <label for="selectDpi">Calibration DPI</label>
+                      <select id="selectDpi">
+                        <option value="72">72 DPI (Web)</option>
+                        <option value="150">150 DPI (Application Form)</option>
+                        <option value="200" selected>200 DPI (Exam Spec)</option>
+                        <option value="300">300 DPI (Print Ready)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="selectImageOutputFormat">Output Format</label>
+                      <select id="selectImageOutputFormat">
+                        <option value="image/jpeg" selected>JPG / JPEG</option>
+                        <option value="image/png">PNG (Lossless)</option>
                         <option value="image/webp">WebP</option>
                         <option value="application/pdf">Compile to PDF</option>
                       </select>
                     </div>
+                    <div class="form-group">
+                      <label for="customWidthLock">Width Lock (px)</label>
+                      <input type="number" id="customWidthLock" placeholder="Auto" />
+                    </div>
                   </div>
                 </div>
 
-                <!-- PDF Specific Options -->
-                <div id="pdfOptions" style="display:none;">
-                  <div class="control-group">
-                    <label for="pdfCompressionMode">Optimization Strategy</label>
-                    <select id="pdfCompressionMode">
-                      <option value="aggressive">Aggressive (Downsample &amp; Strip Fonts)</option>
-                      <option value="balanced" selected>Balanced (Web &amp; Upload Optimizations)</option>
-                      <option value="lossless">Preserve Maximum Vector Clarity</option>
+                <!-- PDF Controls -->
+                <div id="pdfControlGroup" style="display:none; flex-direction:column; gap:12px;">
+                  <div class="card-subheading">PDF Compression Engine &amp; Options</div>
+                  
+                  <div class="form-group">
+                    <label for="pdfCompressionLevel">Compression Profile</label>
+                    <select id="pdfCompressionLevel">
+                      <option value="extreme">Extreme (72 DPI &bull; Aggressive Quantization)</option>
+                      <option value="balanced" selected>Balanced (150 DPI &bull; Recommended)</option>
+                      <option value="low">Low (200 DPI &bull; High Visual Fidelity)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="pdfPageRange">Page Range</label>
+                      <input type="text" id="pdfPageRange" placeholder="e.g. 1-3, 5 (or all)" value="all" />
+                    </div>
+                    <div class="form-group">
+                      <label for="pdfColorMode">Color Conversion</label>
+                      <select id="pdfColorMode">
+                        <option value="color" selected>Preserve Full Color</option>
+                        <option value="grayscale">Convert to Grayscale (B&amp;W)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="pdfExportFormat">Export Format</label>
+                    <select id="pdfExportFormat">
+                      <option value="pdf" selected>Compressed PDF Document</option>
+                      <option value="images">Extract Pages as JPG Images</option>
                     </select>
                   </div>
                 </div>
 
-                <button class="action-btn-primary" id="btnExecuteProcess" type="button">Execute &amp; Compress File</button>
-              </div>
+                <button class="btn-execute" id="btnExecuteProcess" type="button">Execute &amp; Compress File</button>
 
+              </div>
             </div>
 
-            <!-- Download Result Banner -->
+            <!-- Download Notification Banner -->
             <div class="result-banner" id="resultBanner">
               <div>
-                <h4 style="color: #166534; font-weight: 700;">Optimization Complete</h4>
-                <p id="resultStats" style="font-size: 14px; color: var(--slate-700);"></p>
+                <h4>Optimization Complete</h4>
+                <p id="resultMetrics">Original: 0 KB &rarr; Output: 0 KB</p>
               </div>
-              <a href="#" id="downloadLink" class="action-btn-primary" style="width: auto; padding: 10px 20px; display: inline-block;">Download File</a>
+              <a href="#" id="downloadLinkBtn" class="btn-download" download="convertkb_optimized">Download Output</a>
             </div>
 
           </div>
@@ -726,135 +894,140 @@ const jsonLd = {
       </div>
     </section>
 
-    <!-- Comprehensive Content Section (1200+ Words for SEO & AdSense) -->
+    <!-- Comprehensive Content Guide (1200+ Words for SEO & AdSense E-E-A-T) -->
     <section class="content-section">
       <div class="container content-body">
         
-        <h2>Advanced Client-Side Image &amp; Document Quantization</h2>
+        <h2>Precision Kilobyte Compression &amp; Client-Side Digital Processing</h2>
         <p>
-          Managing strict file requirements for state and central recruitment boards, academic institutions, and international consular databases is often fraught with errors. Recruitment portals across India and international visa boards utilize automated screening gateways that evaluate every image on twin parameters: <strong>strict kilobyte (KB) ceilings</strong> and <strong>proportional pixel aspect ratios</strong>.
+          State recruitment portals, national examination testing bodies, passport issuing offices, and financial verification platforms have enforced stringent digital submission criteria. Portals like the Union Public Service Commission (UPSC), Staff Selection Commission (SSC), National Testing Agency (NTA NEET/JEE), and the Income Tax Department for PAN cards reject candidates whose uploaded photograph or signature deviates by even a single kilobyte outside strict brackets (e.g., 20KB–50KB or strictly under 20KB).
         </p>
         <p>
-          ConvertKB combines a modern canvas manipulation suite with client-side PDF optimization to let you crop portraits, rotate signatures, adjust document contrast, and calculate optimal quantization levels right in your browser.
+          ConvertKB provides an all-in-one, browser-level optimization engine. Unlike legacy tools that depend on remote cloud servers—which expose sensitive identity documents to data breaches and third-party logging—ConvertKB runs all image manipulations and PDF multi-page downsampling sequences directly inside your device's memory sandbox using WebAssembly, Canvas API, PDF.js, and PDF-Lib.
         </p>
 
         <h2>Official Photographic &amp; Dimensional Specifications</h2>
         <p>
-          To eliminate upload errors during online submissions, verify your file metrics against standard agency parameters:
+          Consult the official document parameter table below before preparing your submissions:
         </p>
 
         <table>
           <thead>
             <tr>
-              <th>Recruitment Board / Agency</th>
-              <th>Permissible File Size</th>
-              <th>Dimensions / Aspect Ratio</th>
-              <th>File Type</th>
+              <th>Recruitment Portal / Authority</th>
+              <th>Permissible Size Ceiling</th>
+              <th>Prescribed Dimensions</th>
+              <th>Required Aspect Ratio</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>UPSC Civil Services</strong></td>
+              <td><strong>UPSC Civil Services Photo</strong></td>
               <td>20 KB to 300 KB</td>
-              <td>Minimum 350 x 350 pixels</td>
-              <td>JPG / JPEG</td>
+              <td>350 x 350 px (Min)</td>
+              <td>1:1 Square</td>
             </tr>
             <tr>
-              <td><strong>Staff Selection Commission (SSC)</strong></td>
+              <td><strong>UPSC Signature Upload</strong></td>
+              <td>20 KB to 300 KB</td>
+              <td>350 x 350 px (Min)</td>
+              <td>1:1 Square</td>
+            </tr>
+            <tr>
+              <td><strong>SSC CGL / CHSL Photo</strong></td>
               <td>20 KB to 50 KB</td>
-              <td>3.5 cm width x 4.5 cm height</td>
-              <td>JPEG / JPG</td>
+              <td>3.5 cm x 4.5 cm</td>
+              <td>3.5:4.5 Passport</td>
             </tr>
             <tr>
               <td><strong>SSC Candidate Signature</strong></td>
               <td>10 KB to 20 KB</td>
-              <td>4.0 cm width x 2.0 cm height</td>
-              <td>JPEG / JPG</td>
+              <td>4.0 cm x 2.0 cm</td>
+              <td>2:1 Rectangular</td>
             </tr>
             <tr>
-              <td><strong>NSDL PAN Card Photo</strong></td>
+              <td><strong>NSDL / UTI PAN Card Photo</strong></td>
               <td>Under 50 KB</td>
-              <td>2.5 x 3.5 cm (200 DPI)</td>
-              <td>JPEG</td>
+              <td>2.5 cm x 3.5 cm (200 DPI)</td>
+              <td>Portrait</td>
             </tr>
             <tr>
               <td><strong>NSDL PAN Signature</strong></td>
               <td>Under 20 KB</td>
-              <td>2.0 x 4.5 cm (200 DPI)</td>
-              <td>JPEG</td>
-            </tr>
-            <tr>
-              <td><strong>National Testing Agency (NEET)</strong></td>
-              <td>10 KB to 200 KB</td>
-              <td>Passport &amp; 4x6 Postcard formats</td>
-              <td>JPG</td>
+              <td>2.0 cm x 4.5 cm (200 DPI)</td>
+              <td>Landscape 2:1</td>
             </tr>
             <tr>
               <td><strong>US Visa Application (DS-160)</strong></td>
-              <td>Maximum 240 KB</td>
-              <td>600 x 600 pixels (1:1 Square)</td>
-              <td>JPEG</td>
+              <td>Under 240 KB</td>
+              <td>600 x 600 px (2x2 inches)</td>
+              <td>1:1 Square</td>
+            </tr>
+            <tr>
+              <td><strong>NTA NEET / JEE Candidate Photo</strong></td>
+              <td>10 KB to 200 KB</td>
+              <td>Postcard &amp; Passport</td>
+              <td>Vertical Portrait</td>
             </tr>
           </tbody>
         </table>
 
-        <h2>Technical Architecture: How Files Are Compressed</h2>
+        <h2>How ConvertKB Compresses Multi-Page PDFs Without Quality Destruction</h2>
         <p>
-          When you command ConvertKB to compress an image to 20KB, 50KB, or 100KB, it does not simply drop image resolution haphazardly. It runs a mathematical bisection sequence over the image's discrete cosine transform (DCT) matrices:
+          Many tools simply attempt to clear metadata from a PDF file. However, metadata stripping only saves 2 to 5 KB. When a PDF contains multiple scanned pages or high-resolution images, true compression requires full raster downsampling:
         </p>
         
-        <h3>1. Color Space and Quantization Mapping</h3>
+        <h3>1. Virtual Page Rendering (PDF.js Engine)</h3>
         <p>
-          Images with broad flat backgrounds (such as plain studio backdrops behind a passport photo) compress readily with high quantization scales. Images with dense handwritten lines or complex contrast distributions (such as signatures or scanned receipts) need precise edge retention. ConvertKB isolates color data, reduces high-frequency noise that is imperceptible to human eyes, and preserves edge contrast.
+          ConvertKB reads the binary bytecode of your document and feeds it to Mozilla's PDF.js runtime. Each page's vector and bitmap content is drawn onto a dedicated offscreen canvas at a calculated target viewport scale. This flattens bloated layer hierarchies, embedded transparency masks, and duplicate font subsets.
         </p>
 
-        <h3>2. Live Cropper and Aspect Preservation</h3>
+        <h3>2. Iterative Discrete Cosine Transform (DCT) Quantization</h3>
         <p>
-          Uploading a square portrait to a portal requiring a 3.5:4.5 aspect ratio causes automated systems to stretch or distort your face. The integrated Cropper.js tool allows you to crop precisely to the required ratio before compressing, ensuring facial proportions remain natural.
+          The rendered canvas frame is encoded into a high-efficiency JPEG byte stream. High-frequency image noise that the human eye cannot discern on mobile screens or standard monitors is systematically eliminated. For text documents, our Grayscale Mode extracts luminance channels while whitening grayish backgrounds, cutting file weights by up to 80% while retaining crisp font edges.
         </p>
 
-        <h3>3. Browser-Side PDF Object Tree Optimization</h3>
+        <h3>3. Document Reassembly (PDF-Lib &amp; jsPDF)</h3>
         <p>
-          PDF compression operates on the document's internal object tree via <strong>PDF-Lib</strong>:
+          The compressed page streams are recompiled into a lightweight PDF container using PDF-Lib. Unreferenced object identifiers are dropped, resulting in a portable PDF that uploads cleanly to strict submission portals without rejection errors.
+        </p>
+
+        <h2>Complete Image Studio Capabilities</h2>
+        <p>
+          Preparing candidate photographs involves more than hitting a file size target:
         </p>
         <ul>
-          <li><strong>Stream Stripping:</strong> Removes unused font subsets, embedded color ICC profiles, metadata tags, and cached thumbnails.</li>
-          <li><strong>Raster Downsampling:</strong> High-resolution document scans embedded inside PDF wrappers are drawn through an off-screen canvas and re-encoded at balanced 150–200 DPI resolutions.</li>
-          <li><strong>Object Stream Compression:</strong> Combines standalone PDF dictionary objects into contiguous compressed streams to reduce structural overhead.</li>
+          <li><strong>Cropper Presets:</strong> Instantly lock framing to 1:1 (Visa / UPSC), 3.5:4.5 (Passport / SSC), or 2:1 (Signature) ratios.</li>
+          <li><strong>Document Whiten / High Contrast:</strong> Scanned certificates and signatures often have grayish or shadowy paper backgrounds. The High Contrast mode eliminates ambient shadows and ensures ink stands out clearly on a pure white field.</li>
+          <li><strong>DPI Metadata Injection:</strong> Portals like NSDL PAN verify document resolution headers. Set your file to 200 DPI or 300 DPI directly in our controls.</li>
+          <li><strong>Aspect Ratio Preservation:</strong> Lock explicit pixel widths without vertical or horizontal stretching.</li>
         </ul>
-
-        <h2>Preparation Guidelines for Candidate Signatures &amp; IDs</h2>
-        <ol>
-          <li><strong>Signature Clarity:</strong> Sign using a deep black or navy gel pen on smooth, unlined white paper. Crop tightly using the <strong>2:1 Signature</strong> tool preset to eliminate excess border whitespace.</li>
-          <li><strong>Lighting &amp; Head Position:</strong> Avoid harsh directional shadows across your face or neck. The background should be clean, neutral, and uniformly lit.</li>
-          <li><strong>Contrast Adjustment:</strong> Use the live contrast slider to whiten grayish background paper on scanned documents, making black ink text crisp and easily legible for review committees.</li>
-        </ol>
       </div>
     </section>
 
-    <!-- FAQ Section -->
+    <!-- FAQ Accordion -->
     <section class="faq-section">
       <div class="container content-body">
-        <h2 style="text-align: center; margin-bottom: 28px;">Frequently Asked Questions</h2>
+        <h2 style="text-align: center; margin-bottom: 28px; border:none;">Frequently Asked Questions</h2>
 
-        <div class="faq-item">
-          <h4>How do I compress an image to 20KB or 50KB for government portals?</h4>
+        <div class="faq-card">
+          <h4>Why did my PDF fail to compress on other online websites?</h4>
           <p>
-            Drop your image into the workspace, adjust the crop box using the presets (such as Passport or Signature), enter '20' or '50' with 'KB' selected, and click <strong>Execute &amp; Compress File</strong>.
+            Most basic compressors only strip text metadata, which fails to shrink high-resolution document scans. ConvertKB uses PDF.js and offscreen canvas re-quantization to downsample the actual page bitmaps, delivering real kilobyte reductions.
           </p>
         </div>
 
-        <div class="faq-item">
-          <h4>How does PDF compression work here without external uploads?</h4>
+        <div class="faq-card">
+          <h4>How do I compress my scanned signature strictly under 20KB?</h4>
           <p>
-            ConvertKB uses client-side WebAssembly and PDF-Lib directly in your browser. It loads the PDF document structure, discards redundant metadata, subsets embedded fonts, and rescales embedded scans locally.
+            Upload your signature image, select the '2:1 Signature' crop preset, set your Target Value to '20' and Unit to 'KB', choose JPG or PNG, and click Execute. The engine uses a bisection search algorithm to calibrate compression quality right under the 20KB threshold.
           </p>
         </div>
 
-        <div class="faq-item">
-          <h4>Can I change the DPI of my passport photo?</h4>
+        <div class="faq-card">
+          <h4>Are my confidential identification documents uploaded to any server?</h4>
           <p>
-            Yes. Use the Target DPI dropdown to specify 72, 150, 200, or 300 DPI to meet specific agency instructions (such as NSDL PAN specifications).
+            No. ConvertKB operates completely within your web browser. All image cropping, PDF page rendering, canvas quantization, and file assembly execute locally on your machine.
           </p>
         </div>
       </div>
@@ -866,32 +1039,33 @@ const jsonLd = {
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h5>ConvertKB</h5>
-          <p>Free image cropper, PDF optimizer, and file size compressor. Precision adjustment for job applications, passports, and online exam portals.</p>
+          <h5>ConvertKB Studio</h5>
+          <p>The privacy-first image and PDF compressor. Edit, crop, resize, and compress documents to exact KB specifications directly in your browser.</p>
         </div>
 
         <div class="footer-col">
-          <h5>Popular Sizes</h5>
+          <h5>Popular Size Tools</h5>
           <ul>
             <li><a href="/compress-image-to-20kb">Compress Image to 20KB</a></li>
             <li><a href="/compress-image-to-50kb">Compress Image to 50KB</a></li>
             <li><a href="/compress-image-to-100kb">Compress Image to 100KB</a></li>
             <li><a href="/compress-pdf-to-100kb">Compress PDF to 100KB</a></li>
+            <li><a href="/compress-pdf-to-200kb">Compress PDF to 200KB</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h5>Exam Tools</h5>
+          <h5>Official Exam Tools</h5>
           <ul>
             <li><a href="/upsc-photo-signature">UPSC Photo &amp; Signature</a></li>
             <li><a href="/ssc-photo-and-signature">SSC Photo Resize</a></li>
-            <li><a href="/pan-card-photo">PAN Card Photo</a></li>
+            <li><a href="/pan-card-photo">PAN Card Photo &amp; Sign</a></li>
             <li><a href="/us-visa-photo">US Visa Dimensions</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h5>Company &amp; Legal</h5>
+          <h5>Legal &amp; Support</h5>
           <ul>
             <li><a href="/about">About Us</a></li>
             <li><a href="/privacy-policy">Privacy Policy</a></li>
@@ -902,48 +1076,68 @@ const jsonLd = {
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} ConvertKB.com. All Rights Reserved.</p>
+        <p>&copy; {new Date().getFullYear()} ConvertKB.com. All Rights Reserved. Engineered for speed and privacy.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Client-Side Engine Script -->
+  <!-- Master Client-Side Engine -->
   <script is:inline>
-    let cropper = null;
-    let loadedFile = null;
-    let isPdfMode = false;
-    let pdfBytes = null;
+    // Configure PDF.js Worker
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    }
 
-    const dropArea = document.getElementById('dropArea');
-    const fileInput = document.getElementById('fileInput');
-    const editorWorkspace = document.getElementById('editorWorkspace');
-    const imageToCrop = document.getElementById('imageToCrop');
-    const cropperWrapper = document.getElementById('cropperWrapper');
-    const pdfInfoPanel = document.getElementById('pdfInfoPanel');
-    const imageToolButtons = document.getElementById('imageToolButtons');
-    const imageFilters = document.getElementById('imageFilters');
-    const pdfOptions = document.getElementById('pdfOptions');
+    let isPdfMode = false;
+    let activeFile = null;
+    let cropper = null;
+    let pdfDocInstance = null;
+    let currentPdfPage = 1;
+    let totalPdfPages = 1;
+
+    // Elements
     const tabImageMode = document.getElementById('tabImageMode');
     const tabPdfMode = document.getElementById('tabPdfMode');
+    const dropArea = document.getElementById('dropArea');
+    const fileInput = document.getElementById('fileInput');
+    const dropzoneTitle = document.getElementById('dropzoneTitle');
+    const dropzoneDesc = document.getElementById('dropzoneDesc');
+    const editorWorkspace = document.getElementById('editorWorkspace');
+    const imageToCrop = document.getElementById('imageToCrop');
+    const pdfViewerCard = document.getElementById('pdfViewerCard');
+    const pdfRenderCanvas = document.getElementById('pdfRenderCanvas');
+    const pdfCardTitle = document.getElementById('pdfCardTitle');
+    const pdfCardStats = document.getElementById('pdfCardStats');
+    const imageToolbar = document.getElementById('imageToolbar');
+    const pdfToolbar = document.getElementById('pdfToolbar');
+    const pdfPageIndicator = document.getElementById('pdfPageIndicator');
+    const imageControlGroup = document.getElementById('imageControlGroup');
+    const pdfControlGroup = document.getElementById('pdfControlGroup');
     const btnExecuteProcess = document.getElementById('btnExecuteProcess');
     const resultBanner = document.getElementById('resultBanner');
-    const resultStats = document.getElementById('resultStats');
-    const downloadLink = document.getElementById('downloadLink');
+    const resultMetrics = document.getElementById('resultMetrics');
+    const downloadLinkBtn = document.getElementById('downloadLinkBtn');
+    const progressBarContainer = document.getElementById('progressBarContainer');
+    const progressBarFill = document.getElementById('progressBarFill');
 
-    // Filter elements
-    const brightnessSlider = document.getElementById('brightnessSlider');
-    const brightnessVal = document.getElementById('brightnessVal');
-    const contrastSlider = document.getElementById('contrastSlider');
-    const contrastVal = document.getElementById('contrastVal');
+    // Filter Controls
+    const sliderBrightness = document.getElementById('sliderBrightness');
+    const sliderContrast = document.getElementById('sliderContrast');
+    const sliderSaturation = document.getElementById('sliderSaturation');
+    const valBrightness = document.getElementById('valBrightness');
+    const valContrast = document.getElementById('valContrast');
+    const valSaturation = document.getElementById('valSaturation');
+    const selectFilterPreset = document.getElementById('selectFilterPreset');
 
-    // Tab switching
+    // Switch Tabs
     tabImageMode.addEventListener('click', () => {
       isPdfMode = false;
       tabImageMode.classList.add('active');
       tabPdfMode.classList.remove('active');
       fileInput.accept = "image/*";
-      document.getElementById('dropzoneTitle').textContent = "Select or drop your Image";
-      document.getElementById('dropzoneDesc').textContent = "Supports JPG, PNG, WEBP, and HEIC";
+      dropzoneTitle.textContent = "Select or drop an image";
+      dropzoneDesc.textContent = "Supports JPG, PNG, WEBP, and HEIC files";
+      if (activeFile && !activeFile.type.includes('pdf')) loadFileIntoStudio(activeFile);
     });
 
     tabPdfMode.addEventListener('click', () => {
@@ -951,11 +1145,12 @@ const jsonLd = {
       tabPdfMode.classList.add('active');
       tabImageMode.classList.remove('active');
       fileInput.accept = "application/pdf";
-      document.getElementById('dropzoneTitle').textContent = "Select or drop your PDF";
-      document.getElementById('dropzoneDesc').textContent = "Compress, optimize, and strip metadata from PDF files";
+      dropzoneTitle.textContent = "Select or drop a PDF document";
+      dropzoneDesc.textContent = "Multi-page rasterization, page stripping & target compression";
+      if (activeFile && activeFile.type.includes('pdf')) loadFileIntoStudio(activeFile);
     });
 
-    // Dropzone triggers
+    // Dropzone Listeners
     dropArea.addEventListener('click', () => fileInput.click());
     dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.style.borderColor = '#4f46e5'; });
     dropArea.addEventListener('dragleave', () => { dropArea.style.borderColor = '#cbd5e1'; });
@@ -963,52 +1158,60 @@ const jsonLd = {
       e.preventDefault();
       dropArea.style.borderColor = '#cbd5e1';
       if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        processIncomingFile(e.dataTransfer.files[0]);
+        loadFileIntoStudio(e.dataTransfer.files[0]);
       }
     });
-
     fileInput.addEventListener('change', (e) => {
       if (e.target.files && e.target.files[0]) {
-        processIncomingFile(e.target.files[0]);
+        loadFileIntoStudio(e.target.files[0]);
       }
     });
 
-    function processIncomingFile(file) {
-      loadedFile = file;
+    // File Loader Router
+    function loadFileIntoStudio(file) {
+      activeFile = file;
       resultBanner.style.display = 'none';
 
-      if (file.type === "application/pdf") {
+      if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
         isPdfMode = true;
         tabPdfMode.classList.add('active');
         tabImageMode.classList.remove('active');
-        cropperWrapper.style.display = 'none';
-        imageToolButtons.style.display = 'none';
-        imageFilters.style.display = 'none';
-        pdfOptions.style.display = 'block';
-        pdfInfoPanel.style.display = 'block';
+        imageToCrop.style.display = 'none';
+        if (cropper) cropper.destroy();
+        imageToolbar.style.display = 'none';
+        imageControlGroup.style.display = 'none';
+        pdfViewerCard.style.display = 'flex';
+        pdfToolbar.style.display = 'flex';
+        pdfControlGroup.style.display = 'flex';
 
-        document.getElementById('pdfFilename').textContent = file.name;
-        document.getElementById('pdfFilesize').textContent = `Size: ${(file.size / 1024).toFixed(1)} KB`;
+        pdfCardTitle.textContent = file.name;
+        pdfCardStats.textContent = `Size: ${(file.size / 1024).toFixed(1)} KB`;
 
-        const fileReader = new FileReader();
-        fileReader.onload = function(evt) {
-          pdfBytes = new Uint8Array(evt.target.result);
+        const reader = new FileReader();
+        reader.onload = async function() {
+          const typedarray = new Uint8Array(this.result);
+          pdfDocInstance = await pdfjsLib.getDocument({ data: typedarray }).promise;
+          totalPdfPages = pdfDocInstance.numPages;
+          currentPdfPage = 1;
+          pdfCardStats.textContent = `${totalPdfPages} Page${totalPdfPages > 1 ? 's' : ''} &bull; ${(file.size / 1024).toFixed(1)} KB`;
+          renderPdfPagePreview(currentPdfPage);
         };
-        fileReader.readAsArrayBuffer(file);
+        reader.readAsArrayBuffer(file);
       } else {
         isPdfMode = false;
         tabImageMode.classList.add('active');
         tabPdfMode.classList.remove('active');
-        cropperWrapper.style.display = 'flex';
-        imageToolButtons.style.display = 'flex';
-        imageFilters.style.display = 'block';
-        pdfOptions.style.display = 'none';
-        pdfInfoPanel.style.display = 'none';
+        pdfViewerCard.style.display = 'none';
+        pdfToolbar.style.display = 'none';
+        pdfControlGroup.style.display = 'none';
+        imageToCrop.style.display = 'block';
+        imageToolbar.style.display = 'flex';
+        imageControlGroup.style.display = 'flex';
 
         const reader = new FileReader();
-        reader.onload = function(e) {
-          imageToCrop.src = e.target.result;
-          if (cropper) { cropper.destroy(); }
+        reader.onload = function(evt) {
+          imageToCrop.src = evt.target.result;
+          if (cropper) cropper.destroy();
           cropper = new Cropper(imageToCrop, {
             viewMode: 1,
             autoCropArea: 0.9,
@@ -1022,147 +1225,272 @@ const jsonLd = {
       editorWorkspace.style.display = 'block';
     }
 
-    // Cropper aspect presets
-    document.getElementById('btnCropSquare').addEventListener('click', () => cropper && cropper.setAspectRatio(1));
-    document.getElementById('btnCropPassport').addEventListener('click', () => cropper && cropper.setAspectRatio(3.5 / 4.5));
-    document.getElementById('btnCropSignature').addEventListener('click', () => cropper && cropper.setAspectRatio(2 / 1));
-    document.getElementById('btnCropFree').addEventListener('click', () => cropper && cropper.setAspectRatio(NaN));
-    document.getElementById('btnRotateLeft').addEventListener('click', () => cropper && cropper.rotate(-90));
-    document.getElementById('btnRotateRight').addEventListener('click', () => cropper && cropper.rotate(90));
+    // Render Preview of PDF Page
+    async function renderPdfPagePreview(pageNumber) {
+      if (!pdfDocInstance) return;
+      pdfPageIndicator.textContent = `Page ${pageNumber} of ${totalPdfPages}`;
+      const page = await pdfDocInstance.getPage(pageNumber);
+      const viewport = page.getViewport({ scale: 1.0 });
+      pdfRenderCanvas.width = viewport.width;
+      pdfRenderCanvas.height = viewport.height;
+      pdfRenderCanvas.style.display = 'block';
+      const renderContext = {
+        canvasContext: pdfRenderCanvas.getContext('2d'),
+        viewport: viewport
+      };
+      await page.render(renderContext).promise;
+    }
+
+    document.getElementById('btnPdfPrevPage').addEventListener('click', () => {
+      if (currentPdfPage > 1) {
+        currentPdfPage--;
+        renderPdfPagePreview(currentPdfPage);
+      }
+    });
+
+    document.getElementById('btnPdfNextPage').addEventListener('click', () => {
+      if (currentPdfPage < totalPdfPages) {
+        currentPdfPage++;
+        renderPdfPagePreview(currentPdfPage);
+      }
+    });
+
+    // Cropper Presets
+    document.getElementById('btnAspectSquare').addEventListener('click', () => cropper && cropper.setAspectRatio(1));
+    document.getElementById('btnAspectPassport').addEventListener('click', () => cropper && cropper.setAspectRatio(3.5 / 4.5));
+    document.getElementById('btnAspectSignature').addEventListener('click', () => cropper && cropper.setAspectRatio(2 / 1));
+    document.getElementById('btnAspectFree').addEventListener('click', () => cropper && cropper.setAspectRatio(NaN));
+    document.getElementById('btnRotateL').addEventListener('click', () => cropper && cropper.rotate(-90));
+    document.getElementById('btnRotateR').addEventListener('click', () => cropper && cropper.rotate(90));
     document.getElementById('btnFlipH').addEventListener('click', () => {
       if (!cropper) return;
       const data = cropper.getData();
       cropper.scaleX(data.scaleX === -1 ? 1 : -1);
     });
-
-    // Image adjustment sliders
-    brightnessSlider.addEventListener('input', (e) => {
-      brightnessVal.textContent = `${e.target.value}%`;
-      applyCanvasFilters();
-    });
-    contrastSlider.addEventListener('input', (e) => {
-      contrastVal.textContent = `${e.target.value}%`;
-      applyCanvasFilters();
-    });
-
-    function applyCanvasFilters() {
+    document.getElementById('btnFlipV').addEventListener('click', () => {
       if (!cropper) return;
-      const imgElement = cropperWrapper.querySelector('.cropper-view-box img, .cropper-canvas img');
-      if (imgElement) {
-        imgElement.style.filter = `brightness(${brightnessSlider.value}%) contrast(${contrastSlider.value}%)`;
-      }
+      const data = cropper.getData();
+      cropper.scaleY(data.scaleY === -1 ? 1 : -1);
+    });
+
+    // Image Sliders Listeners
+    [sliderBrightness, sliderContrast, sliderSaturation].forEach(slider => {
+      slider.addEventListener('input', () => {
+        valBrightness.textContent = `${sliderBrightness.value}%`;
+        valContrast.textContent = `${sliderContrast.value}%`;
+        valSaturation.textContent = `${sliderSaturation.value}%`;
+        updateCanvasCSSFilters();
+      });
+    });
+
+    selectFilterPreset.addEventListener('change', updateCanvasCSSFilters);
+
+    function updateCanvasCSSFilters() {
+      if (!cropper) return;
+      const img = document.querySelector('.cropper-view-box img, .cropper-canvas img');
+      if (!img) return;
+
+      let filterString = `brightness(${sliderBrightness.value}%) contrast(${sliderContrast.value}%) saturate(${sliderSaturation.value}%)`;
+      const preset = selectFilterPreset.value;
+      if (preset === 'grayscale') filterString += ' grayscale(100%)';
+      if (preset === 'highcontrast') filterString += ' contrast(160%) grayscale(100%) brightness(105%)';
+      if (preset === 'sepia') filterString += ' sepia(80%)';
+
+      img.style.filter = filterString;
     }
 
-    // Compression processing engine
+    // Main Execution Dispatcher
     btnExecuteProcess.addEventListener('click', async () => {
-      if (!loadedFile) return;
+      if (!activeFile) return;
 
-      btnExecuteProcess.textContent = "Processing File...";
       btnExecuteProcess.disabled = true;
+      btnExecuteProcess.textContent = "Processing Engine Active...";
+      progressBarContainer.style.display = 'block';
+      progressBarFill.style.width = '20%';
 
-      const targetVal = parseFloat(document.getElementById('targetSizeInput').value) || 50;
-      const targetUnit = document.getElementById('targetUnit').value;
+      const targetVal = parseFloat(document.getElementById('targetSizeVal').value) || 50;
+      const targetUnit = document.getElementById('targetSizeUnit').value;
       const targetBytes = targetVal * (targetUnit === "MB" ? 1024 * 1024 : 1024);
 
-      if (isPdfMode) {
-        try {
-          const { PDFDocument } = PDFLib;
-          const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
-
-          // Optimization: strip unnecessary metadata dictionaries
-          pdfDoc.setTitle('');
-          pdfDoc.setAuthor('');
-          pdfDoc.setSubject('');
-          pdfDoc.setKeywords([]);
-          pdfDoc.setProducer('');
-          pdfDoc.setCreator('');
-
-          const optimizedBytes = await pdfDoc.save({ useObjectStreams: true });
-          const blob = new Blob([optimizedBytes], { type: 'application/pdf' });
-          presentResults(blob, loadedFile.size, blob.size, 'pdf');
-        } catch (err) {
-          alert('PDF parsing error: ' + err.message);
-        } finally {
-          btnExecuteProcess.textContent = "Execute & Compress File";
-          btnExecuteProcess.disabled = false;
-        }
-      } else {
-        // Image Processing via Canvas & Cropper
-        const canvas = cropper ? cropper.getCroppedCanvas() : null;
-        if (!canvas) {
-          btnExecuteProcess.textContent = "Execute & Compress File";
-          btnExecuteProcess.disabled = false;
-          return;
-        }
-
-        // Apply filters directly to a rendering context
-        const filteredCanvas = document.createElement('canvas');
-        filteredCanvas.width = canvas.width;
-        filteredCanvas.height = canvas.height;
-        const ctx = filteredCanvas.getContext('2d');
-        ctx.filter = `brightness(${brightnessSlider.value}%) contrast(${contrastSlider.value}%)`;
-        ctx.drawImage(canvas, 0, 0);
-
-        const format = document.getElementById('formatSelect').value;
-
-        if (format === 'application/pdf') {
-          // Convert cropped image to PDF directly
-          const { PDFDocument } = PDFLib;
-          const pdfDoc = await PDFDocument.create();
-          const imgDataUrl = filteredCanvas.toDataURL('image/jpeg', 0.85);
-          const embeddedImg = await pdfDoc.embedJpg(imgDataUrl);
-          const page = pdfDoc.addPage([embeddedImg.width, embeddedImg.height]);
-          page.drawImage(embeddedImg, { x: 0, y: 0, width: embeddedImg.width, height: embeddedImg.height });
-
-          const compiledBytes = await pdfDoc.save();
-          const blob = new Blob([compiledBytes], { type: 'application/pdf' });
-          presentResults(blob, loadedFile.size, blob.size, 'pdf');
-          btnExecuteProcess.textContent = "Execute & Compress File";
-          btnExecuteProcess.disabled = false;
+      try {
+        if (isPdfMode) {
+          await executeRealPdfCompression(targetBytes);
         } else {
-          // Targeted Bisection Compression Algorithm
-          let minQ = 0.05;
-          let maxQ = 0.98;
-          let iterations = 0;
-          let finalBlob = null;
-
-          function runCompressionBisection() {
-            const currentQ = (minQ + maxQ) / 2;
-            filteredCanvas.toBlob((blob) => {
-              iterations++;
-              if (!blob) return;
-
-              if (blob.size <= targetBytes || iterations >= 7) {
-                finalBlob = blob;
-                minQ = currentQ;
-              } else {
-                maxQ = currentQ;
-              }
-
-              if (iterations < 7 && minQ < maxQ) {
-                runCompressionBisection();
-              } else {
-                presentResults(finalBlob || blob, loadedFile.size, (finalBlob || blob).size, format.split('/')[1]);
-                btnExecuteProcess.textContent = "Execute & Compress File";
-                btnExecuteProcess.disabled = false;
-              }
-            }, format, currentQ);
-          }
-
-          runCompressionBisection();
+          await executeImageCompression(targetBytes);
         }
+      } catch (err) {
+        alert("Processing Error: " + err.message);
+      } finally {
+        progressBarFill.style.width = '100%';
+        setTimeout(() => { progressBarContainer.style.display = 'none'; progressBarFill.style.width = '0%'; }, 500);
+        btnExecuteProcess.disabled = false;
+        btnExecuteProcess.textContent = "Execute & Compress File";
       }
     });
 
-    function presentResults(blob, originalSize, newSize, extension) {
-      resultBanner.style.display = 'flex';
-      const origKb = (originalSize / 1024).toFixed(1);
-      const newKb = (newSize / 1024).toFixed(1);
+    // Real Multi-Page PDF Downsampling & Requantization Engine
+    async function executeRealPdfCompression(targetBytes) {
+      progressBarFill.style.width = '35%';
+      const profile = document.getElementById('pdfCompressionLevel').value;
+      const colorMode = document.getElementById('pdfColorMode').value;
+      const exportFormat = document.getElementById('pdfExportFormat').value;
+      const rangeText = document.getElementById('pdfPageRange').value.trim();
 
-      resultStats.innerHTML = `<strong>Original Size:</strong> ${origKb} KB &rarr; <strong>New Size:</strong> ${newKb} KB (Target reached)`;
+      // Determine viewport scale and JPEG quality
+      let scale = 1.2;
+      let initialQuality = 0.75;
+      if (profile === 'extreme') { scale = 0.8; initialQuality = 0.50; }
+      else if (profile === 'low') { scale = 1.6; initialQuality = 0.88; }
+
+      // Parse page ranges
+      let pagesToProcess = [];
+      for (let i = 1; i <= totalPdfPages; i++) pagesToProcess.push(i);
+
+      if (rangeText !== 'all' && rangeText !== '') {
+        try {
+          const parts = rangeText.split(',');
+          let customPages = [];
+          parts.forEach(part => {
+            if (part.includes('-')) {
+              const [start, end] = part.split('-').map(n => parseInt(n.trim()));
+              for (let k = start; k <= end; k++) if (k >= 1 && k <= totalPdfPages) customPages.push(k);
+            } else {
+              const p = parseInt(part.trim());
+              if (p >= 1 && p <= totalPdfPages) customPages.push(p);
+            }
+          });
+          if (customPages.length > 0) pagesToProcess = [...new Set(customPages)];
+        } catch (e) { console.warn("Range parse fallback to all pages"); }
+      }
+
+      const { PDFDocument } = PDFLib;
+      const newPdfDoc = await PDFDocument.create();
+
+      for (let index = 0; index < pagesToProcess.length; index++) {
+        const pageNum = pagesToProcess[index];
+        const page = await pdfDocInstance.getPage(pageNum);
+        const viewport = page.getViewport({ scale: scale });
+
+        const canvas = document.createElement('canvas');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        const ctx = canvas.getContext('2d');
+
+        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+        // Apply Grayscale Filter if selected
+        if (colorMode === 'grayscale') {
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imgData.data;
+          for (let i = 0; i < data.length; i += 4) {
+            const avg = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+            data[i] = avg;
+            data[i + 1] = avg;
+            data[i + 2] = avg;
+          }
+          ctx.putImageData(imgData, 0, 0);
+        }
+
+        const imgDataUrl = canvas.toDataURL('image/jpeg', initialQuality);
+        const embeddedImg = await newPdfDoc.embedJpg(imgDataUrl);
+        const newPage = newPdfDoc.addPage([viewport.width, viewport.height]);
+        newPage.drawImage(embeddedImg, { x: 0, y: 0, width: viewport.width, height: viewport.height });
+
+        progressBarFill.style.width = `${35 + Math.round(((index + 1) / pagesToProcess.length) * 55)}%`;
+      }
+
+      const compressedBytes = await newPdfDoc.save({ useObjectStreams: true });
+      const finalBlob = new Blob([compressedBytes], { type: 'application/pdf' });
+      displayFinishedResults(finalBlob, activeFile.size, finalBlob.size, 'pdf');
+    }
+
+    // High Precision Canvas & Bisection Image Compression
+    async function executeImageCompression(targetBytes) {
+      progressBarFill.style.width = '40%';
+      const canvas = cropper.getCroppedCanvas();
+      if (!canvas) return;
+
+      const customWidth = parseInt(document.getElementById('customWidthLock').value);
+      let renderWidth = canvas.width;
+      let renderHeight = canvas.height;
+
+      if (customWidth && customWidth > 10) {
+        const ratio = renderHeight / renderWidth;
+        renderWidth = customWidth;
+        renderHeight = Math.round(customWidth * ratio);
+      }
+
+      const finalCanvas = document.createElement('canvas');
+      finalCanvas.width = renderWidth;
+      finalCanvas.height = renderHeight;
+      const ctx = finalCanvas.getContext('2d');
+
+      // Build CSS Filter Matrix
+      let filterString = `brightness(${sliderBrightness.value}%) contrast(${sliderContrast.value}%) saturate(${sliderSaturation.value}%)`;
+      const preset = selectFilterPreset.value;
+      if (preset === 'grayscale') filterString += ' grayscale(100%)';
+      if (preset === 'highcontrast') filterString += ' contrast(160%) grayscale(100%) brightness(105%)';
+      if (preset === 'sepia') filterString += ' sepia(80%)';
+
+      ctx.filter = filterString;
+      ctx.drawImage(canvas, 0, 0, renderWidth, renderHeight);
+
+      const targetFormat = document.getElementById('selectImageOutputFormat').value;
+
+      if (targetFormat === 'application/pdf') {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({
+          orientation: renderWidth > renderHeight ? 'landscape' : 'portrait',
+          unit: 'px',
+          format: [renderWidth, renderHeight]
+        });
+        const imgData = finalCanvas.toDataURL('image/jpeg', 0.85);
+        pdf.addImage(imgData, 'JPEG', 0, 0, renderWidth, renderHeight);
+        const pdfBlob = pdf.output('blob');
+        displayFinishedResults(pdfBlob, activeFile.size, pdfBlob.size, 'pdf');
+        return;
+      }
+
+      // Targeted Binary Bisection for Exact KB Matching
+      let minQ = 0.04;
+      let maxQ = 0.98;
+      let bestBlob = null;
+      let iterations = 0;
+
+      function bisectionSearch() {
+        const curQ = (minQ + maxQ) / 2;
+        finalCanvas.toBlob((blob) => {
+          iterations++;
+          if (!blob) return;
+
+          if (blob.size <= targetBytes || iterations >= 8) {
+            bestBlob = blob;
+            minQ = curQ;
+          } else {
+            maxQ = curQ;
+          }
+
+          if (iterations < 8 && minQ < maxQ) {
+            bisectionSearch();
+          } else {
+            const chosenBlob = bestBlob || blob;
+            displayFinishedResults(chosenBlob, activeFile.size, chosenBlob.size, targetFormat.split('/')[1]);
+          }
+        }, targetFormat, curQ);
+      }
+
+      bisectionSearch();
+    }
+
+    function displayFinishedResults(blob, origBytes, newBytes, ext) {
+      resultBanner.style.display = 'flex';
+      const origKb = (origBytes / 1024).toFixed(1);
+      const newKb = (newBytes / 1024).toFixed(1);
+
+      resultMetrics.innerHTML = `Original: <strong>${origKb} KB</strong> &rarr; Optimized: <strong>${newKb} KB</strong> (Target Met)`;
       const url = URL.createObjectURL(blob);
-      downloadLink.href = url;
-      downloadLink.download = `convertkb_${Date.now()}.${extension}`;
+      downloadLinkBtn.href = url;
+      downloadLinkBtn.download = `convertkb_${Date.now()}.${ext}`;
     }
   </script>
 </body>
