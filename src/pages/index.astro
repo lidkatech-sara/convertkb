@@ -1,158 +1,12 @@
 ---
 // src/pages/index.astro
-const title = "ConvertKB - Precision Image & PDF Studio, Editor & Compressor";
-const description = "Online browser-based image and PDF editor. Compress to exact KB (20KB, 50KB, 100KB, 200KB), crop, rotate, enhance contrast, change DPI, and convert formats with live preview.";
-const canonicalURL = "https://convertkb.com";
+import Navigation from '../components/navigation.astro';
 
-const navigation = [
-  {
-    name: "Image",
-    items: [
-      { name: "Compress Image", href: "/compress-image" },
-      { name: "Compress Image to 10kb", href: "/compress-image-to-10kb" },
-      { name: "Compress Image to 20kb", href: "/compress-image-to-20kb" },
-      { name: "Compress Image to 30kb", href: "/compress-image-to-30kb" },
-      { name: "Compress Image to 40kb", href: "/compress-image-to-40kb" },
-      { name: "Compress Image to 50kb", href: "/compress-image-to-50kb" },
-      { name: "Compress Image to 100kb", href: "/compress-image-to-100kb" },
-      { name: "Compress Image to 150kb", href: "/compress-image-to-150kb" },
-      { name: "Compress Image to 200kb", href: "/compress-image-to-200kb" },
-      { name: "Compress Image to 500kb", href: "/compress-image-to-500kb" },
-      { name: "Compress Image to 1mb", href: "/compress-image-to-1mb" }
-    ]
-  },
-  {
-    name: "PDF",
-    items: [
-      { name: "Compress PDF", href: "/compress-pdf" },
-      { name: "Compress PDF to 20kb", href: "/compress-pdf-to-20kb" },
-      { name: "Compress PDF to 50kb", href: "/compress-pdf-to-50kb" },
-      { name: "Compress PDF to 100kb", href: "/compress-pdf-to-100kb" },
-      { name: "Compress PDF to 200kb", href: "/compress-pdf-to-200kb" },
-      { name: "Compress PDF to 300kb", href: "/compress-pdf-to-300kb" },
-      { name: "Compress PDF to 400kb", href: "/compress-pdf-to-400kb" },
-      { name: "Compress PDF to 500kb", href: "/compress-pdf-to-500kb" },
-      { name: "Compress PDF to 1mb", href: "/compress-pdf-to-1mb" },
-      { name: "Compress PDF to 2mb", href: "/compress-pdf-to-2mb" }
-    ]
-  },
-  {
-    name: "Image Formats",
-    items: [
-      { name: "Compress JPEG", href: "/compress-jpeg" },
-      { name: "Compress JPEG to 10kb", href: "/compress-jpeg-to-10kb" },
-      { name: "Compress JPEG to 20kb", href: "/compress-jpeg-to-20kb" },
-      { name: "Compress JPEG to 30kb", href: "/compress-jpeg-to-30kb" },
-      { name: "Compress JPEG to 40kb", href: "/compress-jpeg-to-40kb" },
-      { name: "Compress JPEG to 50kb", href: "/compress-jpeg-to-50kb" },
-      { name: "Compress JPEG to 100kb", href: "/compress-jpeg-to-100kb" },
-      { name: "Compress JPEG to 150kb", href: "/compress-jpeg-to-150kb" },
-      { name: "Compress JPEG to 200kb", href: "/compress-jpeg-to-200kb" },
-      { name: "Compress JPEG to 500kb", href: "/compress-jpeg-to-500kb" },
-      { name: "Compress JPG", href: "/compress-jpg" },
-      { name: "Compress JPG to 10kb", href: "/compress-jpg-to-10kb" },
-      { name: "Compress JPG to 20kb", href: "/compress-jpg-to-20kb" },
-      { name: "Compress JPG to 30kb", href: "/compress-jpg-to-30kb" },
-      { name: "Compress JPG to 40kb", href: "/compress-jpg-to-40kb" },
-      { name: "Compress JPG to 50kb", href: "/compress-jpg-to-50kb" },
-      { name: "Compress JPG to 100kb", href: "/compress-jpg-to-100kb" },
-      { name: "Compress JPG to 150kb", href: "/compress-jpg-to-150kb" },
-      { name: "Compress JPG to 200kb", href: "/compress-jpg-to-200kb" },
-      { name: "Compress JPG to 500kb", href: "/compress-jpg-to-500kb" },
-      { name: "Compress WebP", href: "/compress-webp" },
-      { name: "Compress WebP to 100kb", href: "/compress-webp-to-100kb" },
-      { name: "Compress PNG", href: "/compress-png" },
-      { name: "Compress PNG to 10kb", href: "/compress-png-to-10kb" },
-      { name: "Compress PNG to 20kb", href: "/compress-png-to-20kb" },
-      { name: "Compress PNG to 30kb", href: "/compress-png-to-30kb" },
-      { name: "Compress PNG to 40kb", href: "/compress-png-to-40kb" },
-      { name: "Compress PNG to 50kb", href: "/compress-png-to-50kb" },
-      { name: "Compress PNG to 100kb", href: "/compress-png-to-100kb" },
-      { name: "Compress PNG to 150kb", href: "/compress-png-to-150kb" },
-      { name: "Compress PNG to 200kb", href: "/compress-png-to-200kb" },
-      { name: "Compress PNG to 500kb", href: "/compress-png-to-500kb" },
-      { name: "Compress PNG to 1mb", href: "/compress-png-to-1mb" }
-    ]
-  },
-  {
-    name: "Resize",
-    items: [
-      { name: "Resize Image", href: "/resize-image" },
-      { name: "Resize Image to 10kb", href: "/resize-image-to-10kb" },
-      { name: "Resize Image to 20kb", href: "/resize-image-to-20kb" },
-      { name: "Resize Image to 30kb", href: "/resize-image-to-30kb" },
-      { name: "Resize Image to 40kb", href: "/resize-image-to-40kb" },
-      { name: "Resize Image to 50kb", href: "/resize-image-to-50kb" },
-      { name: "Resize Image to 100kb", href: "/resize-image-to-100kb" },
-      { name: "Resize Image to 150kb", href: "/resize-image-to-150kb" },
-      { name: "Resize Image to 200kb", href: "/resize-image-to-200kb" },
-      { name: "Resize Image to 500kb", href: "/resize-image-to-500kb" },
-      { name: "Resize Image to 1mb", href: "/resize-image-to-1mb" },
-      { name: "Resize PDF", href: "/resize-pdf" },
-      { name: "Resize PDF to 10kb", href: "/resize-pdf-to-10kb" },
-      { name: "Resize PDF to 20kb", href: "/resize-pdf-to-20kb" },
-      { name: "Resize PDF to 30kb", href: "/resize-pdf-to-30kb" },
-      { name: "Resize PDF to 40kb", href: "/resize-pdf-to-40kb" },
-      { name: "Resize PDF to 50kb", href: "/resize-pdf-to-50kb" },
-      { name: "Resize PDF to 100kb", href: "/resize-pdf-to-100kb" },
-      { name: "Resize PDF to 150kb", href: "/resize-pdf-to-150kb" },
-      { name: "Resize PDF to 200kb", href: "/resize-pdf-to-200kb" },
-      { name: "Resize PDF to 500kb", href: "/resize-pdf-to-500kb" },
-      { name: "Resize PDF to 1mb", href: "/resize-pdf-to-1mb" }
-    ]
-  },
-  {
-    name: "Convert",
-    items: [
-      { name: "Convert Image to Word", href: "/convert-image-to-word" },
-      { name: "Convert Image to Excel", href: "/convert-image-to-excel" },
-      { name: "Convert PDF to Word", href: "/convert-pdf-to-word" },
-      { name: "Convert PDF to Excel", href: "/convert-pdf-to-excel" },
-      { name: "Convert PDF to JPG", href: "/convert-pdf-to-jpg" },
-      { name: "Convert PDF to PPT", href: "/convert-pdf-to-ppt" },
-      { name: "HEIC to JPG", href: "/heic-to-jpg" },
-      { name: "HEIC to JPEG", href: "/heic-to-jpeg" },
-      { name: "HEIC to PDF", href: "/heic-to-pdf" },
-      { name: "HEIC to PNG", href: "/heic-to-png" },
-      { name: "JPG to Excel", href: "/jpg-to-excel" },
-      { name: "JPG to PDF", href: "/jpg-to-pdf" },
-      { name: "JPG to PNG", href: "/jpg-to-png" },
-      { name: "JPG to JPEG", href: "/jpg-to-jpeg" },
-      { name: "JPG to WebP", href: "/jpg-to-webp" },
-      { name: "JPEG to JPG", href: "/jpeg-to-jpg" },
-      { name: "JPEG to PDF", href: "/jpeg-to-pdf" },
-      { name: "JPEG to PNG", href: "/jpeg-to-png" },
-      { name: "JPEG to Excel", href: "/jpeg-to-excel" },
-      { name: "WebP to JPG", href: "/webp-to-jpg" },
-      { name: "WebP to PNG", href: "/webp-to-png" }
-    ]
-  },
-  {
-    name: "Tools",
-    items: [
-      { name: "Passport Photo Size", href: "/passport-photo-size" },
-      { name: "PAN Card Photo", href: "/pan-card-photo" },
-      { name: "PAN Card Signature", href: "/pan-card-signature" },
-      { name: "YouTube Thumbnail Size", href: "/youtube-thumbnail-size" },
-      { name: "Instagram Photo Size", href: "/instagram-photo-size" },
-      { name: "US Visa Photo", href: "/us-visa-photo" }
-    ]
-  },
-  {
-    name: "Exams",
-    items: [
-      { name: "UPSC Photo & Signature", href: "/upsc-photo-signature" },
-      { name: "SSC Photo & Signature", href: "/ssc-photo-and-signature" },
-      { name: "GATE Photo & Signature", href: "/gate-photo-and-signature" },
-      { name: "NEET Photo & Signature", href: "/neet-photo-and-signature" },
-      { name: "IBPS Photo & Signature", href: "/ibps-photo-and-signature" },
-      { name: "Defence Photo & Signature", href: "/defence-photo-and-signature" },
-      { name: "Signature Resize", href: "/signature-resize" }
-    ]
-  }
-];
+const title = "ConvertKB - Precision Image & PDF Compressor to Exact KB Online";
+const description = "Compress images and PDF documents to exact target sizes like 20KB, 50KB, 100KB, 200KB. Built-in interactive cropper, live preview, DPI calibration, and client-side processing.";
+const canonicalUrl = "https://convertkb.com";
 
-const jsonLd = {
+const schema = {
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -161,7 +15,7 @@ const jsonLd = {
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "All",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "Professional client-side Image & PDF editing, raster downsampling, and target KB compression suite."
+      "description": description
     },
     {
       "@type": "FAQPage",
@@ -171,7 +25,7 @@ const jsonLd = {
           "name": "How does ConvertKB achieve true PDF kilobyte compression in the browser?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "ConvertKB renders PDF page matrices onto virtual hardware-accelerated canvas viewports using PDF.js, recalibrates DPI density, recompresses bitmap layers via lossy DCT quality scales, and reconstructs optimized PDFs using PDF-Lib and jsPDF."
+            "text": "ConvertKB renders PDF page matrices onto virtual hardware-accelerated canvas viewports using PDF.js, recalibrates DPI density, recompresses bitmap layers via lossy DCT quality scales, and reconstructs optimized PDFs using PDF-Lib."
           }
         },
         {
@@ -179,7 +33,23 @@ const jsonLd = {
           "name": "Can I convert color scanned documents to pure black and white for exam uploads?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Enable the Grayscale / B&W mode in either the Image or PDF studio to whiten grayish background paper and reduce file size by up to 80% while retaining text contrast."
+            "text": "Yes. Enable the Document Whiten (B&W) mode in either the Image or PDF studio to whiten grayish background paper and reduce file size by up to 80% while retaining text contrast."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do government recruitment sites demand photos under 20KB or 50KB?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Hosting millions of applicant records strains database bandwidth. Limiting signatures and certificates to 20KB or 50KB allows government servers to process submissions rapidly without storage bottlenecks or timeout errors."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are my personal documents uploaded to any remote server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. ConvertKB runs entirely inside your browser's local sandbox memory using WebAssembly and client-side JavaScript. No file data is transmitted over the internet or saved to remote databases."
           }
         }
       ]
@@ -195,25 +65,30 @@ const jsonLd = {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <link rel="canonical" href={canonicalURL} />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
-  <!-- Fonts -->
+  <!-- Open Graph / Social Meta -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ConvertKB" />
+
+  <!-- Typography & Core CDNs -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
 
-  <!-- Client-Side Engine CDNs -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
   <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
   <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script is:inline src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
   <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
 
-  <style>
+  <style is:global>
     :root {
       --primary: #4f46e5;
       --primary-hover: #4338ca;
@@ -228,13 +103,9 @@ const jsonLd = {
       --slate-200: #e2e8f0;
       --slate-100: #f1f5f9;
       --slate-50: #f8fafc;
-      --card-bg: #ffffff;
       --border: #e2e8f0;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
       --shadow-lg: 0 18px 38px -6px rgba(15, 23, 42, 0.12);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
@@ -244,505 +115,53 @@ const jsonLd = {
     }
     a { text-decoration: none; color: inherit; }
     .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
-
-    /* Sticky Navigation */
-    header {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .nav-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 72px;
-    }
-    .brand-logo {
-      font-size: 24px;
-      font-weight: 800;
-      letter-spacing: -0.6px;
-      color: var(--slate-900);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .brand-logo .dot {
-      width: 10px;
-      height: 10px;
-      background: var(--primary);
-      border-radius: 50%;
-    }
-    .desktop-nav {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .nav-menu-item { position: relative; }
-    .nav-menu-btn {
-      padding: 8px 14px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--slate-700);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-      background: transparent;
-      border: none;
-      transition: all 0.15s ease;
-    }
-    .nav-menu-btn:hover { background: var(--slate-100); color: var(--primary); }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: #ffffff;
-      min-width: 270px;
-      max-height: 460px;
-      overflow-y: auto;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 8px 0;
-      z-index: 1100;
-    }
-    .nav-menu-item:hover .dropdown-content { display: block; }
-    .dropdown-content a {
-      display: block;
-      padding: 9px 20px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--slate-700);
-      transition: background 0.15s, color 0.15s;
-    }
-    .dropdown-content a:hover { background: var(--primary-light); color: var(--primary); }
-
-    /* Studio Header Hero */
-    .hero-section {
-      padding: 48px 0 24px;
-      text-align: center;
-      background: radial-gradient(circle at 50% 0%, #edf2ff 0%, #fafbfc 75%);
-    }
-    .hero-section h1 {
-      font-size: 44px;
-      font-weight: 800;
-      letter-spacing: -1.2px;
-      color: var(--slate-900);
-      margin-bottom: 12px;
-      line-height: 1.2;
-    }
-    .hero-section p {
-      font-size: 18px;
-      color: var(--slate-600);
-      max-width: 780px;
-      margin: 0 auto 36px;
-    }
-
-    /* Studio Master Card */
-    .studio-card {
-      max-width: 1040px;
-      margin: 0 auto 50px;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      box-shadow: var(--shadow-lg);
-      padding: 34px;
-      text-align: left;
-    }
-    .mode-tabs {
-      display: flex;
-      gap: 12px;
-      border-bottom: 2px solid var(--slate-100);
-      margin-bottom: 28px;
-      padding-bottom: 8px;
-    }
-    .mode-btn {
-      background: none;
-      border: none;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--slate-500);
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s ease;
-    }
-    .mode-btn.active {
-      color: var(--primary);
-      background: var(--primary-light);
-    }
-
-    /* Dropzone Upload */
-    .dropzone {
-      border: 2px dashed var(--slate-300);
-      background: #fbfcfe;
-      border-radius: 16px;
-      padding: 48px 24px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .dropzone:hover { border-color: var(--primary); background: #f5f7ff; }
-    .dropzone-icon {
-      font-size: 48px;
-      margin-bottom: 12px;
-      display: inline-block;
-      color: var(--primary);
-    }
-    .dropzone h3 { font-size: 19px; font-weight: 700; color: var(--slate-800); margin-bottom: 4px; }
-    .dropzone p { font-size: 14px; color: var(--slate-500); }
-
-    /* Interactive Workspace Container */
-    .editor-workspace {
-      display: none;
-      margin-top: 32px;
-      border-top: 1px solid var(--border);
-      padding-top: 28px;
-    }
-    .workspace-grid {
-      display: grid;
-      grid-template-columns: 1.35fr 1fr;
-      gap: 28px;
-      align-items: start;
-    }
-
-    /* Visual Viewer Canvas */
-    .viewer-panel {
-      background: #0f172a;
-      border-radius: 16px;
-      overflow: hidden;
-      min-height: 440px;
-      max-height: 520px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    .viewer-panel img { max-width: 100%; display: block; }
-    .viewer-panel canvas { max-width: 100%; max-height: 500px; display: block; }
-
-    /* PDF View Card */
-    .pdf-viewer-card {
-      width: 100%;
-      height: 100%;
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-align: center;
-    }
-    .pdf-viewer-card .pdf-icon { font-size: 56px; margin-bottom: 12px; }
-    .badge-pill {
-      display: inline-block;
-      padding: 4px 10px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 9999px;
-      font-size: 12px;
-      font-family: 'JetBrains Mono', monospace;
-      margin-top: 8px;
-    }
-
-    /* Sub Toolbar */
-    .sub-toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 12px;
-    }
-    .tool-btn {
-      padding: 7px 12px;
-      background: var(--slate-100);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--slate-700);
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .tool-btn:hover { background: var(--slate-200); color: var(--slate-900); }
-
-    /* Control Panel Forms */
-    .controls-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .card-subheading {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--slate-900);
-      border-bottom: 1px solid var(--slate-100);
-      padding-bottom: 6px;
-      margin-top: 4px;
-    }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .form-group label {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--slate-700);
-      display: flex;
-      justify-content: space-between;
-    }
-    .form-group input, .form-group select {
-      width: 100%;
-      padding: 9px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      font-size: 14px;
-      outline: none;
-      background: #ffffff;
-      color: var(--slate-800);
-    }
-    .form-group input:focus, .form-group select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
-    }
-    .range-val { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--primary); }
-
-    /* Master Action Button */
-    .btn-execute {
-      background: var(--primary);
-      color: #ffffff;
-      border: none;
-      padding: 15px 24px;
-      font-size: 16px;
-      font-weight: 700;
-      border-radius: 12px;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 8px;
-      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
-      transition: background 0.2s, transform 0.1s;
-    }
-    .btn-execute:hover { background: var(--primary-hover); }
-    .btn-execute:active { transform: scale(0.99); }
-
-    /* Results Bar */
-    .result-banner {
-      display: none;
-      margin-top: 24px;
-      padding: 18px 24px;
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      border-radius: 14px;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    .result-banner h4 { color: #065f46; font-size: 16px; font-weight: 800; margin-bottom: 2px; }
-    .result-banner p { font-size: 14px; color: #047857; margin: 0; font-family: 'JetBrains Mono', monospace; }
-    .btn-download {
-      background: #059669;
-      color: #ffffff;
-      font-weight: 700;
-      font-size: 14px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      white-space: nowrap;
-      transition: background 0.15s;
-    }
-    .btn-download:hover { background: #047857; }
-
-    /* Progress Overlay */
-    .progress-bar-container {
-      display: none;
-      width: 100%;
-      height: 8px;
-      background: var(--slate-100);
-      border-radius: 9999px;
-      overflow: hidden;
-      margin-top: 14px;
-    }
-    .progress-bar-fill {
-      width: 0%;
-      height: 100%;
-      background: var(--primary);
-      transition: width 0.2s ease;
-    }
-
-    /* Long-Form Article Body (AdSense & SEO Optimized) */
-    .content-section {
-      padding: 60px 0;
-      background: #ffffff;
-      border-top: 1px solid var(--border);
-    }
-    .content-body {
-      max-width: 900px;
-      margin: 0 auto;
-      font-size: 17px;
-      line-height: 1.8;
-      color: var(--slate-800);
-    }
-    .content-body h2 {
-      font-size: 28px;
-      font-weight: 800;
-      margin: 44px 0 16px;
-      color: var(--slate-900);
-      letter-spacing: -0.6px;
-      border-bottom: 2px solid var(--slate-100);
-      padding-bottom: 8px;
-    }
-    .content-body h3 {
-      font-size: 21px;
-      font-weight: 700;
-      margin: 28px 0 10px;
-      color: var(--slate-900);
-    }
-    .content-body p { margin-bottom: 20px; }
-    .content-body ul, .content-body ol { margin-bottom: 24px; padding-left: 24px; }
-    .content-body li { margin-bottom: 8px; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 28px 0;
-      font-size: 14px;
-    }
-    th, td { padding: 13px 16px; border: 1px solid var(--border); text-align: left; }
-    th { background: var(--slate-50); font-weight: 700; color: var(--slate-900); }
-
-    /* FAQ Accordion */
-    .faq-section { padding: 50px 0 80px; background: #fafbfc; }
-    .faq-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 22px 24px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow-sm);
-    }
-    .faq-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--slate-900); }
-    .faq-card p { font-size: 15px; color: var(--slate-600); margin: 0; }
-
-    /* Footer */
-    footer {
-      background: var(--slate-900);
-      color: #94a3b8;
-      padding: 60px 0 28px;
-      font-size: 14px;
-    }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 36px;
-      margin-bottom: 40px;
-    }
-    .footer-col h5 { color: #fff; font-size: 15px; margin-bottom: 14px; font-weight: 700; }
-    .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: 8px; }
-    .footer-col a:hover { color: #fff; }
-    .footer-bottom {
-      border-top: 1px solid var(--slate-800);
-      padding-top: 24px;
-      text-align: center;
-      font-size: 13px;
-    }
-
-    @media (max-width: 992px) {
-      .desktop-nav { display: none; }
-      .workspace-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 576px) {
-      .hero-section h1 { font-size: 30px; }
-      .studio-card { padding: 20px; }
-      .footer-grid { grid-template-columns: 1fr; }
-    }
   </style>
 </head>
 <body>
-
-  <!-- Static Navigation Header -->
-  <header>
-    <div class="container nav-container">
-      <a href="/" class="brand-logo">
-        <span class="dot"></span> ConvertKB
-      </a>
-
-      <nav class="desktop-nav">
-        {navigation.map((menu) => (
-          <div class="nav-menu-item">
-            <button class="nav-menu-btn" type="button">
-              {menu.name}
-              <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </button>
-            <div class="dropdown-content">
-              {menu.items.map((sub) => (
-                <a href={sub.href}>{sub.name}</a>
-              ))}
-            </div>
-          </div>
-        ))}
-      </nav>
-    </div>
-  </header>
+  <!-- Global Navigation Dropdown Menu -->
+  <Navigation />
 
   <main>
-    <!-- Hero Header -->
+    <!-- Hero Section with Interactive Studio -->
     <section class="hero-section">
       <div class="container">
         <h1>Precision Image &amp; PDF Compressor</h1>
         <p>
-          Crop, rotate, filter, and compress images and multi-page PDF documents to exact file targets (20KB, 50KB, 100KB, 200KB) with instant live preview.
+          Crop, rotate, enhance contrast, and compress images and multi-page PDF documents to exact file targets (20KB, 50KB, 100KB, 200KB) with instant live preview.
         </p>
 
         <!-- Studio Suite Engine Card -->
-        <div class="studio-card">
+        <div class="studio-card" data-default-mode="image" data-default-target="50" data-default-ratio="0">
           <div class="mode-tabs">
             <button class="mode-btn active" id="tabImageMode" type="button">&#128444; Image Studio &amp; Crop</button>
             <button class="mode-btn" id="tabPdfMode" type="button">&#128196; Multi-Page PDF Studio</button>
           </div>
 
-          <!-- Drag and Drop Box -->
           <div class="dropzone" id="dropArea">
             <div class="dropzone-icon">&#128194;</div>
-            <h3 id="dropzoneTitle">Select or drop an image</h3>
-            <p id="dropzoneDesc">Supports JPG, PNG, WEBP, and HEIC files</p>
+            <h3 id="dropzoneTitle">Select or drop a file to process</h3>
+            <p id="dropzoneDesc">Supports JPG, PNG, WEBP, HEIC, and PDF files</p>
             <input type="file" id="fileInput" accept="image/*" style="display:none;" />
           </div>
 
-          <!-- Progress Bar -->
           <div class="progress-bar-container" id="progressBarContainer">
             <div class="progress-bar-fill" id="progressBarFill"></div>
           </div>
 
-          <!-- Interactive Workspace -->
-          <div class="editor-workspace" id="editorWorkspace">
+          <div class="editor-workspace" id="editorWorkspace" style="display:none;">
             <div class="workspace-grid">
-              
-              <!-- Left Column: Visual Viewport -->
+              <!-- Visual Viewport -->
               <div>
                 <div class="viewer-panel" id="viewerPanel">
-                  <img id="imageToCrop" src="" alt="Source Preview" />
+                  <img id="imageToCrop" src="" alt="Source preview" style="display:none;" />
                   <div class="pdf-viewer-card" id="pdfViewerCard" style="display:none;">
-                    <div class="pdf-icon">&#128196;</div>
-                    <h3 id="pdfCardTitle" style="font-size: 18px; margin-bottom: 4px;">Document Loaded</h3>
-                    <div class="badge-pill" id="pdfCardStats">0 Pages &bull; 0 KB</div>
-                    <canvas id="pdfRenderCanvas" style="display:none; margin-top: 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);"></canvas>
+                    <div class="pdf-icon" style="font-size:48px; margin-bottom:12px;">&#128196;</div>
+                    <h3 id="pdfCardTitle" style="font-size:16px;">Document Ready</h3>
+                    <div class="badge-pill" id="pdfCardStats">0 Pages</div>
+                    <canvas id="pdfRenderCanvas" style="display:none; max-width:100%; margin-top:14px; border-radius:8px;"></canvas>
                   </div>
                 </div>
 
-                <!-- Image Tool Shortcuts -->
                 <div id="imageToolbar" class="sub-toolbar">
                   <button type="button" class="tool-btn" id="btnAspectSquare">1:1 Square</button>
                   <button type="button" class="tool-btn" id="btnAspectPassport">3.5:4.5 Passport</button>
@@ -754,19 +173,16 @@ const jsonLd = {
                   <button type="button" class="tool-btn" id="btnFlipV">&#8645; Flip V</button>
                 </div>
 
-                <!-- PDF Tool Shortcuts -->
                 <div id="pdfToolbar" class="sub-toolbar" style="display:none;">
                   <button type="button" class="tool-btn" id="btnPdfPrevPage">&larr; Prev Page</button>
                   <button type="button" class="tool-btn" id="btnPdfNextPage">Next Page &rarr;</button>
-                  <span id="pdfPageIndicator" style="font-size: 13px; font-weight: 700; align-self: center; margin-left: 8px;">Page 1</span>
+                  <span id="pdfPageIndicator" style="font-size:13px; font-weight:700; align-self:center; margin-left:8px;">Page 1</span>
                 </div>
               </div>
 
-              <!-- Right Column: Parameters and Filters -->
+              <!-- Controls Panel -->
               <div class="controls-panel">
-                
-                <!-- Target File Weight -->
-                <div class="card-subheading">Target Compression Ceiling</div>
+                <div class="card-subheading">Compression Ceiling Target</div>
                 <div class="form-row">
                   <div class="form-group">
                     <label for="targetSizeVal">Target Value</label>
@@ -783,48 +199,41 @@ const jsonLd = {
 
                 <!-- Image Controls -->
                 <div id="imageControlGroup" style="display:flex; flex-direction:column; gap:12px;">
-                  <div class="card-subheading">Image Enhancements &amp; Color</div>
-                  
+                  <div class="card-subheading">Image Enhancements</div>
                   <div class="form-group">
                     <label for="sliderBrightness">Brightness <span class="range-val" id="valBrightness">100%</span></label>
                     <input type="range" id="sliderBrightness" min="40" max="180" value="100" />
                   </div>
-
                   <div class="form-group">
                     <label for="sliderContrast">Contrast <span class="range-val" id="valContrast">100%</span></label>
                     <input type="range" id="sliderContrast" min="40" max="180" value="100" />
                   </div>
-
                   <div class="form-group">
                     <label for="sliderSaturation">Saturation <span class="range-val" id="valSaturation">100%</span></label>
                     <input type="range" id="sliderSaturation" min="0" max="200" value="100" />
                   </div>
-
                   <div class="form-row">
                     <div class="form-group">
-                      <label for="selectFilterPreset">Filter Preset</label>
+                      <label for="selectFilterPreset">Filter Mode</label>
                       <select id="selectFilterPreset">
-                        <option value="none" selected>Normal</option>
+                        <option value="none" selected>Standard</option>
                         <option value="grayscale">Pure Grayscale</option>
                         <option value="highcontrast">Document Whiten (B&amp;W)</option>
-                        <option value="sepia">Sepia Tone</option>
                       </select>
                     </div>
-
                     <div class="form-group">
-                      <label for="selectDpi">Calibration DPI</label>
+                      <label for="selectDpi">Target DPI</label>
                       <select id="selectDpi">
-                        <option value="72">72 DPI (Web)</option>
-                        <option value="150">150 DPI (Application Form)</option>
-                        <option value="200" selected>200 DPI (Exam Spec)</option>
-                        <option value="300">300 DPI (Print Ready)</option>
+                        <option value="72">72 DPI</option>
+                        <option value="150">150 DPI</option>
+                        <option value="200" selected>200 DPI (Exam)</option>
+                        <option value="300">300 DPI</option>
                       </select>
                     </div>
                   </div>
-
                   <div class="form-row">
                     <div class="form-group">
-                      <label for="selectImageOutputFormat">Output Format</label>
+                      <label for="selectImageOutputFormat">Output Extension</label>
                       <select id="selectImageOutputFormat">
                         <option value="image/jpeg" selected>JPG / JPEG</option>
                         <option value="image/png">PNG (Lossless)</option>
@@ -841,63 +250,50 @@ const jsonLd = {
 
                 <!-- PDF Controls -->
                 <div id="pdfControlGroup" style="display:none; flex-direction:column; gap:12px;">
-                  <div class="card-subheading">PDF Compression Engine &amp; Options</div>
-                  
+                  <div class="card-subheading">PDF Settings</div>
                   <div class="form-group">
                     <label for="pdfCompressionLevel">Compression Profile</label>
                     <select id="pdfCompressionLevel">
-                      <option value="extreme">Extreme (72 DPI &bull; Aggressive Quantization)</option>
+                      <option value="extreme">Extreme (72 DPI &bull; Maximum Compression)</option>
                       <option value="balanced" selected>Balanced (150 DPI &bull; Recommended)</option>
-                      <option value="low">Low (200 DPI &bull; High Visual Fidelity)</option>
+                      <option value="low">Low (200 DPI &bull; High Clarity)</option>
                     </select>
                   </div>
-
                   <div class="form-row">
                     <div class="form-group">
-                      <label for="pdfPageRange">Page Range</label>
-                      <input type="text" id="pdfPageRange" placeholder="e.g. 1-3, 5 (or all)" value="all" />
+                      <label for="pdfPageRange">Page Filter</label>
+                      <input type="text" id="pdfPageRange" value="all" placeholder="e.g. 1-3, 5" />
                     </div>
                     <div class="form-group">
                       <label for="pdfColorMode">Color Conversion</label>
                       <select id="pdfColorMode">
-                        <option value="color" selected>Preserve Full Color</option>
-                        <option value="grayscale">Convert to Grayscale (B&amp;W)</option>
+                        <option value="color" selected>Full Color</option>
+                        <option value="grayscale">Grayscale (B&amp;W)</option>
                       </select>
                     </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="pdfExportFormat">Export Format</label>
-                    <select id="pdfExportFormat">
-                      <option value="pdf" selected>Compressed PDF Document</option>
-                      <option value="images">Extract Pages as JPG Images</option>
-                    </select>
                   </div>
                 </div>
 
                 <button class="btn-execute" id="btnExecuteProcess" type="button">Execute &amp; Compress File</button>
-
               </div>
             </div>
 
-            <!-- Download Notification Banner -->
-            <div class="result-banner" id="resultBanner">
+            <!-- Download Banner -->
+            <div class="result-banner" id="resultBanner" style="display:none;">
               <div>
-                <h4>Optimization Complete</h4>
-                <p id="resultMetrics">Original: 0 KB &rarr; Output: 0 KB</p>
+                <h4 style="color:#065f46; font-size:15px; font-weight:800;">Optimization Complete</h4>
+                <p id="resultMetrics" style="font-size:13px; color:#047857; font-family:'JetBrains Mono', monospace;"></p>
               </div>
-              <a href="#" id="downloadLinkBtn" class="btn-download" download="convertkb_optimized">Download Output</a>
+              <a href="#" id="downloadLinkBtn" class="btn-download" download="convertkb_optimized">Download File</a>
             </div>
-
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Comprehensive Content Guide (1200+ Words for SEO & AdSense E-E-A-T) -->
+    <!-- Comprehensive In-Depth Guide (1,200+ Words for SEO & AdSense E-E-A-T) -->
     <section class="content-section">
       <div class="container content-body">
-        
         <h2>Precision Kilobyte Compression &amp; Client-Side Digital Processing</h2>
         <p>
           State recruitment portals, national examination testing bodies, passport issuing offices, and financial verification platforms have enforced stringent digital submission criteria. Portals like the Union Public Service Commission (UPSC), Staff Selection Commission (SSC), National Testing Agency (NTA NEET/JEE), and the Income Tax Department for PAN cards reject candidates whose uploaded photograph or signature deviates by even a single kilobyte outside strict brackets (e.g., 20KB–50KB or strictly under 20KB).
@@ -906,9 +302,9 @@ const jsonLd = {
           ConvertKB provides an all-in-one, browser-level optimization engine. Unlike legacy tools that depend on remote cloud servers—which expose sensitive identity documents to data breaches and third-party logging—ConvertKB runs all image manipulations and PDF multi-page downsampling sequences directly inside your device's memory sandbox using WebAssembly, Canvas API, PDF.js, and PDF-Lib.
         </p>
 
-        <h2>Official Photographic &amp; Dimensional Specifications</h2>
+        <h2>Official Photographic &amp; Dimensional Specifications Matrix</h2>
         <p>
-          Consult the official document parameter table below before preparing your submissions:
+          Consult the official document parameter table below before preparing your submissions to eliminate rejection warnings during online forms:
         </p>
 
         <table>
@@ -1002,6 +398,23 @@ const jsonLd = {
           <li><strong>DPI Metadata Injection:</strong> Portals like NSDL PAN verify document resolution headers. Set your file to 200 DPI or 300 DPI directly in our controls.</li>
           <li><strong>Aspect Ratio Preservation:</strong> Lock explicit pixel widths without vertical or horizontal stretching.</li>
         </ul>
+
+        <h2>Step-by-Step Walkthrough: Compressing and Editing Files</h2>
+        <ol>
+          <li><strong>Upload Your File:</strong> Click the upload zone or drag your image (JPG, PNG, WebP, HEIC) or multi-page PDF into the browser studio. Files are ingested locally without any server transit.</li>
+          <li><strong>Choose Crop Ratio &amp; Orientation:</strong> For exam photos, select standard passport presets (3.5:4.5). For signatures, use the 2:1 crop preset to eliminate surrounding desk or paper shadows.</li>
+          <li><strong>Apply Color &amp; Exposure Adjustments:</strong> If lighting was poor, adjust the brightness or select 'Document Whiten (B&amp;W)' to purify the background, which drastically reduces kilobyte size.</li>
+          <li><strong>Set Desired Target Limit:</strong> Type your exact required threshold (e.g., 20KB, 50KB, 100KB). ConvertKB automatically determines whether to apply bisection search quality scales or DPI downsampling.</li>
+          <li><strong>Execute &amp; Save:</strong> Click 'Execute &amp; Compress File'. Review your verified byte metrics and download your finished output immediately.</li>
+        </ol>
+
+        <h2>Privacy Guarantee: Why In-Browser Execution Protects You</h2>
+        <p>
+          Identity documents like Aadhaar cards, PAN cards, voter IDs, and signatures contain confidential personally identifiable information (PII). Conventional online converters stream your files to third-party cloud servers where they are queued on shared disks.
+        </p>
+        <p>
+          ConvertKB is completely client-side. All canvas transformations, WebAssembly decoders, and PDF streams execute directly within your device's browser memory sandbox. When you close or refresh this tab, all memory buffers are wiped completely. Your files never touch external storage.
+        </p>
       </div>
     </section>
 
@@ -1009,26 +422,21 @@ const jsonLd = {
     <section class="faq-section">
       <div class="container content-body">
         <h2 style="text-align: center; margin-bottom: 28px; border:none;">Frequently Asked Questions</h2>
-
         <div class="faq-card">
           <h4>Why did my PDF fail to compress on other online websites?</h4>
-          <p>
-            Most basic compressors only strip text metadata, which fails to shrink high-resolution document scans. ConvertKB uses PDF.js and offscreen canvas re-quantization to downsample the actual page bitmaps, delivering real kilobyte reductions.
-          </p>
+          <p>Most basic compressors only strip text metadata, which fails to shrink high-resolution document scans. ConvertKB uses PDF.js and offscreen canvas re-quantization to downsample the actual page bitmaps, delivering real kilobyte reductions.</p>
         </div>
-
         <div class="faq-card">
           <h4>How do I compress my scanned signature strictly under 20KB?</h4>
-          <p>
-            Upload your signature image, select the '2:1 Signature' crop preset, set your Target Value to '20' and Unit to 'KB', choose JPG or PNG, and click Execute. The engine uses a bisection search algorithm to calibrate compression quality right under the 20KB threshold.
-          </p>
+          <p>Upload your signature image, select the '2:1 Signature' crop preset, set your Target Value to '20' and Unit to 'KB', choose JPG or PNG, and click Execute. The engine uses a bisection search algorithm to calibrate compression quality right under the 20KB threshold.</p>
         </div>
-
         <div class="faq-card">
           <h4>Are my confidential identification documents uploaded to any server?</h4>
-          <p>
-            No. ConvertKB operates completely within your web browser. All image cropping, PDF page rendering, canvas quantization, and file assembly execute locally on your machine.
-          </p>
+          <p>No. ConvertKB operates completely within your web browser. All image cropping, PDF page rendering, canvas quantization, and file assembly execute locally on your machine.</p>
+        </div>
+        <div class="faq-card">
+          <h4>Can I change the DPI of my passport photo?</h4>
+          <p>Yes. Use the Target DPI dropdown to specify 72, 150, 200, or 300 DPI to meet specific agency instructions (such as NSDL PAN specifications).</p>
         </div>
       </div>
     </section>
@@ -1039,12 +447,16 @@ const jsonLd = {
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h5>ConvertKB Studio</h5>
-          <p>The privacy-first image and PDF compressor. Edit, crop, resize, and compress documents to exact KB specifications directly in your browser.</p>
+          <div class="footer-brand">
+            <span class="dot"></span> ConvertKB
+          </div>
+          <p>
+            High-performance, client-side precision image editor and PDF compression utility. Crop, filter, calibrate DPI, and compress files to exact kilobyte targets directly in your browser without server uploads.
+          </p>
         </div>
 
         <div class="footer-col">
-          <h5>Popular Size Tools</h5>
+          <h5>Popular Sizes</h5>
           <ul>
             <li><a href="/compress-image-to-20kb">Compress Image to 20KB</a></li>
             <li><a href="/compress-image-to-50kb">Compress Image to 50KB</a></li>
@@ -1055,17 +467,17 @@ const jsonLd = {
         </div>
 
         <div class="footer-col">
-          <h5>Official Exam Tools</h5>
+          <h5>Exam &amp; Portal Tools</h5>
           <ul>
             <li><a href="/upsc-photo-signature">UPSC Photo &amp; Signature</a></li>
-            <li><a href="/ssc-photo-and-signature">SSC Photo Resize</a></li>
+            <li><a href="/ssc-photo-and-signature">SSC Photo &amp; Signature</a></li>
             <li><a href="/pan-card-photo">PAN Card Photo &amp; Sign</a></li>
-            <li><a href="/us-visa-photo">US Visa Dimensions</a></li>
+            <li><a href="/us-visa-photo">US Visa 600x600 Spec</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h5>Legal &amp; Support</h5>
+          <h5>Legal &amp; Trust</h5>
           <ul>
             <li><a href="/about">About Us</a></li>
             <li><a href="/privacy-policy">Privacy Policy</a></li>
@@ -1076,341 +488,290 @@ const jsonLd = {
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} ConvertKB.com. All Rights Reserved. Engineered for speed and privacy.</p>
+        <p>&copy; 2026 ConvertKB.com. All Rights Reserved. Engineered for speed, privacy, and zero server logging.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Master Client-Side Engine -->
+  <!-- Interactive Client-Side Engine -->
   <script is:inline>
-    // Configure PDF.js Worker
     if (window.pdfjsLib) {
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     }
 
-    let isPdfMode = false;
-    let activeFile = null;
-    let cropper = null;
-    let pdfDocInstance = null;
-    let currentPdfPage = 1;
-    let totalPdfPages = 1;
+    let studioCropper = null;
+    let studioFile = null;
+    let isPdfStudio = false;
+    let pdfDocObj = null;
+    let currentPdfPageIdx = 1;
+    let totalPdfPageCount = 1;
 
-    // Elements
-    const tabImageMode = document.getElementById('tabImageMode');
-    const tabPdfMode = document.getElementById('tabPdfMode');
-    const dropArea = document.getElementById('dropArea');
-    const fileInput = document.getElementById('fileInput');
-    const dropzoneTitle = document.getElementById('dropzoneTitle');
-    const dropzoneDesc = document.getElementById('dropzoneDesc');
-    const editorWorkspace = document.getElementById('editorWorkspace');
-    const imageToCrop = document.getElementById('imageToCrop');
-    const pdfViewerCard = document.getElementById('pdfViewerCard');
-    const pdfRenderCanvas = document.getElementById('pdfRenderCanvas');
-    const pdfCardTitle = document.getElementById('pdfCardTitle');
-    const pdfCardStats = document.getElementById('pdfCardStats');
-    const imageToolbar = document.getElementById('imageToolbar');
-    const pdfToolbar = document.getElementById('pdfToolbar');
-    const pdfPageIndicator = document.getElementById('pdfPageIndicator');
-    const imageControlGroup = document.getElementById('imageControlGroup');
-    const pdfControlGroup = document.getElementById('pdfControlGroup');
-    const btnExecuteProcess = document.getElementById('btnExecuteProcess');
-    const resultBanner = document.getElementById('resultBanner');
-    const resultMetrics = document.getElementById('resultMetrics');
-    const downloadLinkBtn = document.getElementById('downloadLinkBtn');
-    const progressBarContainer = document.getElementById('progressBarContainer');
-    const progressBarFill = document.getElementById('progressBarFill');
+    const tabImg = document.getElementById('tabImageMode');
+    const tabPdf = document.getElementById('tabPdfMode');
+    const dropBox = document.getElementById('dropArea');
+    const filePicker = document.getElementById('fileInput');
+    const workArea = document.getElementById('editorWorkspace');
+    const previewImg = document.getElementById('imageToCrop');
+    const pdfCard = document.getElementById('pdfViewerCard');
+    const pdfCanvas = document.getElementById('pdfRenderCanvas');
+    const imgTools = document.getElementById('imageToolbar');
+    const pdfTools = document.getElementById('pdfToolbar');
+    const imgCtrls = document.getElementById('imageControlGroup');
+    const pdfCtrls = document.getElementById('pdfControlGroup');
+    const execBtn = document.getElementById('btnExecuteProcess');
+    const progressBox = document.getElementById('progressBarContainer');
+    const progressBar = document.getElementById('progressBarFill');
+    const outBanner = document.getElementById('resultBanner');
+    const outMetrics = document.getElementById('resultMetrics');
+    const downloadAnchor = document.getElementById('downloadLinkBtn');
 
-    // Filter Controls
-    const sliderBrightness = document.getElementById('sliderBrightness');
-    const sliderContrast = document.getElementById('sliderContrast');
-    const sliderSaturation = document.getElementById('sliderSaturation');
-    const valBrightness = document.getElementById('valBrightness');
-    const valContrast = document.getElementById('valContrast');
-    const valSaturation = document.getElementById('valSaturation');
-    const selectFilterPreset = document.getElementById('selectFilterPreset');
+    const bSlider = document.getElementById('sliderBrightness');
+    const cSlider = document.getElementById('sliderContrast');
+    const sSlider = document.getElementById('sliderSaturation');
+    const bVal = document.getElementById('valBrightness');
+    const cVal = document.getElementById('valContrast');
+    const sVal = document.getElementById('valSaturation');
+    const filterPreset = document.getElementById('selectFilterPreset');
 
-    // Switch Tabs
-    tabImageMode.addEventListener('click', () => {
-      isPdfMode = false;
-      tabImageMode.classList.add('active');
-      tabPdfMode.classList.remove('active');
-      fileInput.accept = "image/*";
-      dropzoneTitle.textContent = "Select or drop an image";
-      dropzoneDesc.textContent = "Supports JPG, PNG, WEBP, and HEIC files";
-      if (activeFile && !activeFile.type.includes('pdf')) loadFileIntoStudio(activeFile);
-    });
-
-    tabPdfMode.addEventListener('click', () => {
-      isPdfMode = true;
-      tabPdfMode.classList.add('active');
-      tabImageMode.classList.remove('active');
-      fileInput.accept = "application/pdf";
-      dropzoneTitle.textContent = "Select or drop a PDF document";
-      dropzoneDesc.textContent = "Multi-page rasterization, page stripping & target compression";
-      if (activeFile && activeFile.type.includes('pdf')) loadFileIntoStudio(activeFile);
-    });
-
-    // Dropzone Listeners
-    dropArea.addEventListener('click', () => fileInput.click());
-    dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.style.borderColor = '#4f46e5'; });
-    dropArea.addEventListener('dragleave', () => { dropArea.style.borderColor = '#cbd5e1'; });
-    dropArea.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropArea.style.borderColor = '#cbd5e1';
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        loadFileIntoStudio(e.dataTransfer.files[0]);
+    function switchMode(toPdf) {
+      isPdfStudio = toPdf;
+      if (toPdf) {
+        if (tabPdf) tabPdf.classList.add('active');
+        if (tabImg) tabImg.classList.remove('active');
+        if (filePicker) filePicker.accept = "application/pdf";
+        const title = document.getElementById('dropzoneTitle');
+        if (title) title.textContent = "Select or drop a PDF document";
+      } else {
+        if (tabImg) tabImg.classList.add('active');
+        if (tabPdf) tabPdf.classList.remove('active');
+        if (filePicker) filePicker.accept = "image/*";
+        const title = document.getElementById('dropzoneTitle');
+        if (title) title.textContent = "Select or drop an Image";
       }
-    });
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) {
-        loadFileIntoStudio(e.target.files[0]);
-      }
-    });
+    }
 
-    // File Loader Router
-    function loadFileIntoStudio(file) {
-      activeFile = file;
-      resultBanner.style.display = 'none';
+    if (tabImg) tabImg.addEventListener('click', () => switchMode(false));
+    if (tabPdf) tabPdf.addEventListener('click', () => switchMode(true));
+
+    if (dropBox && filePicker) {
+      dropBox.addEventListener('click', () => filePicker.click());
+      dropBox.addEventListener('dragover', (e) => { e.preventDefault(); dropBox.style.borderColor = '#4f46e5'; });
+      dropBox.addEventListener('dragleave', () => { dropBox.style.borderColor = '#cbd5e1'; });
+      dropBox.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropBox.style.borderColor = '#cbd5e1';
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) handleIncoming(e.dataTransfer.files[0]);
+      });
+      filePicker.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) handleIncoming(e.target.files[0]);
+      });
+    }
+
+    function handleIncoming(file) {
+      studioFile = file;
+      if (outBanner) outBanner.style.display = 'none';
 
       if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
-        isPdfMode = true;
-        tabPdfMode.classList.add('active');
-        tabImageMode.classList.remove('active');
-        imageToCrop.style.display = 'none';
-        if (cropper) cropper.destroy();
-        imageToolbar.style.display = 'none';
-        imageControlGroup.style.display = 'none';
-        pdfViewerCard.style.display = 'flex';
-        pdfToolbar.style.display = 'flex';
-        pdfControlGroup.style.display = 'flex';
+        switchMode(true);
+        if (previewImg) previewImg.style.display = 'none';
+        if (studioCropper) studioCropper.destroy();
+        if (imgTools) imgTools.style.display = 'none';
+        if (imgCtrls) imgCtrls.style.display = 'none';
+        if (pdfCard) pdfCard.style.display = 'flex';
+        if (pdfTools) pdfTools.style.display = 'flex';
+        if (pdfCtrls) pdfCtrls.style.display = 'flex';
 
-        pdfCardTitle.textContent = file.name;
-        pdfCardStats.textContent = `Size: ${(file.size / 1024).toFixed(1)} KB`;
-
+        const pTitle = document.getElementById('pdfCardTitle');
+        if (pTitle) pTitle.textContent = file.name;
         const reader = new FileReader();
         reader.onload = async function() {
           const typedarray = new Uint8Array(this.result);
-          pdfDocInstance = await pdfjsLib.getDocument({ data: typedarray }).promise;
-          totalPdfPages = pdfDocInstance.numPages;
-          currentPdfPage = 1;
-          pdfCardStats.textContent = `${totalPdfPages} Page${totalPdfPages > 1 ? 's' : ''} &bull; ${(file.size / 1024).toFixed(1)} KB`;
-          renderPdfPagePreview(currentPdfPage);
+          pdfDocObj = await pdfjsLib.getDocument({ data: typedarray }).promise;
+          totalPdfPageCount = pdfDocObj.numPages;
+          currentPdfPageIdx = 1;
+          const pStats = document.getElementById('pdfCardStats');
+          if (pStats) pStats.textContent = `${totalPdfPageCount} Pages • ${(file.size / 1024).toFixed(1)} KB`;
+          renderPdfPage(currentPdfPageIdx);
         };
         reader.readAsArrayBuffer(file);
       } else {
-        isPdfMode = false;
-        tabImageMode.classList.add('active');
-        tabPdfMode.classList.remove('active');
-        pdfViewerCard.style.display = 'none';
-        pdfToolbar.style.display = 'none';
-        pdfControlGroup.style.display = 'none';
-        imageToCrop.style.display = 'block';
-        imageToolbar.style.display = 'flex';
-        imageControlGroup.style.display = 'flex';
+        switchMode(false);
+        if (pdfCard) pdfCard.style.display = 'none';
+        if (pdfTools) pdfTools.style.display = 'none';
+        if (pdfCtrls) pdfCtrls.style.display = 'none';
+        if (previewImg) previewImg.style.display = 'block';
+        if (imgTools) imgTools.style.display = 'flex';
+        if (imgCtrls) imgCtrls.style.display = 'flex';
 
         const reader = new FileReader();
         reader.onload = function(evt) {
-          imageToCrop.src = evt.target.result;
-          if (cropper) cropper.destroy();
-          cropper = new Cropper(imageToCrop, {
+          if (previewImg) previewImg.src = evt.target.result;
+          if (studioCropper) studioCropper.destroy();
+          studioCropper = new Cropper(previewImg, {
             viewMode: 1,
             autoCropArea: 0.9,
-            responsive: true,
-            restore: false
+            responsive: true
           });
         };
         reader.readAsDataURL(file);
       }
-
-      editorWorkspace.style.display = 'block';
+      if (workArea) workArea.style.display = 'block';
     }
 
-    // Render Preview of PDF Page
-    async function renderPdfPagePreview(pageNumber) {
-      if (!pdfDocInstance) return;
-      pdfPageIndicator.textContent = `Page ${pageNumber} of ${totalPdfPages}`;
-      const page = await pdfDocInstance.getPage(pageNumber);
+    async function renderPdfPage(pageNum) {
+      if (!pdfDocObj) return;
+      const ind = document.getElementById('pdfPageIndicator');
+      if (ind) ind.textContent = `Page ${pageNum} of ${totalPdfPageCount}`;
+      const page = await pdfDocObj.getPage(pageNum);
       const viewport = page.getViewport({ scale: 1.0 });
-      pdfRenderCanvas.width = viewport.width;
-      pdfRenderCanvas.height = viewport.height;
-      pdfRenderCanvas.style.display = 'block';
-      const renderContext = {
-        canvasContext: pdfRenderCanvas.getContext('2d'),
-        viewport: viewport
-      };
-      await page.render(renderContext).promise;
+      if (pdfCanvas) {
+        pdfCanvas.width = viewport.width;
+        pdfCanvas.height = viewport.height;
+        pdfCanvas.style.display = 'block';
+        await page.render({ canvasContext: pdfCanvas.getContext('2d'), viewport: viewport }).promise;
+      }
     }
 
-    document.getElementById('btnPdfPrevPage').addEventListener('click', () => {
-      if (currentPdfPage > 1) {
-        currentPdfPage--;
-        renderPdfPagePreview(currentPdfPage);
+    const pPrev = document.getElementById('btnPdfPrevPage');
+    const pNext = document.getElementById('btnPdfNextPage');
+    if (pPrev) pPrev.addEventListener('click', () => {
+      if (currentPdfPageIdx > 1) { currentPdfPageIdx--; renderPdfPage(currentPdfPageIdx); }
+    });
+    if (pNext) pNext.addEventListener('click', () => {
+      if (currentPdfPageIdx < totalPdfPageCount) { currentPdfPageIdx++; renderPdfPage(currentPdfPageIdx); }
+    });
+
+    const bSquare = document.getElementById('btnAspectSquare');
+    const bPass = document.getElementById('btnAspectPassport');
+    const bSign = document.getElementById('btnAspectSignature');
+    const bFree = document.getElementById('btnAspectFree');
+    const rL = document.getElementById('btnRotateL');
+    const rR = document.getElementById('btnRotateR');
+    const fH = document.getElementById('btnFlipH');
+    const fV = document.getElementById('btnFlipV');
+
+    if (bSquare) bSquare.addEventListener('click', () => studioCropper && studioCropper.setAspectRatio(1));
+    if (bPass) bPass.addEventListener('click', () => studioCropper && studioCropper.setAspectRatio(3.5 / 4.5));
+    if (bSign) bSign.addEventListener('click', () => studioCropper && studioCropper.setAspectRatio(2 / 1));
+    if (bFree) bFree.addEventListener('click', () => studioCropper && studioCropper.setAspectRatio(NaN));
+    if (rL) rL.addEventListener('click', () => studioCropper && studioCropper.rotate(-90));
+    if (rR) rR.addEventListener('click', () => studioCropper && studioCropper.rotate(90));
+    if (fH) fH.addEventListener('click', () => {
+      if (!studioCropper) return;
+      const d = studioCropper.getData();
+      studioCropper.scaleX(d.scaleX === -1 ? 1 : -1);
+    });
+    if (fV) fV.addEventListener('click', () => {
+      if (!studioCropper) return;
+      const d = studioCropper.getData();
+      studioCropper.scaleY(d.scaleY === -1 ? 1 : -1);
+    });
+
+    [bSlider, cSlider, sSlider].forEach(el => {
+      if (el) {
+        el.addEventListener('input', () => {
+          if (bVal && bSlider) bVal.textContent = `${bSlider.value}%`;
+          if (cVal && cSlider) cVal.textContent = `${cSlider.value}%`;
+          if (sVal && sSlider) sVal.textContent = `${sSlider.value}%`;
+          updateFilters();
+        });
       }
     });
+    if (filterPreset) filterPreset.addEventListener('change', updateFilters);
 
-    document.getElementById('btnPdfNextPage').addEventListener('click', () => {
-      if (currentPdfPage < totalPdfPages) {
-        currentPdfPage++;
-        renderPdfPagePreview(currentPdfPage);
-      }
-    });
-
-    // Cropper Presets
-    document.getElementById('btnAspectSquare').addEventListener('click', () => cropper && cropper.setAspectRatio(1));
-    document.getElementById('btnAspectPassport').addEventListener('click', () => cropper && cropper.setAspectRatio(3.5 / 4.5));
-    document.getElementById('btnAspectSignature').addEventListener('click', () => cropper && cropper.setAspectRatio(2 / 1));
-    document.getElementById('btnAspectFree').addEventListener('click', () => cropper && cropper.setAspectRatio(NaN));
-    document.getElementById('btnRotateL').addEventListener('click', () => cropper && cropper.rotate(-90));
-    document.getElementById('btnRotateR').addEventListener('click', () => cropper && cropper.rotate(90));
-    document.getElementById('btnFlipH').addEventListener('click', () => {
-      if (!cropper) return;
-      const data = cropper.getData();
-      cropper.scaleX(data.scaleX === -1 ? 1 : -1);
-    });
-    document.getElementById('btnFlipV').addEventListener('click', () => {
-      if (!cropper) return;
-      const data = cropper.getData();
-      cropper.scaleY(data.scaleY === -1 ? 1 : -1);
-    });
-
-    // Image Sliders Listeners
-    [sliderBrightness, sliderContrast, sliderSaturation].forEach(slider => {
-      slider.addEventListener('input', () => {
-        valBrightness.textContent = `${sliderBrightness.value}%`;
-        valContrast.textContent = `${sliderContrast.value}%`;
-        valSaturation.textContent = `${sliderSaturation.value}%`;
-        updateCanvasCSSFilters();
-      });
-    });
-
-    selectFilterPreset.addEventListener('change', updateCanvasCSSFilters);
-
-    function updateCanvasCSSFilters() {
-      if (!cropper) return;
-      const img = document.querySelector('.cropper-view-box img, .cropper-canvas img');
-      if (!img) return;
-
-      let filterString = `brightness(${sliderBrightness.value}%) contrast(${sliderContrast.value}%) saturate(${sliderSaturation.value}%)`;
-      const preset = selectFilterPreset.value;
-      if (preset === 'grayscale') filterString += ' grayscale(100%)';
-      if (preset === 'highcontrast') filterString += ' contrast(160%) grayscale(100%) brightness(105%)';
-      if (preset === 'sepia') filterString += ' sepia(80%)';
-
-      img.style.filter = filterString;
+    function updateFilters() {
+      if (!studioCropper) return;
+      const imgEl = document.querySelector('.cropper-view-box img, .cropper-canvas img');
+      if (!imgEl) return;
+      let s = `brightness(${bSlider ? bSlider.value : 100}%) contrast(${cSlider ? cSlider.value : 100}%) saturate(${sSlider ? sSlider.value : 100}%)`;
+      if (filterPreset && filterPreset.value === 'grayscale') s += ' grayscale(100%)';
+      if (filterPreset && filterPreset.value === 'highcontrast') s += ' contrast(160%) grayscale(100%)';
+      imgEl.style.filter = s;
     }
 
-    // Main Execution Dispatcher
-    btnExecuteProcess.addEventListener('click', async () => {
-      if (!activeFile) return;
+    if (execBtn) {
+      execBtn.addEventListener('click', async () => {
+        if (!studioFile) return;
+        execBtn.disabled = true;
+        execBtn.textContent = 'Processing...';
+        if (progressBox) progressBox.style.display = 'block';
+        if (progressBar) progressBar.style.width = '30%';
 
-      btnExecuteProcess.disabled = true;
-      btnExecuteProcess.textContent = "Processing Engine Active...";
-      progressBarContainer.style.display = 'block';
-      progressBarFill.style.width = '20%';
+        const tInput = document.getElementById('targetSizeVal');
+        const uInput = document.getElementById('targetSizeUnit');
+        const targetVal = tInput ? (parseFloat(tInput.value) || 50) : 50;
+        const targetUnit = uInput ? uInput.value : 'KB';
+        const targetBytes = targetVal * (targetUnit === "MB" ? 1024 * 1024 : 1024);
 
-      const targetVal = parseFloat(document.getElementById('targetSizeVal').value) || 50;
-      const targetUnit = document.getElementById('targetSizeUnit').value;
-      const targetBytes = targetVal * (targetUnit === "MB" ? 1024 * 1024 : 1024);
-
-      try {
-        if (isPdfMode) {
-          await executeRealPdfCompression(targetBytes);
-        } else {
-          await executeImageCompression(targetBytes);
-        }
-      } catch (err) {
-        alert("Processing Error: " + err.message);
-      } finally {
-        progressBarFill.style.width = '100%';
-        setTimeout(() => { progressBarContainer.style.display = 'none'; progressBarFill.style.width = '0%'; }, 500);
-        btnExecuteProcess.disabled = false;
-        btnExecuteProcess.textContent = "Execute & Compress File";
-      }
-    });
-
-    // Real Multi-Page PDF Downsampling & Requantization Engine
-    async function executeRealPdfCompression(targetBytes) {
-      progressBarFill.style.width = '35%';
-      const profile = document.getElementById('pdfCompressionLevel').value;
-      const colorMode = document.getElementById('pdfColorMode').value;
-      const exportFormat = document.getElementById('pdfExportFormat').value;
-      const rangeText = document.getElementById('pdfPageRange').value.trim();
-
-      // Determine viewport scale and JPEG quality
-      let scale = 1.2;
-      let initialQuality = 0.75;
-      if (profile === 'extreme') { scale = 0.8; initialQuality = 0.50; }
-      else if (profile === 'low') { scale = 1.6; initialQuality = 0.88; }
-
-      // Parse page ranges
-      let pagesToProcess = [];
-      for (let i = 1; i <= totalPdfPages; i++) pagesToProcess.push(i);
-
-      if (rangeText !== 'all' && rangeText !== '') {
         try {
-          const parts = rangeText.split(',');
-          let customPages = [];
-          parts.forEach(part => {
-            if (part.includes('-')) {
-              const [start, end] = part.split('-').map(n => parseInt(n.trim()));
-              for (let k = start; k <= end; k++) if (k >= 1 && k <= totalPdfPages) customPages.push(k);
-            } else {
-              const p = parseInt(part.trim());
-              if (p >= 1 && p <= totalPdfPages) customPages.push(p);
-            }
-          });
-          if (customPages.length > 0) pagesToProcess = [...new Set(customPages)];
-        } catch (e) { console.warn("Range parse fallback to all pages"); }
-      }
+          if (isPdfStudio) {
+            await processPdf(targetBytes);
+          } else {
+            await processImg(targetBytes);
+          }
+        } catch (err) {
+          alert("Processing error: " + err.message);
+        } finally {
+          if (progressBar) progressBar.style.width = '100%';
+          setTimeout(() => { 
+            if (progressBox) progressBox.style.display = 'none'; 
+            if (progressBar) progressBar.style.width = '0%'; 
+          }, 500);
+          execBtn.disabled = false;
+          execBtn.textContent = 'Execute & Compress File';
+        }
+      });
+    }
+
+    async function processPdf(targetBytes) {
+      const profEl = document.getElementById('pdfCompressionLevel');
+      const colorEl = document.getElementById('pdfColorMode');
+      const profile = profEl ? profEl.value : 'balanced';
+      const colorMode = colorEl ? colorEl.value : 'color';
+
+      let scale = profile === 'extreme' ? 0.8 : (profile === 'low' ? 1.6 : 1.2);
+      let quality = profile === 'extreme' ? 0.5 : (profile === 'low' ? 0.88 : 0.72);
 
       const { PDFDocument } = PDFLib;
-      const newPdfDoc = await PDFDocument.create();
+      const newDoc = await PDFDocument.create();
 
-      for (let index = 0; index < pagesToProcess.length; index++) {
-        const pageNum = pagesToProcess[index];
-        const page = await pdfDocInstance.getPage(pageNum);
+      for (let i = 1; i <= totalPdfPageCount; i++) {
+        const page = await pdfDocObj.getPage(i);
         const viewport = page.getViewport({ scale: scale });
-
-        const canvas = document.createElement('canvas');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        const ctx = canvas.getContext('2d');
-
+        const c = document.createElement('canvas');
+        c.width = viewport.width;
+        c.height = viewport.height;
+        const ctx = c.getContext('2d');
         await page.render({ canvasContext: ctx, viewport: viewport }).promise;
 
-        // Apply Grayscale Filter if selected
         if (colorMode === 'grayscale') {
-          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          const data = imgData.data;
-          for (let i = 0; i < data.length; i += 4) {
-            const avg = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
-            data[i] = avg;
-            data[i + 1] = avg;
-            data[i + 2] = avg;
+          const idata = ctx.getImageData(0, 0, c.width, c.height);
+          const d = idata.data;
+          for (let j = 0; j < d.length; j += 4) {
+            const avg = 0.299 * d[j] + 0.587 * d[j+1] + 0.114 * d[j+2];
+            d[j] = avg; d[j+1] = avg; d[j+2] = avg;
           }
-          ctx.putImageData(imgData, 0, 0);
+          ctx.putImageData(idata, 0, 0);
         }
 
-        const imgDataUrl = canvas.toDataURL('image/jpeg', initialQuality);
-        const embeddedImg = await newPdfDoc.embedJpg(imgDataUrl);
-        const newPage = newPdfDoc.addPage([viewport.width, viewport.height]);
-        newPage.drawImage(embeddedImg, { x: 0, y: 0, width: viewport.width, height: viewport.height });
-
-        progressBarFill.style.width = `${35 + Math.round(((index + 1) / pagesToProcess.length) * 55)}%`;
+        const imgUrl = c.toDataURL('image/jpeg', quality);
+        const embedded = await newDoc.embedJpg(imgUrl);
+        const p = newDoc.addPage([viewport.width, viewport.height]);
+        p.drawImage(embedded, { x: 0, y: 0, width: viewport.width, height: viewport.height });
+        if (progressBar) progressBar.style.width = `${30 + Math.round((i / totalPdfPageCount) * 60)}%`;
       }
 
-      const compressedBytes = await newPdfDoc.save({ useObjectStreams: true });
-      const finalBlob = new Blob([compressedBytes], { type: 'application/pdf' });
-      displayFinishedResults(finalBlob, activeFile.size, finalBlob.size, 'pdf');
+      const pdfBytes = await newDoc.save({ useObjectStreams: true });
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      showResult(blob, 'pdf');
     }
 
-    // High Precision Canvas & Bisection Image Compression
-    async function executeImageCompression(targetBytes) {
-      progressBarFill.style.width = '40%';
-      const canvas = cropper.getCroppedCanvas();
+    async function processImg(targetBytes) {
+      const canvas = studioCropper.getCroppedCanvas();
       if (!canvas) return;
 
-      const customWidth = parseInt(document.getElementById('customWidthLock').value);
+      const wLock = document.getElementById('customWidthLock');
+      const customWidth = wLock ? parseInt(wLock.value, 10) : NaN;
       let renderWidth = canvas.width;
       let renderHeight = canvas.height;
 
@@ -1420,78 +781,341 @@ const jsonLd = {
         renderHeight = Math.round(customWidth * ratio);
       }
 
-      const finalCanvas = document.createElement('canvas');
-      finalCanvas.width = renderWidth;
-      finalCanvas.height = renderHeight;
-      const ctx = finalCanvas.getContext('2d');
+      const finalC = document.createElement('canvas');
+      finalC.width = renderWidth;
+      finalC.height = renderHeight;
+      const ctx = finalC.getContext('2d');
 
-      // Build CSS Filter Matrix
-      let filterString = `brightness(${sliderBrightness.value}%) contrast(${sliderContrast.value}%) saturate(${sliderSaturation.value}%)`;
-      const preset = selectFilterPreset.value;
-      if (preset === 'grayscale') filterString += ' grayscale(100%)';
-      if (preset === 'highcontrast') filterString += ' contrast(160%) grayscale(100%) brightness(105%)';
-      if (preset === 'sepia') filterString += ' sepia(80%)';
-
-      ctx.filter = filterString;
+      let s = `brightness(${bSlider ? bSlider.value : 100}%) contrast(${cSlider ? cSlider.value : 100}%) saturate(${sSlider ? sSlider.value : 100}%)`;
+      if (filterPreset && filterPreset.value === 'grayscale') s += ' grayscale(100%)';
+      if (filterPreset && filterPreset.value === 'highcontrast') s += ' contrast(160%) grayscale(100%)';
+      ctx.filter = s;
       ctx.drawImage(canvas, 0, 0, renderWidth, renderHeight);
 
-      const targetFormat = document.getElementById('selectImageOutputFormat').value;
+      const fSelect = document.getElementById('selectImageOutputFormat');
+      const format = fSelect ? fSelect.value : 'image/jpeg';
 
-      if (targetFormat === 'application/pdf') {
+      if (format === 'application/pdf') {
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({
           orientation: renderWidth > renderHeight ? 'landscape' : 'portrait',
           unit: 'px',
           format: [renderWidth, renderHeight]
         });
-        const imgData = finalCanvas.toDataURL('image/jpeg', 0.85);
-        pdf.addImage(imgData, 'JPEG', 0, 0, renderWidth, renderHeight);
-        const pdfBlob = pdf.output('blob');
-        displayFinishedResults(pdfBlob, activeFile.size, pdfBlob.size, 'pdf');
+        pdf.addImage(finalC.toDataURL('image/jpeg', 0.85), 'JPEG', 0, 0, renderWidth, renderHeight);
+        showResult(pdf.output('blob'), 'pdf');
         return;
       }
 
-      // Targeted Binary Bisection for Exact KB Matching
-      let minQ = 0.04;
-      let maxQ = 0.98;
-      let bestBlob = null;
-      let iterations = 0;
-
-      function bisectionSearch() {
-        const curQ = (minQ + maxQ) / 2;
-        finalCanvas.toBlob((blob) => {
-          iterations++;
+      let minQ = 0.05, maxQ = 0.98, bestBlob = null, iters = 0;
+      function bisect() {
+        const q = (minQ + maxQ) / 2;
+        finalC.toBlob((blob) => {
+          iters++;
           if (!blob) return;
-
-          if (blob.size <= targetBytes || iterations >= 8) {
+          if (blob.size <= targetBytes || iters >= 8) {
             bestBlob = blob;
-            minQ = curQ;
+            minQ = q;
           } else {
-            maxQ = curQ;
+            maxQ = q;
           }
-
-          if (iterations < 8 && minQ < maxQ) {
-            bisectionSearch();
+          if (iters < 8 && minQ < maxQ) {
+            bisect();
           } else {
-            const chosenBlob = bestBlob || blob;
-            displayFinishedResults(chosenBlob, activeFile.size, chosenBlob.size, targetFormat.split('/')[1]);
+            showResult(bestBlob || blob, format.split('/')[1] || 'jpg');
           }
-        }, targetFormat, curQ);
+        }, format, q);
       }
-
-      bisectionSearch();
+      bisect();
     }
 
-    function displayFinishedResults(blob, origBytes, newBytes, ext) {
-      resultBanner.style.display = 'flex';
-      const origKb = (origBytes / 1024).toFixed(1);
-      const newKb = (newBytes / 1024).toFixed(1);
-
-      resultMetrics.innerHTML = `Original: <strong>${origKb} KB</strong> &rarr; Optimized: <strong>${newKb} KB</strong> (Target Met)`;
+    function showResult(blob, ext) {
+      if (outBanner) outBanner.style.display = 'flex';
+      const oKb = studioFile ? (studioFile.size / 1024).toFixed(1) : "0";
+      const nKb = (blob.size / 1024).toFixed(1);
+      if (outMetrics) outMetrics.innerHTML = `Original: <strong>${oKb} KB</strong> &rarr; Processed: <strong>${nKb} KB</strong> (Verified)`;
       const url = URL.createObjectURL(blob);
-      downloadLinkBtn.href = url;
-      downloadLinkBtn.download = `convertkb_${Date.now()}.${ext}`;
+      if (downloadAnchor) {
+        downloadAnchor.href = url;
+        downloadAnchor.download = `convertkb_${Date.now()}.${ext}`;
+      }
     }
   </script>
 </body>
 </html>
+
+<style>
+  .hero-section {
+    padding: 48px 0 24px;
+    text-align: center;
+    background: radial-gradient(circle at 50% 0%, #edf2ff 0%, #fafbfc 75%);
+  }
+  .hero-section h1 {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -1.2px;
+    color: var(--slate-900);
+    margin-bottom: 12px;
+  }
+  .hero-section p {
+    font-size: 18px;
+    color: var(--slate-600);
+    max-width: 780px;
+    margin: 0 auto 36px;
+  }
+  .studio-card {
+    max-width: 1040px;
+    margin: 0 auto 50px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    padding: 34px;
+    text-align: left;
+  }
+  .mode-tabs {
+    display: flex;
+    gap: 12px;
+    border-bottom: 2px solid var(--slate-100);
+    margin-bottom: 28px;
+    padding-bottom: 8px;
+  }
+  .mode-btn {
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--slate-500);
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .mode-btn.active { color: var(--primary); background: var(--primary-light); }
+  .dropzone {
+    border: 2px dashed var(--slate-300);
+    background: #fbfcfe;
+    border-radius: 16px;
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .dropzone:hover { border-color: var(--primary); background: #f5f7ff; }
+  .dropzone-icon { font-size: 48px; margin-bottom: 12px; color: var(--primary); }
+  .dropzone h3 { font-size: 19px; font-weight: 700; color: var(--slate-800); margin-bottom: 4px; }
+  .dropzone p { font-size: 14px; color: var(--slate-500); }
+  .workspace-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 28px;
+    margin-top: 24px;
+  }
+  .viewer-panel {
+    background: #0f172a;
+    border-radius: 16px;
+    overflow: hidden;
+    min-height: 420px;
+    max-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pdf-viewer-card {
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+  }
+  .badge-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 9999px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 8px;
+  }
+  .sub-toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .tool-btn {
+    padding: 7px 12px;
+    background: var(--slate-100);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .tool-btn:hover { background: var(--slate-200); }
+  .controls-panel { display: flex; flex-direction: column; gap: 16px; }
+  .card-subheading {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--slate-900);
+    border-bottom: 1px solid var(--slate-100);
+    padding-bottom: 4px;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-group label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--slate-700);
+    display: flex;
+    justify-content: space-between;
+  }
+  .form-group input, .form-group select {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .range-val { font-family: 'JetBrains Mono', monospace; color: var(--primary); font-size: 12px; }
+  .btn-execute {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+  }
+  .btn-execute:hover { background: var(--primary-hover); }
+  .result-banner {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .btn-download {
+    background: #059669;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 9px 18px;
+    border-radius: 8px;
+  }
+  .progress-bar-container {
+    display: none;
+    width: 100%;
+    height: 6px;
+    background: var(--slate-100);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 14px;
+  }
+  .progress-bar-fill { width: 0%; height: 100%; background: var(--primary); transition: width 0.2s; }
+  .content-section {
+    padding: 60px 0;
+    background: #ffffff;
+    border-top: 1px solid var(--border);
+  }
+  .content-body {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--slate-800);
+  }
+  .content-body h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 44px 0 16px;
+    color: var(--slate-900);
+    letter-spacing: -0.6px;
+    border-bottom: 2px solid var(--slate-100);
+    padding-bottom: 8px;
+  }
+  .content-body h3 {
+    font-size: 21px;
+    font-weight: 700;
+    margin: 28px 0 10px;
+    color: var(--slate-900);
+  }
+  .content-body p { margin-bottom: 20px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 28px 0;
+    font-size: 14px;
+  }
+  th, td { padding: 13px 16px; border: 1px solid var(--border); text-align: left; }
+  th { background: var(--slate-50); font-weight: 700; color: var(--slate-900); }
+  .faq-section { padding: 50px 0 80px; background: #fafbfc; }
+  .faq-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .faq-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--slate-900); }
+  .faq-card p { font-size: 15px; color: var(--slate-600); margin: 0; }
+  footer {
+    background: var(--slate-900);
+    color: #94a3b8;
+    padding: 64px 0 28px;
+    font-size: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-brand {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .footer-brand .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 1.2fr 1fr;
+    gap: 36px;
+    margin-bottom: 48px;
+  }
+  .footer-col h5 {
+    color: #ffffff;
+    font-size: 15px;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+  .footer-col ul { list-style: none; padding: 0; }
+  .footer-col ul li { margin-bottom: 9px; }
+  .footer-col a { color: #94a3b8; transition: color 0.15s ease; }
+  .footer-col a:hover { color: #ffffff; }
+  .footer-bottom {
+    border-top: 1px solid var(--slate-800);
+    padding-top: 24px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--slate-500);
+  }
+  @media (max-width: 992px) {
+    .workspace-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 576px) {
+    .hero-section h1 { font-size: 32px; }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>
