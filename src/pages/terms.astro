@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { CONTACT_EMAIL, UPDATED } from '../consts.js';
+---
+<Layout title="Terms of Use | ConvertKB" description="Terms of use for ConvertKB's free image and PDF tools.">
+  <div class="narrow pagehead"><h1>Terms of use</h1><p style="color:var(--muted)">Last updated: {UPDATED}</p></div>
+  <div class="narrow prose" style="padding-bottom:40px">
+    <h2>Using the tools</h2>
+    <p>ConvertKB provides free tools to compress, resize and convert images and PDFs. You may use them for personal and commercial work, provided you have the right to process the files you add and you do not use the site to break the law or infringe anyone's rights.</p>
+    <h2>No guarantee of acceptance</h2>
+    <p>Our pages describe typical size and dimension requirements. Organisations change them without notice, so you are responsible for checking the current requirements and for confirming that the output meets them before you submit an application. We are not liable for rejected applications, missed deadlines or other consequences of a file being refused.</p>
+    <h2>Output quality</h2>
+    <p>Compression and conversion can change a file: quality may drop, text in PDFs may become unselectable when pages are rebuilt as images, and OCR can misread characters. Always review the output, and keep your originals.</p>
+    <h2>Availability and warranty</h2>
+    <p>The service is provided "as is" without warranties of any kind. Features may change or be removed. Some features rely on third-party libraries that load on demand and may be unavailable if those services are blocked or offline.</p>
+    <h2>Intellectual property</h2>
+    <p>You keep all rights to your files. The site's text, design and code belong to ConvertKB or its licensors; open-source libraries remain under their own licences.</p>
+    <h2>Contact</h2>
+    <p>Questions about these terms: <a href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL}</a>.</p>
+  </div>
+</Layout>
