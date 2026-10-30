@@ -1,0 +1,275 @@
+// Hand-written, size-specific knowledge. Each size has its own uses, expectations, tips, pitfalls and FAQs.
+export const SIZES = {
+  10: {
+    exImg: "A 2.4 MB phone photo of a signature on white paper, cropped to 300 \u00d7 120 pixels and whitened, lands near 6 to 8 KB as a JPG. The same signature photographed on grey, lined paper can need twice that.",
+    exPdf: "A one-page letter exported from Word is often 40 KB; as a black-and-white 100 DPI scan it can reach about 9 KB, but small print becomes hard to read, so keep it to a single short page.",
+    hook: 'tiny signature and thumbnail fields',
+    imgUses: [
+      'Handwritten signature boxes on state recruitment forms that cap uploads at 10 KB.',
+      'Small left-thumb or initial fields where only a rough impression is checked.',
+      'Avatar and thumbnail uploads on older web forms with very tight limits.',
+      'Stamp, seal or logo fields on tender and vendor-registration portals.'],
+    imgExpect: 'At 10 KB there is room for roughly one small, mostly-white image. Signatures and stamps survive well because large flat areas compress to almost nothing; a colourful face photo will lose fine detail quickly, so crop tightly before you compress.',
+    pdfUses: [
+      'One-page declarations or undertakings that a portal limits to 10 KB.',
+      'A single scanned self-attested line or short certificate saved as black-and-white.',
+      'Cover letters that are mostly text where the PDF is generated, not scanned.',
+      'Tiny acknowledgement slips attached to online grievance forms.'],
+    pdfExpect: 'A 10 KB PDF is only realistic for one page of mostly text. A scanned colour page cannot be squeezed that far without becoming unreadable, so use greyscale, one page and expect low resolution.',
+    tips: ['Sign with a dark pen on plain white paper and photograph it in daylight so the compressor has less noise to encode.', 'Crop away the empty paper around the signature; every blank pixel you remove is bytes saved.'],
+    pitfalls: ['A grey or yellowish paper background costs more bytes than pure white. Use the Document whiten colour mode.', 'Do not enlarge a tiny image first. Upscaling adds pixels without detail and makes 10 KB harder to reach.'],
+    faq: [['Is 10 KB enough for a readable signature?', 'Yes, if the signature is cropped tightly and the paper is white. A 300 by 150 pixel signature usually fits comfortably under 10 KB as a JPG.'], ['Why does my 10 KB result look soft?', 'The tool lowers JPEG quality or shrinks dimensions until the file fits. A busy photo has far more detail to store than a signature, so soft edges are expected at this size.']],
+    pdfFaq: [['Can a scanned page really be 10 KB?', 'Only as a small, greyscale, low-resolution page. If the portal accepts it, use one page; if you need several pages, ask whether a higher limit such as 50 KB or 100 KB is allowed.']],
+    related: ['signature-resize', 'pan-card-signature']
+  },
+  20: {
+    exImg: "A 140 \u00d7 60 pixel signature usually weighs 3 to 6 KB, which is why portals can ask for 10\u201320 KB and still get a clear image. A 200 \u00d7 230 pixel portrait of a face on a plain wall typically needs 14 to 19 KB.",
+    exPdf: "A single scanned page of an Aadhaar photocopy at 120 DPI greyscale is usually 15 to 19 KB, so it fits, but a colour scan of the same page at 300 DPI can be 900 KB before compression.",
+    hook: 'SSC, IBPS and state exam signatures',
+    imgUses: [
+      'SSC and IBPS candidate signature fields, which commonly sit between 10 and 20 KB.',
+      'Compact passport-style photos on exam forms that cap photos at 20 KB.',
+      'Online job-portal profile pictures with a 20 KB ceiling.',
+      'Bank KYC and account-opening forms that limit each attachment to 20 KB.'],
+    imgExpect: 'Twenty kilobytes holds a clear signature or a small head-and-shoulders photo. Expect a photo to land around 120 by 150 pixels or a little larger, which is the size many exam portals actually ask for.',
+    pdfUses: [
+      'A one-page ID proof such as an Aadhaar or PAN photocopy for upload-limited forms.',
+      'A short signed declaration page saved as black-and-white.',
+      'Single-page certificates that a university portal accepts under 20 KB.',
+      'Employment-exchange or scholarship forms that cap each document at 20 KB.'],
+    pdfExpect: 'One greyscale page at modest resolution fits in 20 KB. Two pages is tight, and colour scans will usually need to be converted to greyscale to stay legible.',
+    tips: ['If a portal gives both a minimum and a maximum, set the minimum field too. The tool can pad a JPG up to the minimum without changing how it looks.', 'Photograph signatures straight-on; a skewed photo needs more pixels to keep the same readable width.'],
+    pitfalls: ['Setting a 20 KB target on an image that must also be exactly 140 by 60 pixels can conflict. Set the dimensions first and let the tool fit the file size inside them.', 'Re-saving an already compressed JPG repeatedly adds blocky artefacts. Start from the original photo.'],
+    faq: [['What dimensions fit in 20 KB?', 'A plain signature of 140 by 60 pixels is far below 20 KB. A portrait photo of about 200 by 230 pixels usually fits at good quality.'], ['Why does the tool aim slightly under 20 KB?', 'Some portals count 1 KB as 1000 bytes and others as 1024. Aiming just under 20,000 bytes passes both.']],
+    pdfFaq: [['How many pages fit in 20 KB?', 'Usually one. Each extra scanned page needs its own image data, so pages share a small budget and quality falls fast.']],
+    related: ['ssc-photo-and-signature', 'ibps-photo-and-signature', 'signature-resize']
+  },
+  30: {
+    exImg: "A 240 \u00d7 300 pixel passport photo with a plain background normally compresses to 20 to 28 KB at around 70% JPEG quality, comfortably inside a 30 KB limit.",
+    exPdf: "A two-page marks card scanned in greyscale at 110 DPI lands around 26 to 30 KB, so check the preview if the second page has dense small print.",
+    hook: 'state board and scholarship portals',
+    imgUses: [
+      'State scholarship and board-exam forms that ask for photos or signatures under 30 KB.',
+      'Admit-card and hall-ticket photo replacements on university portals.',
+      'Municipal and utility service forms with small attachment limits.',
+      'Identity-proof thumbnails in HR onboarding tools.'],
+    imgExpect: 'Thirty kilobytes gives noticeably more room than 20 KB. A passport-style photo at about 240 by 300 pixels or a clean scanned seal usually fits with no visible blockiness.',
+    pdfUses: [
+      'One or two pages of marks cards saved in greyscale.',
+      'Bonafide and caste or income certificates when the portal limit is 30 KB.',
+      'A single ID page plus a short declaration combined into one file.',
+      'Application receipts that need to be re-uploaded to a second portal.'],
+    pdfExpect: 'Thirty kilobytes allows one clear greyscale page or two tight ones. Colour stamps and photographs on the page increase size quickly, so remove unneeded pages first.',
+    tips: ['Use the page-range box to keep only the pages the portal needs. Fewer pages means more bytes per page.', 'For photos, a 3:4 crop (or the preset for your exam) avoids a second resize.'],
+    pitfalls: ['Photos with patterned clothing or busy backgrounds cost far more than plain ones. Crop closer to the face.', 'PNG output is almost never right at 30 KB. Choose JPG unless the portal demands PNG.'],
+    faq: [['Is 30 KB the same as 0.03 MB?', 'Roughly. 30 KB is about 0.029 MB in binary units and 0.03 MB in decimal units; the tool targets slightly under 30,000 bytes to be safe either way.'], ['Can I compress a 5 MB phone photo to 30 KB?', 'Yes. The tool reduces quality first and then shrinks the pixel dimensions if needed, so even very large photos reach 30 KB.']],
+    pdfFaq: [['Will my text stay sharp at 30 KB?', 'For one or two greyscale pages, usually yes. The tool tells you the resolution it ended up using so you can judge readability.']],
+    related: ['compress-image-to-20kb', 'compress-image-to-50kb']
+  },
+  40: {
+    exImg: "A 280 \u00d7 350 pixel employee photo with soft studio lighting comes out near 30 to 38 KB at roughly 75% quality; a patterned shirt can push it to the limit faster.",
+    exPdf: "A front-and-back ID card placed on one page and scanned at 130 DPI greyscale is typically 28 to 36 KB.",
+    hook: 'job-application photos and certificates',
+    imgUses: [
+      'Job-application photographs where the employer portal caps files at 40 KB.',
+      'Scanned certificates and ID cards for state recruitment boards.',
+      'Teacher-eligibility and nursing council application photographs.',
+      'Insurance and bank forms that accept up to 40 KB per document image.'],
+    imgExpect: 'Forty kilobytes comfortably fits a passport-size photo at roughly 280 by 350 pixels, or a single-page document photo at low resolution. Faces stay natural; small printed text on a document may need a close crop to remain readable.',
+    pdfUses: [
+      'Two-page ID bundles, such as the front and back of a card in one PDF.',
+      'Single-page experience or relieving letters.',
+      'Mark-sheet pages saved in greyscale.',
+      'Medical or fitness certificates uploaded with job forms.'],
+    pdfExpect: 'You can fit two greyscale pages or one fairly detailed page. Pages with photographs or coloured stamps should be converted to greyscale for best results.',
+    tips: ['If a portal asks for 20 to 40 KB, target 38 KB: it satisfies the maximum and leaves clear headroom above the minimum.', 'Use the Enhance panel to raise contrast on faded certificates before compressing.'],
+    pitfalls: ['Dark backgrounds in photos waste bytes; many portals want a plain light background anyway.', 'Resizing after compressing re-encodes the image and can push it back over the limit. Resize and compress in one step.'],
+    faq: [['What is the best format for 40 KB?', 'JPG for photographs and signatures. WebP is smaller still but many government portals reject it.'], ['Does the tool upload my photo?', 'No. All processing happens in your browser tab, and nothing is sent to a server.']],
+    pdfFaq: [['What about a two-sided ID card?', 'Place both sides on one page before scanning or merge them first, then compress to 40 KB in greyscale.']],
+    related: ['ssc-photo-and-signature', 'compress-image-to-50kb']
+  },
+  50: {
+    exImg: "A 350 \u00d7 450 pixel photo for a PAN or exam form usually reaches 35 to 48 KB at about 70% quality. If your source is a 4 MB phone picture, the tool will first crop, then resample, and finally tune quality.",
+    exPdf: "Three greyscale A4 pages at 105 DPI come to roughly 40 to 50 KB, while the same pages in colour need about double.",
+    hook: 'PAN, passport-style photos and many exam forms',
+    imgUses: [
+      'PAN card and e-PAN application photographs and signatures, which are commonly capped near 50 KB.',
+      'SSC, railway and bank exam photographs with a 20 to 50 KB window.',
+      'University admission forms that restrict each uploaded image to 50 KB.',
+      'Driving licence and RTO online forms with 50 KB photo limits.'],
+    imgExpect: 'Fifty kilobytes is a comfortable size for a well-framed portrait: expect around 350 by 450 pixels at good quality, with clean skin tones and readable text on a document photo.',
+    pdfUses: [
+      'Two or three scanned pages of identity or address proof.',
+      'One-page résumés and short cover letters.',
+      'Fee receipts and payment screenshots turned into a single PDF.',
+      'Previous-year marks cards for admission portals that limit uploads to 50 KB.'],
+    pdfExpect: 'Fifty kilobytes holds two to three greyscale text pages at readable resolution, or one colour page with a photograph. This is the most commonly requested PDF limit for form uploads.',
+    tips: ['Use the PAN or SSC preset on the matching exam page to set pixel dimensions, DPI and size range in one click.', 'Check the preview at 100% zoom before uploading; if a face looks soft, crop tighter rather than lowering the size limit.'],
+    pitfalls: ['A 50 KB limit does not mean the photo can be any dimension. Portals often also fix pixel size; set both.', 'Saving the result as PNG can make it several times larger. Keep JPG for photos.'],
+    faq: [['How do I compress an image to exactly 50 KB?', 'Set the maximum to 50 KB. The tool finds the highest quality that fits, so the result is just under the limit rather than exactly equal. If a minimum applies, set it and tick padding.'], ['Will a 50 KB photo be accepted for a passport form?', 'Passport and visa portals usually require larger, sharper files; use the dedicated passport or US visa pages for those.']],
+    pdfFaq: [['How can I keep a three-page PDF under 50 KB?', 'Use greyscale, keep only the needed pages, and let the tool pick the resolution. It will report the final size and approximate DPI.']],
+    related: ['pan-card-photo', 'ssc-photo-and-signature', 'ibps-photo-and-signature']
+  },
+  100: {
+    exImg: "A 600 \u00d7 800 pixel scan of a certificate fits in about 85 to 100 KB, and text such as seal numbers stays readable. A 1000 \u00d7 1300 pixel portrait needs a bit more squeezing, around 70% quality.",
+    exPdf: "Four greyscale text pages at 125 DPI come out near 90 to 100 KB. Add a colour photograph to one page and the budget per page drops to about 60 KB.",
+    hook: 'marksheets, ID proofs and school forms',
+    imgUses: [
+      'Scanned ID proofs and address documents for bank and telecom KYC.',
+      'School and college admission forms with a 100 KB per-file limit.',
+      'Professional licence and council registration photographs.',
+      'Product and listing photos on small-business marketplaces with strict image limits.'],
+    imgExpect: 'One hundred kilobytes gives you about 600 by 800 pixels at good quality. Printed text on a document photo is comfortably readable, and portraits keep natural detail.',
+    pdfUses: [
+      'Three to five page academic transcripts in greyscale.',
+      'Combined Aadhaar, PAN and photo identity bundles.',
+      'Résumés with a profile photo.',
+      'Experience letters and appointment letters for background-verification portals.'],
+    pdfExpect: 'You can fit around four greyscale text pages at readable resolution or two to three colour pages. It is a good middle ground between size and legibility.',
+    tips: ['If the document is mostly text, greyscale gives the best size-to-clarity ratio.', 'For multi-page PDFs, check the "pages to keep" range so you are not carrying blank back pages.'],
+    pitfalls: ['Scanning at 600 DPI creates enormous files; the tool downsamples, but starting with 200 to 300 DPI is faster.', 'Photos taken at an angle waste pixels on background; crop first.'],
+    faq: [['Is 100 KB enough for a clear document scan?', 'Yes for one or two pages. For many pages the tool lowers resolution to fit, so check the readability of small print in the result.'], ['Can I compress a PNG screenshot to 100 KB?', 'Yes. The tool reduces colours and, if allowed, dimensions. Switching to JPG often gives a much better-looking result for photos.']],
+    pdfFaq: [['How many pages fit in 100 KB?', 'Typically three to six greyscale text pages. Pages heavy with photographs or colour backgrounds take more space each.']],
+    related: ['compress-pdf-to-200kb', 'compress-image-to-200kb']
+  },
+  150: {
+    exImg: "A 700 \u00d7 900 pixel portrait with moderate detail is around 100 to 140 KB at 80% quality, leaving room for finer skin texture than at 50 KB.",
+    exPdf: "Six greyscale pages at 120 DPI land around 130 to 150 KB; a page with a signature stamp and a coloured seal may need to drop to 105 DPI.",
+    hook: 'sharper ID scans and university uploads',
+    imgUses: [
+      'University and admission portals that allow up to 150 KB per image.',
+      'Certificate scans that include fine seals or watermarks.',
+      'Professional profile photos for government employee portals.',
+      'E-commerce seller-verification documents.'],
+    imgExpect: 'At 150 KB a portrait keeps good facial detail at around 700 by 900 pixels, and a certificate scan keeps seals and small print readable.',
+    pdfUses: [
+      'Six to eight page transcripts or project reports in greyscale.',
+      'Rental agreements and affidavits with signatures and stamps.',
+      'Bank statements for loan applications with 150 KB limits.',
+      'Combined identity and address proof packs.'],
+    pdfExpect: 'You can keep about five to eight text pages at readable quality. Coloured letterheads and stamps use extra space, so greyscale is still worth testing.',
+    tips: ['If the result looks too soft, raise the limit slightly or reduce the page count instead of lowering quality further.', 'Keep a copy of the original; portals sometimes ask for a higher-quality file later.'],
+    pitfalls: ['Double compression (compressing a file that was already compressed by WhatsApp) degrades quality; share original files when possible.', 'Large images with transparency saved as JPG get a white background; check logos after conversion.'],
+    faq: [['Is 150 KB a common limit?', 'It appears on university and some employee portals. If your form lists 100 KB or 200 KB, use the matching page for a closer fit.'], ['Why is my 150 KB image smaller than 150 KB?', 'The tool picks the highest quality that fits under the limit. If the source is already small or simple, it can be well under without losing anything.']],
+    pdfFaq: [['Will stamps and signatures survive?', 'Yes at 150 KB for a few pages. Tiny seals may soften, so zoom the preview before uploading.']],
+    related: ['compress-image-to-200kb', 'compress-pdf-to-200kb']
+  },
+  200: {
+    exImg: "A 800 \u00d7 1000 pixel portrait is typically 120 to 180 KB at 80 to 85% quality, so most phone portraits fit after a mild downscale.",
+    exPdf: "Ten greyscale pages at 110 DPI come to roughly 170 to 200 KB, enough for a typical application pack.",
+    hook: 'NEET-style photos and multi-page documents',
+    imgUses: [
+      'NTA-style exam photographs that allow up to 200 KB.',
+      'Passport and visa photo pre-checks before final upload.',
+      'Portfolio and ID images for e-governance portals.',
+      'Insurance claim photographs with a 200 KB attachment limit.'],
+    imgExpect: 'Two hundred kilobytes keeps a portrait sharp at roughly 800 by 1000 pixels. This is large enough that most photographs need only mild compression.',
+    pdfUses: [
+      'Ten-page academic or research documents in greyscale.',
+      'Full application packs: form, ID proof and photo in one PDF.',
+      'Medical reports with a few images.',
+      'Court and tribunal filings with a 200 KB per-file limit.'],
+    pdfExpect: 'About eight to twelve text pages at readable resolution. Colour scans of fewer pages also work well at this limit.',
+    tips: ['Use 200 KB as the target for anything that says "up to 200 KB"; the tool lands safely just under.', 'For photographs with a minimum size too (for example 10 to 200 KB), set both fields.'],
+    pitfalls: ['Large files from DSLR cameras must be downsized; do it in the same step as compression for best quality.', 'Merging PDFs from different sources before compression can embed duplicate fonts; the image-rebuild method avoids that.'],
+    faq: [['Is 200 KB enough for a NEET or JEE photo?', 'Yes. Such photographs usually have a range with 200 KB as the upper bound, but always confirm the dimensions and range in your notification.'], ['Can I compress a PDF to 200 KB without losing text quality?', 'For text-based PDFs the smart method keeps the text sharp; for scans the tool rebuilds pages as images and reports the resolution used.']],
+    pdfFaq: [['What about a 10-page scan at 200 KB?', 'That works in greyscale at around 100 DPI equivalent. For colour scans, trim the page count or accept lower resolution.']],
+    related: ['neet-photo-and-signature', 'passport-photo-size']
+  },
+  300: {
+    exImg: "",
+    exPdf: "A fifteen-page assignment scanned in greyscale at about 110 DPI is typically 250 to 300 KB. Each added colour diagram costs roughly 20 to 30 KB.",
+    hook: 'longer scanned documents',
+    imgUses: [],
+    imgExpect: '',
+    pdfUses: [
+      'Fifteen-page assignment or project submissions.',
+      'Government form packs requiring several attachments merged into one file.',
+      'Academic certificates with multiple semesters.',
+      'Property and legal document extracts.'],
+    pdfExpect: 'Three hundred kilobytes holds about ten to fifteen greyscale text pages at readable resolution, or six to eight colour pages.',
+    tips: ['Check text in the preview at normal zoom; if it is legible there, it will be legible to the portal.', 'If you only need some pages, enter a range such as 1-5, 8 so the budget is not spent on unneeded pages.'],
+    pitfalls: ['Mixing colour photo pages with text pages makes the file larger; convert photo pages separately if the portal allows.', 'A 300 KB cap with a 20-page scan will force very low resolution; split into two uploads if possible.'],
+    faq: [], pdfFaq: [['Is 300 KB a standard portal limit?', 'It appears on several university and exam portals. When your portal states a different number, use the matching size page.'], ['Can I keep the text selectable?', 'Only if the PDF already contains real text and is small enough with the smart method. Scans are rebuilt as images.']],
+    related: ['compress-pdf-to-200kb', 'compress-pdf-to-500kb']
+  },
+  400: {
+    exImg: "",
+    exPdf: "A twenty-page application bundle at 105 DPI greyscale is about 340 to 400 KB; swapping in two colour pages can add 60 KB.",
+    hook: 'bundled application packs',
+    imgUses: [],
+    imgExpect: '',
+    pdfUses: [
+      'Complete application bundles with ID, address and qualification proofs.',
+      'Tender and quotation documents for small vendors.',
+      'Medical history and discharge summaries.',
+      'Thesis or report chapters submitted for review.'],
+    pdfExpect: 'Four hundred kilobytes supports roughly fifteen to twenty greyscale text pages, or ten colour pages with modest images.',
+    tips: ['Order pages the way the portal reviewer will read them before you compress; page order is kept.', 'Use greyscale for text-heavy bundles and keep colour only when it carries meaning.'],
+    pitfalls: ['High-resolution photographs inside a PDF dominate its size; replace them with lighter versions if you can.', 'Password-protected PDFs need the password to be opened before compression.'],
+    faq: [], pdfFaq: [['Does 400 KB keep signatures clear?', 'Yes for typical scans. The tool shows the approximate DPI it used so you can judge.'], ['Is this the same as 0.4 MB?', 'About 0.39 MB in binary units. The tool aims slightly under 400,000 bytes.']],
+    related: ['compress-pdf-to-500kb', 'compress-pdf-to-1mb']
+  },
+  500: {
+    exImg: "A 1200 \u00d7 1600 pixel photographed form at 85% quality averages 300 to 450 KB, so a 500 KB limit rarely forces any shrinking beyond the original crop.",
+    exPdf: "About twenty greyscale pages at 115 DPI fit in 450 to 500 KB; coloured letterheads on every page cut that to around twelve.",
+    hook: 'high-quality scans and longer reports',
+    imgUses: [
+      'Large form-field photographs for banking and insurance portals.',
+      'High-detail document photos where small text must stay readable.',
+      'Product photos for marketplace listings with a half-megabyte cap.',
+      'Image attachments for email systems with strict size filters.'],
+    imgExpect: 'Half a megabyte preserves detail well: about 1200 by 1600 pixels for a portrait, and crisp text on photographed documents.',
+    pdfUses: [
+      'Twenty to thirty page documents at readable greyscale quality.',
+      'Contracts and agreements with signatures.',
+      'College applications with attached statements and certificates.',
+      'Technical reports with a few diagrams.'],
+    pdfExpect: 'Five hundred kilobytes holds roughly twenty to thirty text pages or around ten colour pages with images.',
+    tips: ['If your PDF is already text-based (exported from Word), the smart method may be enough without rebuilding pages.', 'Use "pages to keep" to drop appendix pages the reader does not need.'],
+    pitfalls: ['Embedded high-resolution logos on every page add up; the rebuild method flattens them.', 'Very long scans may still need a higher limit; ask the portal about a 1 MB allowance.'],
+    faq: [['Is 500 KB too large for a photo on a government portal?', 'Many portals cap photos far lower, around 20 to 200 KB. Use 500 KB only when your form says so.'], ['Does compression change colours?', 'JPG compression can slightly shift fine colour detail, but at 500 KB the difference is rarely visible.']],
+    pdfFaq: [['Can I fit a full report in 500 KB?', 'Text-heavy reports yes; reports with many photographs may need 1 MB or more.']],
+    related: ['compress-image-to-1mb', 'compress-pdf-to-1mb']
+  },
+  1024: {
+    exImg: "A typical 12-megapixel phone photo shrinks from about 3 to 5 MB to 600 to 900 KB at 85% quality after a 1600 \u00d7 1200 resample, close to indistinguishable on screen.",
+    exPdf: "A 30-page greyscale report at 120 DPI is about 700 to 950 KB. If it contains photographs, expect to stay near twenty pages to remain under 1 MB.",
+    hook: 'email attachments and general uploads',
+    imgUses: [
+      'Email attachments with 1 MB limits.',
+      'High-quality photos for visa pre-screening and appointment forms.',
+      'Website, blog and CMS uploads with a 1 MB cap.',
+      'Design proofs and screenshots shared on messaging apps.'],
+    imgExpect: 'One megabyte keeps photographs essentially sharp: about 1600 by 2000 pixels for a portrait. Most phone photos only need a mild reduction to fit.',
+    pdfUses: [
+      'Full application packs and scanned booklets.',
+      'Email attachments that must stay under 1 MB.',
+      'Legal agreements with multiple signed pages.',
+      'Course materials and short e-books.'],
+    pdfExpect: 'One megabyte holds fifty or more greyscale text pages, or about twenty colour pages at readable resolution.',
+    tips: ['Because 1 MB is generous, the tool will keep high quality; no need to lower dimensions.', 'For email, remember encoding adds about a third to the attachment size, so aim for 700 KB when a mail server caps at 1 MB.'],
+    pitfalls: ['Confusing MB and KB: set the unit to MB or enter 1024 KB.', 'Do not re-compress the same file multiple times to hit 1 MB; start from the original.'],
+    faq: [['How much is 1 MB in KB?', '1 MB is 1024 KB in binary units (1000 KB in decimal). The tool targets just under 1,000,000 bytes to satisfy both.'], ['Will my phone photo be noticeably worse at 1 MB?', 'Usually not. Phone photos of 3 to 8 MB reduce to under 1 MB with little visible change on screens.']],
+    pdfFaq: [['Will the text stay selectable?', 'If the PDF has real text and is already near the limit, the smart method keeps it. Scans are rebuilt as images.']],
+    related: ['compress-image-to-500kb', 'compress-pdf-to-2mb']
+  },
+  2048: {
+    exImg: "",
+    exPdf: "A 100-page greyscale text document at 100 DPI fits close to 2 MB, while 40 colour scan pages at 120 DPI land near the same size.",
+    hook: 'large documents with images',
+    imgUses: [],
+    imgExpect: '',
+    pdfUses: [
+      'Long reports, theses and portfolios with diagrams.',
+      'Scanned books or study material for sharing.',
+      'Multi-document application bundles with colour pages.',
+      'Presentation handouts exported from slides.'],
+    pdfExpect: 'Two megabytes holds about a hundred greyscale text pages or around forty colour scan pages at readable resolution.',
+    tips: ['At 2 MB, colour is affordable; keep it where figures and signatures need it.', 'If the result is still over, split the document in two rather than sacrificing legibility.'],
+    pitfalls: ['A single uncompressed image can occupy several MB; the rebuild method resamples it.', 'Fonts embedded multiple times inflate PDFs exported from some tools; the smart method deduplicates where possible.'],
+    faq: [], pdfFaq: [['Is 2 MB a common limit?', 'Yes for email gateways and some university portals. Check whether your portal measures in MB or KB.'], ['Will the pages be sharp?', 'For text pages, yes. The tool reports the approximate DPI used so you can compare with your needs.']],
+    related: ['compress-pdf-to-1mb', 'compress-pdf']
+  }
+};
+export const SIZE_KEYS = Object.keys(SIZES).map(Number).sort((a, b) => a - b);
