@@ -1,0 +1,36 @@
+---
+import { NAV } from '../data/pages.js';
+---
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="logo" href="/" aria-label="ConvertKB home"><i><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h8"/></svg></i><span>Convert<b>KB</b></span></a>
+    <nav aria-label="Main" style="display:contents">
+      <ul class="dnav">
+        {NAV.map((g) => (
+          <li>
+            <button type="button" aria-haspopup="true">{g.name} <span aria-hidden="true">▾</span></button>
+            <div class={g.items.length > 12 ? 'dd cols' : 'dd'}>
+              <a class="all" href={'/' + g.hub}>All {g.name} tools →</a>
+              {g.items.map((i) => <a href={'/' + i.slug}>{i.h1}</a>)}
+            </div>
+          </li>
+        ))}
+        <li><a href="/guides">Guides</a></li>
+      </ul>
+    </nav>
+    <div class="hdr-r">
+      <button type="button" class="icon-btn" id="themeBtn" aria-label="Toggle dark mode"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <button type="button" class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+  <div class="mnav" id="mnav">
+    {NAV.map((g) => (
+      <details>
+        <summary>{g.name}</summary>
+        <a href={'/' + g.hub}><b>All {g.name} tools</b></a>
+        {g.items.map((i) => <a href={'/' + i.slug}>{i.h1}</a>)}
+      </details>
+    ))}
+    <a href="/guides" style="padding:14px 2px;font-weight:700">Guides</a>
+  </div>
+</header>

@@ -1,0 +1,13 @@
+---
+const { blocks = [] } = Astro.props;
+---
+{blocks.map((b) => (
+  b.t === 'p' ? <p>{b.x}</p> :
+  b.t === 'ul' ? <ul>{b.items.map((i) => <li>{i}</li>)}</ul> :
+  b.t === 'ol' ? <ol>{b.items.map((i) => <li>{i}</li>)}</ol> :
+  b.t === 'note' ? <div class="note">{b.x}</div> :
+  b.t === 'table' ? <div class="tw"><table><thead><tr>{b.head.map((h) => <th>{h}</th>)}</tr></thead><tbody>{b.rows.map((r) => <tr>{r.map((c) => <td>{c}</td>)}</tr>)}</tbody></table></div> :
+  b.t === 'chips' ? <div class="chips">{b.slugs.map((s, i) => <a href={'/' + s}>{b.labels[i]}</a>)}</div> :
+  b.t === 'link' ? <p><a href={b.href} target={b.ext ? '_blank' : undefined} rel={b.ext ? 'noopener noreferrer' : undefined}>{b.label} →</a></p> :
+  null
+))}
