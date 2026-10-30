@@ -1,0 +1,70 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_URL, SITE_NAME, ADSENSE_CLIENT } from '../consts.js';
+const { title, description, schema = [], noindex = false } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '');
+const canonical = SITE_URL + path;
+const og = SITE_URL + '/og.png';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex,follow" />}
+    <meta name="theme-color" content="#5b5bf0" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={og} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script is:inline>
+      try { var t = localStorage.getItem('ck-theme'); if (t) document.documentElement.setAttribute('data-theme', t); else if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
+    </script>
+    {schema.length > 0 && <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />}
+    {ADSENSE_CLIENT && <script async src={'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ADSENSE_CLIENT} crossorigin="anonymous"></script>}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+    <div class="cookie" id="cookie" role="dialog" aria-label="Cookie notice">
+      <span>We use only the storage needed to remember your theme and this choice. If ads are enabled, advertising partners may set their own cookies. See our <a href="/privacy-policy" style="text-decoration:underline">privacy policy</a>.</span>
+      <button type="button" class="ck-btn primary sm" id="cookieOk">Got it</button>
+    </div>
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        document.getElementById('themeBtn').addEventListener('click', function () {
+          var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next); try { localStorage.setItem('ck-theme', next); } catch (e) {}
+        });
+        var mn = document.getElementById('mnav'), bg = document.getElementById('burger');
+        bg.addEventListener('click', function () { var o = mn.classList.toggle('open'); bg.setAttribute('aria-expanded', o); });
+        document.querySelectorAll('.dnav > li > button').forEach(function (b) {
+          b.addEventListener('click', function (e) { var li = b.parentElement, was = li.classList.contains('open'); document.querySelectorAll('.dnav > li.open').forEach(function (x) { x.classList.remove('open'); }); if (!was) li.classList.add('open'); e.stopPropagation(); });
+        });
+        document.addEventListener('click', function () { document.querySelectorAll('.dnav > li.open').forEach(function (x) { x.classList.remove('open'); }); });
+        var ck = document.getElementById('cookie');
+        try { if (!localStorage.getItem('ck-cookie')) ck.classList.add('show'); } catch (e) {}
+        document.getElementById('cookieOk').addEventListener('click', function () { ck.classList.remove('show'); try { localStorage.setItem('ck-cookie', '1'); } catch (e) {} });
+      })();
+    </script>
+  </body>
+</html>
