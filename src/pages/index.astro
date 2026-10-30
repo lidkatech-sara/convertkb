@@ -1,36 +1,89 @@
 ---
-import BaseLayout from '../layouts/layout.astro';
-import ToolEngine from '../components/toolengine.astro';
-import { pagesData } from '../data/pages.js';
+import Layout from '../layouts/Layout.astro';
+import { PAGES, PAGE_MAP } from '../data/pages.js';
+import { GUIDES } from '../data/guides.js';
+import { SITE_URL, SITE_NAME } from '../consts.js';
 
-const title = "ConvertKB - Free Online Image & PDF Compressor, Resizer & Converter Hub";
-const description = "ConvertKB is the ultimate browser-based utility platform. Compress images and PDFs to exact KB limits, crop for exam portals, and convert formats 100% locally with zero server uploads.";
-const canonicalURL = "https://convertkb.com/";
+const popular = ['compress-image-to-20kb', 'compress-image-to-50kb', 'compress-image-to-100kb', 'compress-pdf-to-100kb', 'compress-pdf-to-200kb', 'resize-image', 'ssc-photo-and-signature', 'upsc-photo-signature', 'pan-card-photo', 'passport-photo-size', 'heic-to-jpg', 'jpg-to-pdf', 'convert-pdf-to-word', 'convert-pdf-to-jpg'].map((s) => PAGE_MAP[s]);
+const cats = [
+  { icon: '🖼️', name: 'Image compression', href: '/image-tools', text: 'Reduce JPG, PNG and WebP photos to 10 KB, 50 KB, 200 KB, 1 MB or any size you type.' },
+  { icon: '📄', name: 'PDF compression', href: '/pdf-tools', text: 'Shrink scans and documents to portal limits while keeping pages readable.' },
+  { icon: '📐', name: 'Resize', href: '/resize-tools', text: 'Exact pixels, centimetres or inches for images, and standard page sizes for PDFs.' },
+  { icon: '🔁', name: 'Converters', href: '/converters', text: 'PDF to Word, Excel, JPG and PowerPoint; HEIC to JPG; images to PDF, Word and Excel.' },
+  { icon: '🎓', name: 'Exam and ID photos', href: '/photo-tools', text: 'Presets for UPSC, SSC, IBPS, NEET, GATE, PAN, passport, US visa and more.' },
+  { icon: '✍️', name: 'Signatures', href: '/signature-resize', text: 'Crop, whiten and fit a signature under 10, 20 or 50 KB in a few clicks.' }
+];
+const faqs = [
+  ['Are my files uploaded to a server?', 'No. Every tool runs inside your browser, on your own device. ConvertKB has no upload step, so your photos, signatures and documents are not sent to us.'],
+  ['How does ConvertKB hit an exact size?', 'It encodes the image at several quality levels, keeps the highest one under your limit, and reduces dimensions only if quality alone is not enough. It aims slightly under the limit so strict portals accept the file.'],
+  ['Does it work on a phone?', 'Yes. The tools are designed for mobile browsers, including paste, camera-roll selection and HEIC photos from iPhones.'],
+  ['Is it really free?', 'Yes. There is no signup, no watermark and no daily limit.'],
+  ['Why do some tools load extra files?', 'Heavier features such as PDF reading, HEIC decoding and text recognition load their libraries only when you use them, so the pages stay fast.']
+];
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: SITE_URL + '/', description: 'Private, in-browser image and PDF compressor, resizer and converter.' },
+  { '@context': 'https://schema.org', '@type': 'Organization', name: SITE_NAME, url: SITE_URL, logo: SITE_URL + '/apple-touch-icon.png' },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }
+];
+const cfg = { mode: 'compress', targetKb: 100, format: 'jpeg' };
 ---
+<Layout title="ConvertKB – Compress, Resize & Convert Images and PDFs to Any Size" description="Free private tools to compress images and PDFs to an exact KB or MB, resize photos, convert HEIC, PDF and more. Everything runs in your browser; nothing is uploaded." schema={schema}>
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Private by design · Runs in your browser</div>
+      <h1>Hit the exact file size <em>every form asks for</em></h1>
+      <p class="lead">Compress, resize and convert images and PDFs without uploading them anywhere. Set a limit, get a file that passes.</p>
+      <div class="trust"><span>No upload</span><span>No signup</span><span>No watermark</span><span>Works on mobile</span></div>
+    </div>
+  </section>
+  <section class="toolwrap">
+    <div class="wrap"><div class="tool-shell"><div id="ck-tool" data-tool="image" data-config={JSON.stringify(cfg)}><noscript><p>Please enable JavaScript to use the tool.</p></noscript></div></div></div>
+  </section>
+  <script is:inline defer src="/js/ck-core.js"></script>
+  <script is:inline defer src="/js/ck-image.js"></script>
 
-<BaseLayout title={title} description={description} canonicalURL={canonicalURL}>
-  <section style="text-align: center; padding: 64px 0 40px; background: radial-gradient(circle at 50% 0%, #eff6ff 0%, #fafafa 70%); border-bottom: 1px solid var(--border);">
-    <div class="container" style="max-width: 960px;">
-      <h1 style="font-size: 2.8rem; font-weight: 800; color: var(--text-main); margin-bottom: 16px; letter-spacing: -0.03em;">
-        The Ultimate <span style="background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Image &amp; PDF</span> Utility Hub
-      </h1>
-      <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 720px; margin: 0 auto 30px; line-height: 1.6;">
-        Instantly compress photographs to exact byte limits, manage multi-page PDF documents, and format passport, visa, and exam credentials 100% locally in your browser.
-      </p>
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head"><h2>Everything for photos, signatures and documents</h2><p>Pick a collection, or jump straight to the exact size you need.</p></div>
+      <div class="grid g3">
+        {cats.map((c) => <a class="card" href={c.href}><div class="ic">{c.icon}</div><h3>{c.name}</h3><p>{c.text}</p></a>)}
+      </div>
     </div>
   </section>
 
-  <main class="container" style="padding: 50px 24px; max-width: 1040px;">
-    <!-- Interactive Tool Engine Workspace -->
-    <ToolEngine toolType="image-compressor" targetSize="50KB" />
+  <section class="section alt">
+    <div class="wrap">
+      <div class="sec-head"><h2>Popular tools</h2><p>The pages people open most when a form rejects a file.</p></div>
+      <div class="grid g4">
+        {popular.map((p) => <a class="card" href={'/' + p.slug}><h3>{p.h1}</h3><p>{p.desc.length > 100 ? p.desc.slice(0, p.desc.lastIndexOf(' ', 98)) + '…' : p.desc}</p></a>)}
+      </div>
+    </div>
+  </section>
 
-    <article style="margin-top: 60px; line-height: 1.8; color: var(--text-muted);">
-      <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin-bottom: 16px;">
-        Complete Browser-Based Optimization Suite
-      </h2>
-      <p style="margin-bottom: 16px;">
-        ConvertKB provides professional-grade browser utilities for students, applicants, and professionals. Whether you need to compress photographs down to 10KB for strict government examination portals, resize multi-page PDF certificates under 200KB, or convert document formats, our client-side engine executes all tasks directly in your device memory.
-      </p>
-    </article>
-  </main>
-</BaseLayout>
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head"><h2>How it works</h2><p>Three steps, all on your device.</p></div>
+      <ol class="steps">
+        <li><b>Add your file</b><span>Drop it in, browse, or paste a screenshot. iPhone HEIC photos and password-protected PDFs are handled too.</span></li>
+        <li><b>Set the limit</b><span>Type a maximum size, or choose a preset for your exam, passport or platform. Add pixel dimensions and DPI if the form asks.</span></li>
+        <li><b>Download and upload</b><span>Check the preview and the size badge, then download a file that fits. Nothing was sent to a server.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap narrow">
+      <div class="sec-head"><h2>Questions</h2></div>
+      <div class="faq">{faqs.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head"><h2>From the guides</h2><p>Short, practical explanations behind the tools.</p></div>
+      <div class="grid g3">
+        {GUIDES.slice(0, 3).map((g) => <a class="card" href={'/guides/' + g.slug}><h3>{g.title}</h3><p>{g.desc}</p></a>)}
+      </div>
+    </div>
+  </section>
+</Layout>
