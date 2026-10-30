@@ -1,0 +1,106 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Blocks from '../components/Blocks.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { PAGES, SCRIPT, relatedFor, hubOf, NAV_ORDER } from '../data/pages.js';
+import { SITE_URL, SITE_NAME } from '../consts.js';
+
+export function getStaticPaths() {
+  return PAGES.map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+const { page } = Astro.props;
+const isHub = page.kind === 'hub';
+const hub = hubOf(page);
+const related = isHub ? [] : relatedFor(page);
+const url = SITE_URL + '/' + page.slug;
+const cut = (s, n) => (s.length <= n ? s : s.slice(0, s.lastIndexOf(' ', n - 1)) + '…');
+const crumbs = [{ name: 'Home', url: SITE_URL + '/' }];
+if (hub) crumbs.push({ name: hub.h1, url: SITE_URL + '/' + hub.slug });
+crumbs.push({ name: page.h1, url });
+const chips = page.tool === 'pdf' || page.tool === 'pdfconv' ? ['Smart: keeps text when possible', 'Pages stay on your device', 'No signup or watermark'] : page.tool === 'ocr' ? ['Text read on your device', 'Hindi, Tamil and more', 'Free, no watermark'] : ['100% private: runs in your browser', 'Exact size targets', 'Free, no signup'];
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.url })) },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: page.faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }
+];
+if (!isHub) schema.push({ '@context': 'https://schema.org', '@type': 'WebApplication', name: page.h1, url, description: page.desc, applicationCategory: 'MultimediaApplication', operatingSystem: 'Any (modern web browser)', browserRequirements: 'Requires JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL } });
+else schema.push({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: page.h1, url, description: page.desc });
+const hubGroups = isHub ? page.navs.map((n) => ({ name: n, items: PAGES.filter((x) => x.nav === n) })) : [];
+const toc = (page.sections || []).map((s) => ({ id: s.id, h2: s.h2 }));
+if (page.faqs.length) toc.push({ id: 'faq', h2: 'Questions and answers' });
+---
+<Layout title={page.title} description={page.desc} schema={schema}>
+  <section class="hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>›</span>{hub && <><a href={'/' + hub.slug}>{hub.h1}</a><span>›</span></>}<span>{page.h1}</span>
+      </nav>
+      <div class="eyebrow">{isHub ? 'Tool collection' : 'Free online tool'}</div>
+      <h1>{page.h1}</h1>
+      <p class="lead">{page.lead}</p>
+      {!isHub && <div class="trust">{chips.map((c) => <span>{c}</span>)}</div>}
+    </div>
+  </section>
+
+  {!isHub && (
+    <section class="toolwrap">
+      <div class="wrap">
+        <div class="tool-shell">
+          <div id="ck-tool" data-tool={page.tool} data-config={JSON.stringify(page.cfg)}>
+            <noscript><p>This tool needs JavaScript. Everything runs in your browser, so please enable it to continue.</p></noscript>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+  {!isHub && <script is:inline defer src="/js/ck-core.js"></script>}
+  {!isHub && <script is:inline defer src={'/js/' + SCRIPT[page.tool]}></script>}
+
+  {isHub && (
+    <section class="section">
+      <div class="wrap">
+        {hubGroups.map((g) => (
+          <div style="margin-bottom:44px">
+            <div class="sec-head" style="text-align:left;margin-bottom:18px"><h2>{g.name}</h2></div>
+            <div class="grid g3">
+              {g.items.map((i) => <a class="card" href={'/' + i.slug}><h3>{i.h1}</h3><p>{cut(i.desc, 110)}</p></a>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class={isHub ? 'section alt' : 'section'}>
+    <div class="wrap article">
+      <div class="prose">
+        {(page.sections || []).map((s, i) => (
+          <>
+            <h2 id={s.id}>{s.h2}</h2>
+            <Blocks blocks={s.blocks} />
+            {i === 1 && <AdSlot slot="" />}
+          </>
+        ))}
+        <h2 id="faq">Questions and answers</h2>
+        <div class="faq">
+          {page.faqs.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+        </div>
+      </div>
+      <aside class="toc" aria-label="On this page">
+        <strong>On this page</strong>
+        {toc.map((t) => <a href={'#' + t.id}>{t.h2}</a>)}
+      </aside>
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <div class="sec-head"><h2>Related tools</h2><p>Nearby sizes and companion tools for the same job.</p></div>
+        <div class="grid g4">
+          {related.map((r) => <a class="card" href={'/' + r.slug}><h3>{r.h1}</h3><p>{cut(r.desc, 96)}</p></a>)}
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>
