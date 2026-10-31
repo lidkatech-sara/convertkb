@@ -2,6 +2,12 @@ import { SIZES, SIZE_KEYS } from './sizes.js';
 import { FORMATS } from './formats.js';
 import { EXAMS, CHECK } from './exams.js';
 import { CONVERTERS, G } from './converters.js';
+import { EXTRAS_A } from './extras-a.js';
+import { EXTRAS_B } from './extras-b.js';
+import { EXTRAS_C } from './extras-c.js';
+import { U as UNIQUE, BASES } from './tool-unique.js';
+import { EX } from './tool-examples.js';
+import { GEN } from './tool-generic.js';
 
 export const NAV_ORDER = ['Image', 'PDF', 'Image Formats', 'Resize', 'Convert', 'Tools', 'Exams'];
 export const HUB_OF = { Image: 'image-tools', 'Image Formats': 'image-tools', PDF: 'pdf-tools', Resize: 'resize-tools', Convert: 'converters', Tools: 'photo-tools', Exams: 'photo-tools' };
@@ -36,6 +42,18 @@ function pdfBudget(kb) {
   });
   return table(['Pages kept', 'Budget per page', 'Black-and-white text scan', 'Colour photo scan'], rows);
 }
+
+function dpiPhotoTable(kb) {
+  const P = kb * 8000 / FORMATS.image.bpp.portrait, v = (d) => (d >= 300 ? 'print quality' : d >= 150 ? 'sharp on screen' : d >= 96 ? 'screen only' : 'soft');
+  const rows = [['3.5 × 4.5 cm passport', 3.5 / 2.54, 4.5 / 2.54], ['2 × 2 in square', 2, 2], ['4 × 6 in print', 4, 6], ['A4 page (8.27 × 11.69 in)', 8.27, 11.69]].map(([n, w, h]) => { const d = Math.round(Math.sqrt(P / (w * h))); return [n, d + ' DPI', v(d)]; });
+  return table(['Physical size', 'Highest DPI this limit supports', 'What that means'], rows);
+}
+function pdfPageSizeTable(kb) {
+  const sizes = [['A3', 297, 420], ['A4', 210, 297], ['A5', 148, 210], ['US Letter', 215.9, 279.4], ['US Legal', 215.9, 355.6]];
+  const v = (d) => (d >= 150 ? 'sharp' : d >= 100 ? 'readable' : d >= 70 ? 'tight' : 'too soft');
+  const dpi = (w, h, n) => Math.round(Math.sqrt(Math.max(0, kb * 1000 / n - 700) / (4.2 * (w * h) / (210 * 297))));
+  return table(['Page size', 'One scanned text page', 'Four scanned text pages'], sizes.map(([n, w, h]) => [n, dpi(w, h, 1) + ' DPI (' + v(dpi(w, h, 1)) + ')', dpi(w, h, 4) + ' DPI (' + v(dpi(w, h, 4)) + ')']));
+}
 function cmPxTable(kb) {
   const sets = {
     tiny: [['4.0 × 2.0 cm', 4, 2], ['3.5 × 1.5 cm', 3.5, 1.5], ['5 × 2 cm', 5, 2], ['6 × 3 cm', 6, 3]],
@@ -53,7 +71,6 @@ function pageSizeTable() {
 const FAMS = [
   { id: 'compress-image', tool: 'img-compress', fmt: 'image', noun: 'image', verb: 'compress', nav: 'Image', sizes: [10, 20, 30, 40, 50, 100, 150, 200, 500, 1024] },
   { id: 'compress-pdf', tool: 'pdf-compress', fmt: 'pdf', noun: 'pdf', verb: 'compress', nav: 'PDF', sizes: [20, 50, 100, 200, 300, 400, 500, 1024, 2048] },
-  { id: 'compress-jpeg', tool: 'img-compress', fmt: 'jpeg', noun: 'jpeg', verb: 'compress', nav: 'Image Formats', sizes: [10, 20, 30, 40, 50, 100, 150, 200, 500] },
   { id: 'compress-jpg', tool: 'img-compress', fmt: 'jpg', noun: 'jpg', verb: 'compress', nav: 'Image Formats', sizes: [10, 20, 30, 40, 50, 100, 150, 200, 500] },
   { id: 'compress-webp', tool: 'img-compress', fmt: 'webp', noun: 'webp', verb: 'compress', nav: 'Image Formats', sizes: [100] },
   { id: 'compress-png', tool: 'img-compress', fmt: 'png', noun: 'png', verb: 'compress', nav: 'Image Formats', sizes: [10, 20, 30, 40, 50, 100, 150, 200, 500, 1024] },
@@ -64,11 +81,10 @@ const NOUN = { image: 'Image', pdf: 'PDF', jpeg: 'JPEG', jpg: 'JPG', webp: 'WebP
 const BASE_META = {
   'compress-image': ['Compress Image Online – Reduce Size in KB or MB | ConvertKB', 'Compress JPG, PNG, WebP or HEIC photos to a size you choose. Auto quality search, optional crop, DPI and greyscale. Private: nothing is uploaded.'],
   'compress-pdf': ['Compress PDF Online – Reduce PDF Size to Any KB | ConvertKB', 'Reduce a PDF to the KB or MB limit you need. Keeps text when possible, rebuilds scans at the best resolution that fits. Private and free.'],
-  'compress-jpeg': ['Compress JPEG Online – Set the Exact Size in KB | ConvertKB', 'Compress JPEG photos to a precise size limit. Automatic quality search, crop and enhance tools, with no upload and no signup.'],
-  'compress-jpg': ['Compress JPG Online – Reduce JPG Size in KB | ConvertKB', 'Compress JPG files to a size you choose, with a clean .jpg extension for strict upload forms. Quality search, crop, DPI. Private in-browser tool.'],
+  'compress-jpg': ['Compress JPG / JPEG Online – Reduce Size in KB | ConvertKB', 'Compress JPG or JPEG files to a size you choose, with a clean .jpg extension for strict upload forms. Quality search, crop, DPI. Private in-browser tool.'],
   'compress-webp': ['Compress WebP Online – Reduce WebP Size in KB | ConvertKB', 'Shrink WebP images to a target size while keeping them sharp. Choose a limit, convert to JPG if needed, and keep files on your device.'],
   'compress-png': ['Compress PNG Online – Reduce PNG Size in KB | ConvertKB', 'Compress PNG files with smart colour reduction and optional resizing. Set a KB limit and keep transparency where possible. Private in-browser tool.'],
-  'resize-image': ['Resize Image Online – Pixels, cm or Inches, with KB Limit | ConvertKB', 'Resize photos to exact pixel, centimetre or inch dimensions, set DPI and optionally a KB limit. Crop, rotate and download as JPG, PNG or WebP.'],
+  'resize-image': ['Resize Image Online – Pixels, cm, Inches, KB Limit | ConvertKB', 'Resize photos to exact pixel, centimetre or inch dimensions, set DPI and optionally a KB limit. Crop, rotate and download as JPG, PNG or WebP.'],
   'resize-pdf': ['Resize PDF Online – Change Page Size and File Size | ConvertKB', 'Resize PDF pages to A4, A3, A5, Letter or Legal and keep the file under a KB limit. Vector text is preserved when possible. Private and free.']
 };
 
@@ -86,7 +102,7 @@ function engineSection(f, L) {
   return sec('Resizing pages without losing text', [p('When you change the page size, ConvertKB scales the original page onto a new page of the size you choose. Text and vector graphics stay sharp because the page is placed, not re-drawn as a picture.'), p(`If the file is still over ${T}, pages are rebuilt as images at the best resolution that fits, and you are told that this happened.`)]);
 }
 
-const FI = { 'compress-image': 0, 'compress-jpg': 1, 'compress-jpeg': 2, 'compress-png': 3, 'compress-webp': 4, 'resize-image': 5, 'compress-pdf': 0, 'resize-pdf': 1 };
+const FI = { 'compress-image': 0, 'compress-jpg': 1, 'compress-png': 3, 'compress-webp': 4, 'resize-image': 5, 'compress-pdf': 0, 'resize-pdf': 1 };
 const win = (arr, start, n) => { if (arr.length <= n) return arr; const o = []; for (let i = 0; i < n; i++) o.push(arr[(start + i) % arr.length]); return o; };
 function tier(fmt, bpp) {
   if (fmt === 'png') return bpp < 0.8 ? 'Needs very few colours or far smaller dimensions' : bpp < 2 ? 'Heavy colour reduction (about 16 levels)' : bpp < 4 ? 'Moderate colour reduction (about 48 levels)' : bpp < 8 ? 'Light or no colour reduction' : 'Lossless PNG fits as it is';
@@ -100,49 +116,49 @@ function qualityTable(kb, fmt) {
 const dimOf = (kb, fmt, key, a, c) => { const P = kb * 8000 / FORMATS[fmt].bpp[key], w = Math.sqrt(P * a / c); return round10(w) + ' × ' + round10(w * c / a); };
 
 function sizeContent(f, kb) {
-  const S = SIZES[kb], F = FORMATS[f.fmt], isPdf = f.fmt === 'pdf', L = Lt(kb), noun = NOUN[f.noun], fi = FI[f.id], gen = f.id === 'compress-image' || f.id === 'compress-pdf';
-  const bracket = kb <= 30 ? 'tiny' : kb <= 200 ? 'small' : 'large', resizing = f.verb === 'resize';
-  const usesAll = isPdf ? S.pdfUses : S.imgUses, faqBase = isPdf ? S.pdfFaq : S.faq;
-  const uses = gen ? usesAll : win(usesAll, fi, resizing ? 3 : 2);
-  const tips = gen ? S.tips : [S.tips[fi % 2]], pit = gen ? S.pitfalls : [S.pitfalls[(fi + 1) % 2]];
-  const faq0 = gen ? faqBase : [faqBase[fi % faqBase.length]];
-  const leadTool = resizing ? (isPdf ? 'Change the page size and fit the file under the limit.' : 'Set the exact dimensions and fit the file under the limit.') : F.lead;
-  const out = [];
-  if (!gen && !isPdf) {
-    const portrait = dimOf(kb, f.fmt, 'portrait', 3.5, 4.5), doc = dimOf(kb, f.fmt, 'doc', 2, 1);
-    out.push(sec(`What a ${L} ${noun} can hold`, [p(`${leadTool} At ${L}, expect roughly ${portrait} pixels for a plain portrait and ${doc} pixels for a signature or document with mostly white background, before quality has to drop noticeably.`), qualityTable(kb, f.fmt), p(F.atSize[bracket]), note('These are planning estimates. ConvertKB shows the real size and dimensions after processing.')]));
-    out.push(sec(`Where a ${L} ${noun} is used`, [ul(uses)]));
-  } else {
-    out.push(sec(`When you need a ${L} ${noun}`, [p(`${leadTool} These are the situations where a ${L} limit usually appears:`), ul(uses)]));
-    const exp = gen ? (isPdf ? S.pdfExpect : S.imgExpect) : `At ${L}, a single A4 page gets about ${(kb - 1.5).toFixed(0)} KB of image data, and four pages about ${((kb - 1.5) / 4).toFixed(1)} KB each. The table shows the scan resolution that budget supports.`;
-    out.push(sec(`What to expect at ${L}`, [p(exp), isPdf ? pdfBudget(kb) : dimsTable(kb, f.fmt), note(isPdf ? 'The DPI figures are planning estimates for typical A4 scans. ConvertKB reports the resolution it actually used.' : 'Dimensions are planning estimates. ConvertKB shows the real size and dimensions after processing.')]));
+  const S = SIZES[kb], F = FORMATS[f.fmt], isPdf = f.fmt === 'pdf', L = Lt(kb), noun = NOUN[f.noun], gen = f.id === 'compress-image' || f.id === 'compress-pdf';
+  const resizing = f.verb === 'resize', slug = `${f.id}-to-${slugKb(kb)}`, out = [];
+  if (gen) {
+    // compress-image and compress-pdf own the size-level content in sizes.js, so it is used here in full and nowhere else.
+    const usesAll = isPdf ? S.pdfUses : S.imgUses, faqBase = isPdf ? S.pdfFaq : S.faq;
+    out.push(sec(`When you need a ${L} ${noun}`, [p(`${F.lead} These are the situations where a ${L} limit usually appears:`), ul(usesAll)]));
+    out.push(sec(`What to expect at ${L}`, [p(isPdf ? S.pdfExpect : S.imgExpect), isPdf ? pdfBudget(kb) : dimsTable(kb, f.fmt), note(isPdf ? 'The DPI figures are planning estimates for typical A4 scans. ConvertKB reports the resolution it actually used.' : 'Dimensions are planning estimates. ConvertKB shows the real size and dimensions after processing.')]));
+    const exT = isPdf ? S.exPdf : S.exImg;
+    if (exT) out.push(sec(`A real example at ${L}`, [p(exT)]));
+    const G2 = GEN[slug]; if (!G2) throw new Error('missing generic tips for ' + slug);
+    out.push(sec(`Getting the best ${L} result`, [p(`Set the maximum to ${L} in the tool above, add your ${isPdf ? 'PDF' : 'picture'} and run it; the result note reports the final size.`), ul(G2.tips)]));
+    out.push(sec(`Typical results at ${L}`, [p(`How much a file shrinks depends on where it starts. These examples show what a ${L} limit means in practice:`), reductionTable(kb, isPdf ? PDF_INPUTS : IMG_INPUTS)]));
+    out.push(sec(`Problems at ${L} and how to avoid them`, [ul(G2.pits)]));
+    return { sections: out, faqs: faqBase.concat([PRIVACY]) };
   }
-  const exT = isPdf ? S.exPdf : S.exImg;
-  if (exT) out.push(sec(`A real example at ${L}`, [p(exT)]));
-  out.push(sec(`How to ${f.verb} ${isPdf ? 'a PDF' : 'a ' + noun} to ${L}`, [ol(stepsFor(f, kb)), ul(tips)]));
-  out.push(sec('How the target is set', [p(`For a ${L} limit the tool aims at ${(kb * 1000 - 24).toLocaleString('en-US')} bytes, counting 1 KB as 1000 bytes. That is also under ${(kb * 1024).toLocaleString('en-US')} bytes, so the file passes whether a portal counts 1000 or 1024 bytes per KB.`), { t: 'link', href: '/' + f.id, label: 'How the size search works' }]));
-  if (f.tool === 'img-resize') out.push(sec('Pixels, centimetres and DPI', [p('Forms mix units: some ask for pixels, others for centimetres at a given DPI. Pixels equal centimetres divided by 2.54, times the DPI. These sizes are the ones people at this file size ask for most:'), cmPxTable(kb)]));
-  if (f.tool === 'pdf-resize') out.push(sec('Standard page sizes', [p('These are the sizes offered in the page-size menu, in the units portals usually quote:'), pageSizeTable()]));
-  out.push(sec(`${F.label} notes for ${L}`, [ul(win(F.section.list, SIZE_KEYS.indexOf(kb), 2)), { t: 'link', href: '/' + f.id, label: `More about ${F.label} compression` }]));
+  const X = UNIQUE[slug];
+  if (!X) throw new Error('missing unique content for ' + slug);
+  out.push(sec(X.h, X.ps.map(p)));
+  if (EX[slug]) out.push(sec(EX[slug].h, [p(EX[slug].p)]));
+  if (isPdf) out.push(sec(`What ${L} supports on each page size`, [p(`Resizing changes the page, but the bytes you have decide how sharp a scan can be. This table shows the resolution a ${L} budget supports for text scans on each page size.`), pdfPageSizeTable(kb), note('The DPI figures are planning estimates for black-and-white text scans. ConvertKB reports the resolution it actually used.')]));
+  else if (resizing) out.push(sec(`What ${L} supports at each print size`, [p(`Pixels, centimetres and DPI are linked. For a plain portrait photograph, a ${L} file supports these resolutions at common physical sizes:`), dpiPhotoTable(kb), note('These are planning estimates. ConvertKB shows the real size and dimensions after processing.')]));
+  else {
+    const portrait = dimOf(kb, f.fmt, 'portrait', 3.5, 4.5), doc = dimOf(kb, f.fmt, 'doc', 2, 1);
+    out.push(sec(`What a ${L} ${noun} can hold`, [p(`At ${L}, expect roughly ${portrait} pixels for a plain portrait and ${doc} pixels for a signature or document with mostly white background, before quality has to drop noticeably.`), qualityTable(kb, f.fmt), note('These are planning estimates. ConvertKB shows the real size and dimensions after processing.')]));
+  }
+  out.push(sec(X.ah || `Tips for a ${L} ${noun}`, [ul(X.adv)]));
   out.push(sec(`Typical results at ${L}`, [p(`How much a file shrinks depends on where it starts. These examples show what a ${L} limit means in practice:`), reductionTable(kb, isPdf ? PDF_INPUTS : IMG_INPUTS)]));
-  out.push(sec(`Problems at ${L} and how to avoid them`, [ul(pit.concat([F.pitfall]))]));
-  const toolFaq = f.tool === 'img-compress' ? ['Will the tool shrink my image dimensions?', 'Only if quality alone cannot reach the limit and “Allow shrinking” is ticked. Otherwise it keeps the pixel size you set.'] : f.tool === 'img-resize' ? ['Does resizing change the file size?', `Yes. Fewer pixels means a smaller file, and the tool then fits the result under ${L}.`] : f.tool === 'pdf-compress' ? ['Will my PDF text stay selectable?', 'Only if the text-preserving pass fits the limit. When pages are rebuilt as images, the result note says so.'] : ['Will my text stay sharp after resizing pages?', 'Yes when the page is scaled as a vector. If the file also needs shrinking to fit the limit, pages may be rebuilt as images.'];
-  return { sections: out, faqs: faq0.concat(gen ? F.faq : [F.faq[fi % 2]], [toolFaq, PRIVACY]) };
+  return { sections: out, faqs: X.faq.concat([PRIVACY]) };
 }
 
 function baseContent(f) {
-  const isPdf = f.fmt === 'pdf', F = FORMATS[f.fmt], fam = FAMS.find((x) => x.id === f.id), out = [];
+  const isPdf = f.fmt === 'pdf', F = FORMATS[f.fmt], fam = FAMS.find((x) => x.id === f.id), out = [], B = BASES[f.id];
   const what = { 'img-compress': 'compress', 'img-resize': 'resize', 'pdf-compress': 'compress', 'pdf-resize': 'resize' }[f.tool];
+  if (!B) throw new Error('missing base content for ' + f.id);
   out.push(sec(`Pick a target size for your ${NOUN[f.noun]}`, [p(`Every common limit has its own page with tips and expectations for that size. Choose the one that matches your form, or use the size box above for any value.`), { t: 'chips', slugs: fam.sizes.map((k) => `${fam.id}-to-${slugKb(k)}`), labels: fam.sizes.map((k) => Lt(k)) }]));
-  out.push(sec(`How to ${what} ${isPdf ? 'a PDF' : 'an image'}`, [ol(stepsFor(f, fam.sizes[Math.floor(fam.sizes.length / 2)])), engineSection(f, 0).blocks[0]]));
+  out.push(sec(`How to ${what} ${isPdf ? 'a PDF' : 'an image'}`, [ol(stepsFor(f, fam.sizes[Math.floor(fam.sizes.length / 2)]))]));
   out.push(engineSection(f, 0));
+  out.push(sec(B.h, B.ps.map(p).concat([ul(B.items)])));
   if (f.tool === 'img-resize') out.push(sec('Pixels, centimetres and DPI', [p('Pixels equal centimetres divided by 2.54, times the DPI. These conversions come up most often:'), cmPxTable(0)]));
   if (f.tool === 'pdf-resize') out.push(sec('Standard page sizes', [p('These are the sizes available in the page-size menu:'), pageSizeTable()]));
-  out.push(sec(F.section.h2, [].concat(F.section.ps.map(p), [ul(F.section.list)])));
-  const guide = isPdf ? ['See our guide', 'Read “How to Make a PDF Smaller Without Making It Unreadable” for a plain-language walkthrough of resolution and readability.'] : ['See our guide', 'Read “Why Application Portals Reject Photos and Signatures” for the usual causes and fixes.'];
-  out.push(sec('Before you upload', [ul(isPdf ? ['Open the result and scroll through every page.', 'Confirm the pages are in the order the portal expects.', 'Zoom to 100% on small print to check it is legible.', 'Keep the original PDF in case a higher-quality copy is requested later.'] : ['Open the result at 100% zoom to check detail.', 'Confirm the pixel dimensions and size against the form.', 'Check the file extension matches the instructions.', 'Keep your original photo; do not compress a compressed copy again.']), p(guide[1])]));
-  const faqs = isPdf ? [['What is the best way to shrink a scanned PDF?', 'Lower the resolution, use greyscale for text pages and keep only the pages you need. ConvertKB does this automatically to fit your limit.'], ['Can I keep text selectable?', 'Only if the PDF already contains real text and the text-preserving pass reaches your limit.']] : [['What size should I choose?', 'Use the number printed on the form you are filling in. If none is given, 100 KB is a good general-purpose target.'], ['Which format is smallest?', 'WebP, then JPG, then PNG for photographs. JPG is the safest for official uploads.']];
-  return { sections: out, faqs: faqs.concat(F.faq.slice(0, 1), [PRIVACY]) };
+  if (f.id !== 'resize-image' && f.id !== 'resize-pdf') out.push(sec(F.section.h2, [].concat(F.section.ps.map(p), [ul(F.section.list)])));
+  out.push(sec('How the size target is set', [p('The tool aims a few bytes under your limit, counting 1 KB as 1000 bytes. That is also under the 1024-byte figure, so the file passes whether a portal counts 1000 or 1024 bytes per KB.')]));
+  return { sections: out, faqs: [B.faq, ...F.faq.slice(0, 1), PRIVACY] };
 }
 
 /* ---------- assemble pages ---------- */
@@ -163,7 +179,7 @@ for (const f of FAMS) {
   for (const kb of f.sizes) {
     const S = SIZES[kb], c = sizeContent(f, kb), slug = `${f.id}-to-${slugKb(kb)}`;
     const verbT = f.verb === 'compress' ? 'Compress' : 'Resize';
-    const title = f.verb === 'compress' ? `Compress ${NOUN[f.noun]} to ${Ls(kb)} Online – Free & Private | ConvertKB` : isPdf ? `Resize PDF to ${Ls(kb)} – Page Size & File Size | ConvertKB` : `Resize Image to ${Ls(kb)} Online – Set Size in KB | ConvertKB`;
+    const title = f.verb === 'compress' ? `Compress ${f.id === 'compress-jpg' ? 'JPG / JPEG' : NOUN[f.noun]} to ${Ls(kb)} Online – Free & Private | ConvertKB` : isPdf ? `Resize PDF to ${Ls(kb)} – Page Size & File Size | ConvertKB` : `Resize Image to ${Ls(kb)} Online – Set Size in KB | ConvertKB`;
     const hookTxt = isPdf ? cut(S.pdfUses[0].replace(/\.$/, '').replace(/^./, (m) => m.toLowerCase()), 80) : S.hook;
     const tail = f.tool === 'pdf-resize' ? 'Pages are scaled, not redrawn.' : f.tool === 'img-resize' ? 'Set exact pixels, cm or inches.' : FORMATS[f.fmt].tail;
     const desc = cut(`${verbT} ${isPdf ? 'a PDF' : /^[aeiou]/i.test(NOUN[f.noun]) ? 'an ' + NOUN[f.noun] : 'a ' + NOUN[f.noun]} to under ${Lt(kb)} for ${hookTxt}. ${tail} Private, free, no upload.`, 158);
@@ -238,7 +254,7 @@ export const HUBS = [
   { slug: 'resize-tools', navs: ['Resize'], h1: 'Image and PDF Resizers', title: 'Resize Image and PDF Tools – Dimensions and KB | ConvertKB', desc: 'Resize images to exact pixels, cm or inches, and PDFs to A4, A3, A5, Letter or Legal, with an optional KB limit. Free and private.', lead: 'Change dimensions or page size, then fit the file under a size limit.',
     sections: [sec('Page sizes and pixel sizes', [pageSizeTable(), cmPxTable(60)]), sec('Resize versus compress', [p('Resizing changes the dimensions of a picture or the page size of a PDF. Compressing changes how much data is used to store it. Forms often need both: the right pixel size and a file under a limit. The resize tools do both in one step.')])],
     faqs: [['Do resized files lose quality?', 'Shrinking uses a high-quality resampling method, so results stay sharp. Enlarging adds no new detail.'], PRIVACY] },
-  { slug: 'converters', navs: ['Convert'], h1: 'Image and PDF Converters', title: 'Free Converters – PDF to Word, HEIC to JPG, JPG to PDF | ConvertKB', desc: 'Convert PDF to Word, Excel, JPG and PowerPoint; images to Word, Excel and PDF; HEIC to JPG, PNG and PDF; JPG, PNG and WebP. Private and in-browser.', lead: 'Working converters for the formats people actually need, all processed on your device.',
+  { slug: 'converters', navs: ['Convert'], h1: 'Image and PDF Converters', title: 'Free Converters – PDF to Word, HEIC to JPG, JPG to PDF', desc: 'Convert PDF to Word, Excel, JPG and PowerPoint; images to Word, Excel and PDF; HEIC to JPG, PNG and PDF; JPG, PNG and WebP. Private and in-browser.', lead: 'Working converters for the formats people actually need, all processed on your device.',
     sections: [sec('What converts to what', [table(['From', 'To', 'Runs on'], CONVERTERS.map((c) => [c.from, c.to, c.tool === 'ocr' ? 'Text recognition (OCR)' : c.tool === 'pdfconv' ? 'PDF reader' : c.group === 'heic' ? 'HEIC decoder' : 'Browser image engine']))]), sec('How the converters work', [p('Format conversions use your browser’s own image engine. HEIC uses an in-browser decoder. PDF to Word and Excel read the text layer (or use OCR for scans). Nothing is uploaded.')])],
     faqs: [['Are the converters really free?', 'Yes, with no signup or watermark.'], PRIVACY] },
   { slug: 'photo-tools', navs: ['Tools', 'Exams'], h1: 'Photo and Signature Tools', title: 'Exam, Passport and Platform Photo Tools | ConvertKB', desc: 'Photo and signature resizers for UPSC, SSC, IBPS, NEET, GATE, PAN, passport, US visa, YouTube and Instagram, with presets for size, pixels and DPI.', lead: 'One-click presets for the photo, signature and thumbnail uploads that exam and ID portals ask for.',
@@ -247,6 +263,21 @@ export const HUBS = [
 ].map((h) => ({ ...h, kind: 'hub', tool: null, nav: null, cfg: null }));
 
 for (const h of HUBS) PAGES.push(h);
+
+// Page-specific extra sections and FAQs (extras-a.js, extras-b.js). Inserted before the closing
+// 'Learn more' / 'Not sure why uploads fail?' sections so the page still ends with its usual links.
+{
+  const EXTRA_SETS = [EXTRAS_A, EXTRAS_B, EXTRAS_C];
+  for (const [slug, x] of EXTRA_SETS.flatMap((m) => Object.entries(m))) {
+    const pg = PAGES.find((q) => q.slug === slug);
+    if (!pg) throw new Error('extras for unknown page: ' + slug);
+    const extra = (x.sections || []).map((e) => sec(e.h2, e.blocks));
+    const stop = pg.kind === 'convert' ? 'learn-more' : pg.kind === 'exam' ? 'not-sure-why-uploads-fail' : null;
+    const at = stop ? pg.sections.findIndex((q) => q.id === stop) : -1;
+    if (at >= 0) pg.sections.splice(at, 0, ...extra); else pg.sections.push(...extra);
+    if (x.faqs && x.faqs.length) pg.faqs.splice(Math.max(pg.faqs.length - 1, 0), 0, ...x.faqs);
+  }
+}
 
 export const PAGE_MAP = Object.fromEntries(PAGES.map((x) => [x.slug, x]));
 export const NAV = NAV_ORDER.map((name) => ({ name, hub: HUB_OF[name], items: PAGES.filter((x) => x.nav === name) }));

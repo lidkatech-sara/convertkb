@@ -2,7 +2,7 @@
 const CHECK = 'Portals and notifications change between recruitment cycles. Treat these numbers as the usual starting point and always confirm them against the instructions on your own application form.';
 export const EXAMS = [
   {
-    slug: 'passport-photo-size', nav: 'Tools', h1: 'Passport Photo Size Resizer', title: 'Passport Photo Size Online – Resize to 35×45 mm, 2×2 in | ConvertKB',
+    slug: 'passport-photo-size', nav: 'Tools', h1: 'Passport Photo Size Resizer', title: 'Passport Photo Size – Resize to 35×45 mm, 2×2 in | ConvertKB',
     desc: 'Resize a photo to passport size: 35×45 mm, 2×2 inch or 50×70 mm. Crop to the correct ratio, set DPI and reach the KB limit privately in your browser.',
     lead: 'Crop and resize a portrait to the common passport sizes, then fit it to the upload limit without sending the picture anywhere.',
     cfg: { mode: 'photo', targetKb: 250, format: 'jpeg', w: 413, h: 531, dpi: 300, presets: [
@@ -42,7 +42,7 @@ export const EXAMS = [
     official: { label: 'Protean (NSDL) PAN services', url: 'https://www.protean-tinpan.com' }, related: ['pan-card-photo', 'signature-resize', 'compress-image-to-50kb']
   },
   {
-    slug: 'youtube-thumbnail-size', nav: 'Tools', h1: 'YouTube Thumbnail Size Resizer', title: 'YouTube Thumbnail Size – Resize to 1280×720 Under 2 MB | ConvertKB',
+    slug: 'youtube-thumbnail-size', nav: 'Tools', h1: 'YouTube Thumbnail Size Resizer', title: 'YouTube Thumbnail Size – 1280×720 Under 2 MB | ConvertKB',
     desc: 'Resize any image to the YouTube thumbnail size of 1280×720 pixels (16:9) and keep it under the 2 MB limit. JPG or PNG, processed privately in your browser.',
     lead: 'Crop to 16:9, scale to 1280 × 720 and keep the file under YouTube’s 2 MB limit.',
     cfg: { mode: 'photo', targetKb: 1900, format: 'jpeg', w: 1280, h: 720, presets: [{ label: '1280×720 · 16:9 · <2 MB', w: 1280, h: 720, maxKb: 1900 }, { label: '1920×1080 · <2 MB', w: 1920, h: 1080, maxKb: 1900 }] },
@@ -76,7 +76,7 @@ export const EXAMS = [
     steps: ['Upload a front-facing colour photo with a plain background.', 'Keep the 1:1 crop with the head about 50–69% of the image height.', 'Press Prepare photo; the tool keeps the file under 240 KB.', 'Upload the JPG in the DS-160 photo step and check the photo-tool result.'],
     mistakes: ['Wearing glasses or a head covering when not allowed for religious reasons.', 'Shadows on the face or background.', 'A photo that is too small or too tightly cropped.', 'Using a scan of an old printed photo.'],
     faq: [['What is the size for a US visa photo?', 'A square JPEG between 600 × 600 and 1200 × 1200 pixels, up to 240 KB.'], ['Do I need exactly 2 × 2 inches?', 'Printed photos are 2 × 2 inches; for the online upload, the pixel size and file size matter.'], ['Is the tool safe for passport photos?', 'Nothing leaves your device, so it is safe for ID photos.']],
-    official: { label: 'US Department of State – Photo requirements', url: 'https://travel.state.gov' }, related: ['passport-photo-size', 'compress-image-to-200kb', 'compress-jpeg-to-200kb']
+    official: { label: 'US Department of State – Photo requirements', url: 'https://travel.state.gov' }, related: ['passport-photo-size', 'compress-image-to-200kb', 'compress-jpg-to-200kb']
   },
   {
     slug: 'upsc-photo-signature', nav: 'Exams', h1: 'UPSC Photo & Signature Resizer', title: 'UPSC Photo and Signature Size – Resize Under 300 KB | ConvertKB',
@@ -146,7 +146,7 @@ export const EXAMS = [
     official: { label: 'IBPS', url: 'https://www.ibps.in' }, related: ['ssc-photo-and-signature', 'compress-image-to-20kb', 'signature-resize']
   },
   {
-    slug: 'defence-photo-and-signature', nav: 'Exams', h1: 'Defence Exam Photo & Signature Resizer', title: 'Defence Exam Photo & Signature – NDA, CDS, Agniveer Resizer | ConvertKB',
+    slug: 'defence-photo-and-signature', nav: 'Exams', h1: 'Defence Exam Photo & Signature Resizer', title: 'Defence Exam Photo & Signature – NDA, CDS, Agniveer | ConvertKB',
     desc: 'Prepare photo and signature uploads for defence recruitment forms such as NDA, CDS and Agniveer: crop, set the KB window and download a clean JPEG.',
     lead: 'Defence recruitment uses several portals, each with its own limits. Start from sensible presets, then adjust to your notice.',
     cfg: { mode: 'photo', targetKb: 50, minKb: 10, format: 'jpeg', w: 240, h: 320, dpi: 200, presets: [
@@ -159,7 +159,7 @@ export const EXAMS = [
     official: { label: 'UPSC (NDA/CDS notices)', url: 'https://upsc.gov.in' }, related: ['upsc-photo-signature', 'ssc-photo-and-signature', 'compress-image-to-50kb']
   },
   {
-    slug: 'signature-resize', nav: 'Exams', h1: 'Signature Resizer', title: 'Signature Resizer – Resize Signature Under 10, 20, 50 KB | ConvertKB',
+    slug: 'signature-resize', nav: 'Exams', h1: 'Signature Resizer', title: 'Signature Resizer – Under 10, 20, 50 KB | ConvertKB',
     desc: 'Resize a scanned or photographed signature to exact pixel sizes and KB limits: 140×60, 300×100 or 400×200 px. Whiten paper, crop and download a JPEG.',
     lead: 'A purpose-built signature tool: crop tightly, whiten the paper and fit any size limit from 10 KB to 100 KB.',
     cfg: { mode: 'photo', targetKb: 20, minKb: 0, format: 'jpeg', w: 140, h: 60, dpi: 200, presets: [
