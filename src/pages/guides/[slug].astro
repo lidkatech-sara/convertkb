@@ -1,0 +1,19 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { GUIDES } from '../../data/guides.js';
+import { SITE_URL, SITE_NAME, UPDATED } from '../../consts.js';
+export function getStaticPaths() { return GUIDES.map((g) => ({ params: { slug: g.slug }, props: { g } })); }
+const { g } = Astro.props;
+const others = GUIDES.filter((x) => x.slug !== g.slug).slice(0, 3);
+const schema = [{ '@context': 'https://schema.org', '@type': 'Article', headline: g.title, description: g.desc, mainEntityOfPage: SITE_URL + '/guides/' + g.slug, publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL } },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL + '/' }, { '@type': 'ListItem', position: 2, name: 'Guides', item: SITE_URL + '/guides' }, { '@type': 'ListItem', position: 3, name: g.title, item: SITE_URL + '/guides/' + g.slug }] }];
+---
+<Layout title={g.title + ' | ConvertKB'} description={g.desc} schema={schema}>
+  <div class="narrow pagehead"><nav class="crumbs" style="justify-content:flex-start"><a href="/">Home</a><span>›</span><a href="/guides">Guides</a></nav><h1>{g.title}</h1><p style="color:var(--muted)">{g.read} min read · Updated {UPDATED}</p></div>
+  <article class="narrow prose" style="padding-bottom:30px">
+    <p style="font-size:18px">{g.desc}</p>
+    {g.sections.map((s) => <><h2>{s.h2}</h2>{s.ps.map((t) => <p>{t}</p>)}</>)}
+    <div class="note">Need to fix a file now? Try the <a href="/compress-image">image compressor</a>, <a href="/compress-pdf">PDF compressor</a> or <a href="/photo-tools">photo and signature presets</a>.</div>
+  </article>
+  <section class="section alt"><div class="wrap"><div class="sec-head"><h2>More guides</h2></div><div class="grid g3">{others.map((o) => <a class="card" href={'/guides/' + o.slug}><h3>{o.title}</h3><p>{o.desc}</p></a>)}</div></div></section>
+</Layout>
