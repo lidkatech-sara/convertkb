@@ -176,3 +176,7 @@ th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line)}th{b
 .cookie{position:fixed;left:16px;right:16px;bottom:16px;max-width:560px;z-index:150;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow-lg);display:none;gap:14px;align-items:center;font-size:14px;color:var(--muted)}
 .cookie.show{display:flex}
 @media print{.hdr,.ftr,.cookie,.toolwrap{display:none}}
+
+.page-fig{margin:0 0 28px}
+.page-fig img{display:block;width:100%;height:auto;border-radius:18px;border:1px solid var(--line);background:var(--surface)}
+.page-fig figcaption{margin-top:8px;font-size:14px;color:var(--muted,#62668a)}
