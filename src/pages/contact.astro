@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { CONTACT_EMAIL } from '../consts.js';
+---
+<Layout title="Contact ConvertKB" description="Contact ConvertKB with feedback, corrections or questions about the image and PDF tools.">
+  <div class="narrow pagehead"><h1>Contact us</h1></div>
+  <div class="narrow prose" style="padding-bottom:40px">
+    <p>The quickest way to reach us is email: <a href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL}</a>. We read every message and reply as soon as we can, usually within a few working days.</p>
+    <h2>What to include</h2>
+    <ul><li>The page address (for example, the exam or size page you were using).</li><li>Your browser and device (for example, Chrome on Android).</li><li>What you expected, and what happened instead.</li><li>For size problems, the portal's stated limits. Please do not send personal documents; describe the file instead.</li></ul>
+    <h2>Corrections</h2>
+    <p>Exam portals change their rules. If a limit on one of our pages no longer matches the current notification, send us the notice link and we will update the page.</p>
+    <h2>Privacy</h2>
+    <p>We cannot see files you process in the tools, so there is nothing to attach or recover. Please read the <a href="/privacy-policy">privacy policy</a> for details.</p>
+  </div>
+</Layout>
