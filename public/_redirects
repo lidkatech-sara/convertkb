@@ -1,0 +1,17 @@
+# Retired near-duplicate pages (JPEG and JPG are the same format) -> permanent redirects to the page that stays
+/jpeg-to-jpg   /compress-jpg   301
+/jpg-to-jpeg   /compress-jpg   301
+/jpeg-to-png   /jpg-to-png     301
+/jpeg-to-pdf   /jpg-to-pdf     301
+/jpeg-to-excel /jpg-to-excel   301
+/heic-to-jpeg  /heic-to-jpg    301
+/compress-jpeg /compress-jpg   301
+/compress-jpeg-to-10kb  /compress-jpg-to-10kb  301
+/compress-jpeg-to-20kb  /compress-jpg-to-20kb  301
+/compress-jpeg-to-30kb  /compress-jpg-to-30kb  301
+/compress-jpeg-to-40kb  /compress-jpg-to-40kb  301
+/compress-jpeg-to-50kb  /compress-jpg-to-50kb  301
+/compress-jpeg-to-100kb /compress-jpg-to-100kb 301
+/compress-jpeg-to-150kb /compress-jpg-to-150kb 301
+/compress-jpeg-to-200kb /compress-jpg-to-200kb 301
+/compress-jpeg-to-500kb /compress-jpg-to-500kb 301
