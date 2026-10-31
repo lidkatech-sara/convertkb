@@ -4,6 +4,7 @@ import Blocks from '../components/Blocks.astro';
 import AdSlot from '../components/AdSlot.astro';
 import { PAGES, SCRIPT, relatedFor, hubOf, NAV_ORDER } from '../data/pages.js';
 import { SITE_URL, SITE_NAME } from '../consts.js';
+import { IMAGES } from '../data/images.js';
 
 export function getStaticPaths() {
   return PAGES.map((page) => ({ params: { slug: page.slug }, props: { page } }));
@@ -25,11 +26,13 @@ const schema = [
 ];
 if (!isHub) schema.push({ '@context': 'https://schema.org', '@type': 'WebApplication', name: page.h1, url, description: page.desc, applicationCategory: 'MultimediaApplication', operatingSystem: 'Any (modern web browser)', browserRequirements: 'Requires JavaScript', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL } });
 else schema.push({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: page.h1, url, description: page.desc });
+const img = IMAGES[page.slug];
+if (img) schema.push({ '@context': 'https://schema.org', '@type': 'ImageObject', contentUrl: SITE_URL + '/img/' + page.slug + '.png', url: SITE_URL + '/img/' + page.slug + '.png', width: 1200, height: 630, caption: img.caption, name: page.h1, creator: { '@type': 'Organization', name: SITE_NAME } });
 const hubGroups = isHub ? page.navs.map((n) => ({ name: n, items: PAGES.filter((x) => x.nav === n) })) : [];
 const toc = (page.sections || []).map((s) => ({ id: s.id, h2: s.h2 }));
 if (page.faqs.length) toc.push({ id: 'faq', h2: 'Questions and answers' });
 ---
-<Layout title={page.title} description={page.desc} schema={schema}>
+<Layout title={page.title} description={page.desc} schema={schema} image={img ? '/img/' + page.slug + '.png' : '/og.png'}>
   <section class="hero">
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb">
@@ -74,6 +77,12 @@ if (page.faqs.length) toc.push({ id: 'faq', h2: 'Questions and answers' });
   <section class={isHub ? 'section alt' : 'section'}>
     <div class="wrap article">
       <div class="prose">
+        {img && (
+          <figure class="page-fig">
+            <img src={'/img/' + page.slug + '.png'} width="1200" height="630" alt={img.alt} loading="lazy" decoding="async" />
+            <figcaption>{img.caption}</figcaption>
+          </figure>
+        )}
         {(page.sections || []).map((s, i) => (
           <>
             <h2 id={s.id}>{s.h2}</h2>
